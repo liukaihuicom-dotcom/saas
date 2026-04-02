@@ -1,0 +1,711 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>代理中心 - Broker SaaS 运营平台</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #2563eb;
+            --secondary: #f8fafc;
+            --accent: #0ea5e9;
+            --muted: #64748b;
+            --border: #e2e8f0;
+            --radius: 0.5rem;
+            --sidebar-width: 260px;
+            --header-height: 64px;
+        }
+        
+        * {
+            font-family: 'Inter', sans-serif;
+        }
+        
+        body {
+            background-color: #f8fafc;
+            margin: 0;
+        }
+        
+        .sidebar {
+            width: var(--sidebar-width);
+            height: 100vh;
+            background: linear-gradient(180deg, #1e293b 0%, #0f172a 100%);
+            position: fixed;
+            left: 0;
+            top: 0;
+            padding: 24px 0;
+            transition: all 0.3s ease;
+        }
+        
+        .main-content {
+            margin-left: var(--sidebar-width);
+            padding: 24px;
+            min-height: 100vh;
+        }
+        
+        .header {
+            height: var(--header-height);
+            background: white;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 24px;
+            position: sticky;
+            top: 0;
+            z-index: 50;
+        }
+        
+        .card {
+            background: white;
+            border-radius: var(--radius);
+            border: 1px solid var(--border);
+            padding: 20px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        }
+        
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 2px 8px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+        
+        .badge-success {
+            background-color: #dcfce7;
+            color: #166534;
+        }
+        
+        .badge-warning {
+            background-color: #fef3c7;
+            color: #92400e;
+        }
+        
+        .badge-danger {
+            background-color: #fee2e2;
+            color: #991b1b;
+        }
+        
+        .badge-info {
+            background-color: #dbeafe;
+            color: #1e40af;
+        }
+        
+        .tab-container {
+            display: flex;
+            border-bottom: 1px solid var(--border);
+            margin-bottom: 20px;
+            overflow-x: auto;
+        }
+        
+        .tab-item {
+            padding: 12px 20px;
+            cursor: pointer;
+            border-bottom: 2px solid transparent;
+            transition: all 0.2s;
+            white-space: nowrap;
+        }
+        
+        .tab-item.active {
+            border-bottom-color: var(--primary);
+            color: var(--primary);
+            font-weight: 500;
+        }
+        
+        .stat-card {
+            background: white;
+            border-radius: var(--radius);
+            border: 1px solid var(--border);
+            padding: 20px;
+            transition: transform 0.2s;
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-2px);
+        }
+        
+        .agent-tier {
+            border: 2px solid transparent;
+            border-radius: var(--radius);
+            padding: 20px;
+            transition: all 0.2s;
+        }
+        
+        .agent-tier:hover {
+            border-color: var(--primary);
+        }
+        
+        .tier-premium {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        
+        .tier-standard {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+        }
+        
+        .tier-basic {
+            background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+        }
+    </style>
+</head>
+<body>
+    <div class="sidebar">
+        <div class="px-6 py-4">
+            <h1 class="text-white text-xl font-bold">Broker SaaS</h1>
+            <p class="text-slate-400 text-sm mt-1">运营平台</p>
+        </div>
+        
+        <nav class="mt-8">
+            <a href="dashboard.html" class="block px-6 py-3 text-slate-300 hover:text-white hover:bg-blue-900/30 flex items-center gap-3">
+                <i class="fas fa-chart-line w-5"></i>
+                <span>经营总览</span>
+            </a>
+            <a href="crm.html" class="block px-6 py-3 text-slate-300 hover:text-white hover:bg-blue-900/30 flex items-center gap-3">
+                <i class="fas fa-users w-5"></i>
+                <span>客户中心</span>
+            </a>
+            <a href="kyc.html" class="block px-6 py-3 text-slate-300 hover:text-white hover:bg-blue-900/30 flex items-center gap-3">
+                <i class="fas fa-id-card w-5"></i>
+                <span>KYC审核中心</span>
+            </a>
+            <a href="wallet.html" class="block px-6 py-3 text-slate-300 hover:text-white hover:bg-blue-900/30 flex items-center gap-3">
+                <i class="fas fa-wallet w-5"></i>
+                <span>钱包与支付</span>
+            </a>
+            <a href="agent.html" class="block px-6 py-3 text-white bg-blue-900/30 flex items-center gap-3">
+                <i class="fas fa-handshake w-5"></i>
+                <span>代理中心</span>
+            </a>
+            <a href="index.html" class="block px-6 py-3 text-slate-300 hover:text-white hover:bg-blue-900/30 flex items-center gap-3 mt-8">
+                <i class="fas fa-home w-5"></i>
+                <span>返回首页</span>
+            </a>
+        </nav>
+        
+        <div class="absolute bottom-0 w-full p-6 border-t border-slate-700">
+            <div class="flex items-center gap-3">
+                <div class="w-8 h-8 bg-orange-500 rounded-full flex items-center justify-center text-white">
+                    <i class="fas fa-users"></i>
+                </div>
+                <div>
+                    <p class="text-white text-sm">代理运营</p>
+                    <p class="text-slate-400 text-xs">agent@broker.com</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="main-content">
+        <div class="header">
+            <div>
+                <h2 class="text-xl font-semibold">代理中心</h2>
+                <p class="text-slate-600 mt-1">代理管理、返佣结算、团队体系</p>
+            </div>
+            <div class="flex items-center gap-4">
+                <button class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600">
+                    <i class="fas fa-user-plus mr-2"></i>新增代理
+                </button>
+                <button class="border border-blue-500 text-blue-500 px-4 py-2 rounded-lg hover:bg-blue-50">
+                    <i class="fas fa-cog mr-2"></i>规则设置
+                </button>
+            </div>
+        </div>
+        
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-6">
+            <div class="stat-card">
+                <div class="flex justify-between">
+                    <div>
+                        <p class="text-slate-600">活跃代理</p>
+                        <p class="text-2xl font-bold mt-1">142</p>
+                    </div>
+                    <div class="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center">
+                        <i class="fas fa-user-check text-blue-500"></i>
+                    </div>
+                </div>
+                <div class="mt-3 text-sm">
+                    <span class="text-green-600">+8个</span> <span class="text-slate-500">本月新增</span>
+                </div>
+            </div>
+            
+            <div class="stat-card">
+                <div class="flex justify-between">
+                    <div>
+                        <p class="text-slate-600">名下客户数</p>
+                        <p class="text-2xl font-bold mt-1">1,254</p>
+                    </div>
+                    <div class="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center">
+                        <i class="fas fa-users text-green-500"></i>
+                    </div>
+                </div>
+                <div class="mt-3 text-sm">
+                    <span class="text-green-600">+12%</span> <span class="text-slate-500">vs 上月</span>
+                </div>
+            </div>
+            
+            <div class="stat-card">
+                <div class="flex justify-between">
+                    <div>
+                        <p class="text-slate-600">本月返佣</p>
+                        <p class="text-2xl font-bold mt-1">$28,450</p>
+                    </div>
+                    <div class="w-10 h-10 bg-purple-100 rounded-full flex items-center justify-center">
+                        <i class="fas fa-money-check-alt text-purple-500"></i>
+                    </div>
+                </div>
+                <div class="mt-3 text-sm">
+                    <span class="text-green-600">+15.3%</span> <span class="text-slate-500">vs 上月</span>
+                </div>
+            </div>
+            
+            <div class="stat-card">
+                <div class="flex justify-between">
+                    <div>
+                        <p class="text-slate-600">待处理争议</p>
+                        <p class="text-2xl font-bold mt-1">3</p>
+                    </div>
+                    <div class="w-10 h-10 bg-yellow-100 rounded-full flex items-center justify-center">
+                        <i class="fas fa-exclamation-triangle text-yellow-500"></i>
+                    </div>
+                </div>
+                <div class="mt-3 text-sm">
+                    <span class="text-slate-500">需审核处理</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="tab-container">
+            <div class="tab-item active">代理列表</div>
+            <div class="tab-item">返佣明细</div>
+            <div class="tab-item">结算单</div>
+            <div class="tab-item">团队架构</div>
+            <div class="tab-item">推广素材</div>
+            <div class="tab-item">争议处理</div>
+        </div>
+        
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <div class="lg:col-span-2">
+                <div class="card">
+                    <div class="flex justify-between items-center mb-6">
+                        <h3 class="text-lg font-semibold">代理业绩排行</h3>
+                        <select class="border rounded px-2 py-1 text-sm">
+                            <option>本月业绩</option>
+                            <option>本季度业绩</option>
+                            <option>年度业绩</option>
+                        </select>
+                    </div>
+                    
+                    <div class="overflow-x-auto">
+                        <table class="w-full">
+                            <thead>
+                                <tr class="border-b">
+                                    <th class="text-left py-3">排名</th>
+                                    <th class="text-left py-3">代理信息</th>
+                                    <th class="text-left py-3">等级</th>
+                                    <th class="text-left py-3">客户数</th>
+                                    <th class="text-left py-3">本月入金</th>
+                                    <th class="text-left py-3">本月返佣</th>
+                                    <th class="text-left py-3">转化率</th>
+                                    <th class="text-left py-3">操作</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="border-b hover:bg-slate-50">
+                                    <td class="py-4">
+                                        <div class="w-8 h-8 bg-yellow-100 rounded-full flex items-center justify-center">
+                                            <span class="font-bold text-yellow-600">1</span>
+                                        </div>
+                                    </td>
+                                    <td class="py-4">
+                                        <div class="flex items-center gap-3">
+                                            <div class="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center">
+                                                <i class="fas fa-user-tie text-blue-600"></i>
+                                            </div>
+                                            <div>
+                                                <p class="font-medium">Robert Chen</p>
+                                                <p class="text-slate-500 text-sm">代理ID: AGT1001</p>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="py-4">
+                                        <span class="badge badge-success">白金代理</span>
+                                    </td>
+                                    <td class="py-4 font-medium">42</td>
+                                    <td class="py-4">
+                                        <p class="font-medium">$128,400</p>
+                                        <p class="text-green-600 text-sm">+18.5%</p>
+                                    </td>
+                                    <td class="py-4">
+                                        <p class="font-medium">$6,420</p>
+                                        <p class="text-slate-500 text-sm">上周: $5,800</p>
+                                    </td>
+                                    <td class="py-4">
+                                        <p class="font-medium">32.5%</p>
+                                        <div class="w-full bg-slate-200 rounded-full h-2">
+                                            <div class="bg-green-500 h-2 rounded-full" style="width: 32.5%"></div>
+                                        </div>
+                                    </td>
+                                    <td class="py-4">
+                                        <button class="text-blue-500 hover:text-blue-700">
+                                            <i class="fas fa-eye"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                                
+                                <tr class="border-b hover:bg-slate-50">
+                                    <td class="py-4">
+                                        <div class="w-8 h-8 bg-slate-100 rounded-full flex items-center justify-center">
+                                            <span class="font-bold text-slate-600">2</span>
+                                        </div>
+                                    </td>
+                                    <td class="py-4">
+                                        <div class="flex items-center gap-3">
+                                            <div class="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center">
+                                                <i class="fas fa-user-tie text-green-600"></i>
+                                            </div>
+                                            <div>
+                                                <p class="font-medium">Lisa Wang</p>
+                                                <p class="text-slate-500 text-sm">代理ID: AGT1002</p>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="py-4">
+                                        <span class="badge badge-info">黄金代理</span>
+                                    </td>
+                                    <td class="py-4 font-medium">28</td>
+                                    <td class="py-4">
+                                        <p class="font-medium">$85,200</p>
+                                        <p class="text-green-600 text-sm">+12.3%</p>
+                                    </td>
+                                    <td class="py-4">
+                                        <p class="font-medium">$4,260</p>
+                                        <p class="text-slate-500 text-sm">上周: $3,900</p>
+                                    </td>
+                                    <td class="py-4">
+                                        <p class="font-medium">28.8%</p>
+                                        <div class="w-full bg-slate-200 rounded-full h-2">
+                                            <div class="bg-blue-500 h-2 rounded-full" style="width: 28.8%"></div>
+                                        </div>
+                                    </td>
+                                    <td class="py-4">
+                                        <button class="text-blue-500 hover:text-blue-700">
+                                            <i class="fas fa-eye"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                                
+                                <tr class="border-b hover:bg-slate-50">
+                                    <td class="py-4">
+                                        <div class="w-8 h-8 bg-orange-100 rounded-full flex items-center justify-center">
+                                            <span class="font-bold text-orange-600">3</span>
+                                        </div>
+                                    </td>
+                                    <td class="py-4">
+                                        <div class="flex items-center gap-3">
+                                            <div class="w-10 h-10 bg-purple-100 rounded-full flex items-center justify-center">
+                                                <i class="fas fa-user-tie text-purple-600"></i>
+                                            </div>
+                                            <div>
+                                                <p class="font-medium">David Lee</p>
+                                                <p class="text-slate-500 text-sm">代理ID: AGT1003</p>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="py-4">
+                                        <span class="badge badge-info">黄金代理</span>
+                                    </td>
+                                    <td class="py-4 font-medium">35</td>
+                                    <td class="py-4">
+                                        <p class="font-medium">$76,800</p>
+                                        <p class="text-green-600 text-sm">+8.9%</p>
+                                    </td>
+                                    <td class="py-4">
+                                        <p class="font-medium">$3,840</p>
+                                        <p class="text-slate-500 text-sm">上周: $3,500</p>
+                                    </td>
+                                    <td class="py-4">
+                                        <p class="font-medium">25.4%</p>
+                                        <div class="w-full bg-slate-200 rounded-full h-2">
+                                            <div class="bg-purple-500 h-2 rounded-full" style="width: 25.4%"></div>
+                                        </div>
+                                    </td>
+                                    <td class="py-4">
+                                        <button class="text-blue-500 hover:text-blue-700">
+                                            <i class="fas fa-eye"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                
+                <div class="card mt-6">
+                    <div class="flex justify-between items-center mb-6">
+                        <h3 class="text-lg font-semibold">返佣发放管理</h3>
+                        <div class="flex gap-2">
+                            <button class="border rounded px-3 py-1 text-sm hover:bg-slate-50">批量发放</button>
+                            <button class="border rounded px-3 py-1 text-sm hover:bg-slate-50">导出报表</button>
+                        </div>
+                    </div>
+                    
+                    <div class="space-y-4">
+                        <div class="flex justify-between items-center p-4 border rounded-lg">
+                            <div>
+                                <div class="flex items-center gap-3">
+                                    <div class="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center">
+                                        <i class="fas fa-user-tie text-blue-600"></i>
+                                    </div>
+                                    <div>
+                                        <p class="font-medium">Robert Chen</p>
+                                        <p class="text-slate-500 text-sm">可提返佣: $6,420</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="text-right">
+                                <p class="font-medium">$6,420</p>
+                                <p class="text-slate-500 text-sm">2024年3月结算</p>
+                            </div>
+                            <div>
+                                <button class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">
+                                    发放
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div class="flex justify-between items-center p-4 border rounded-lg">
+                            <div>
+                                <div class="flex items-center gap-3">
+                                    <div class="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center">
+                                        <i class="fas fa-user-tie text-green-600"></i>
+                                    </div>
+                                    <div>
+                                        <p class="font-medium">Lisa Wang</p>
+                                        <p class="text-slate-500 text-sm">可提返佣: $4,260</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="text-right">
+                                <p class="font-medium">$4,260</p>
+                                <p class="text-slate-500 text-sm">2024年3月结算</p>
+                            </div>
+                            <div>
+                                <button class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">
+                                    发放
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="lg:col-span-1">
+                <div class="card">
+                    <h3 class="text-lg font-semibold mb-6">代理等级体系</h3>
+                    <div class="space-y-4">
+                        <div class="agent-tier tier-premium">
+                            <div class="flex justify-between items-center mb-3">
+                                <span class="font-bold text-lg">白金代理</span>
+                                <i class="fas fa-crown text-yellow-300 text-xl"></i>
+                            </div>
+                            <p class="text-sm opacity+90">月入金 > $100,000</p>
+                            <p class="text-sm opacity+90 mt-2">返佣比例: 5%</p>
+                        </div>
+                        
+                        <div class="agent-tier tier-standard">
+                            <div class="flex justify-between items-center mb-3">
+                                <span class="font-bold text-lg">黄金代理</span>
+                                <i class="fas fa-medal text-yellow-300 text-xl"></i>
+                            </div>
+                            <p class="text-sm opacity+90">月入金 $20,000 - $100,000</p>
+                            <p class="text-sm opacity+90 mt-2">返佣比例: 4%</p>
+                        </div>
+                        
+                        <div class="agent-tier tier-basic">
+                            <div class="flex justify-between items-center mb-3">
+                                <span class="font-bold text-lg">基础代理</span>
+                                <i class="fas fa-user text-slate-600 text-xl"></i>
+                            </div>
+                            <p class="text-sm">月入金 < $20,000</p>
+                            <p class="text-sm mt-2">返佣比例: 3%</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card mt-6">
+                    <h3 class="text-lg font-semibold mb-6">推广素材统计</h3>
+                    <div class="space-y-4">
+                        <div>
+                            <div class="flex justify-between mb-1">
+                                <span>开户链接</span>
+                                <span class="font-medium">4,285次点击</span>
+                            </div>
+                            <div class="w-full bg-slate-200 rounded-full h-2">
+                                <div class="bg-blue-500 h-2 rounded-full" style="width: 85%"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between mb-1">
+                                <span>活动海报</span>
+                                <span class="font-medium">2,148次下载</span>
+                            </div>
+                            <div class="w-full bg-slate-200 rounded-full h-2">
+                                <div class="bg-green-500 h-2 rounded-full" style="width: 65%"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between mb-1">
+                                <span>邀请码</span>
+                                <span class="font-medium">982次使用</span>
+                            </div>
+                            <div class="w-full bg-slate-200 rounded-full h-2">
+                                <div class="bg-purple-500 h-2 rounded-full" style="width: 45%"></div>
+                            </div>
+                        </div>
+                        <div class="pt-4 border-t">
+                            <button class="w-full border border-blue-500 text-blue-500 py-2 rounded hover:bg-blue-50">
+                                <i class="fas fa-download mr-2"></i>下载素材包
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card mt-6">
+                    <h3 class="text-lg font-semibold mb-6">待处理争议</h3>
+                    <div class="space-y-4">
+                        <div class="border border-yellow-200 rounded-lg p-3 bg-yellow-50">
+                            <p class="font-medium">客户归属争议</p>
+                            <p class="text-slate-600 text-sm mt-1">客户 #USR1056 归属权争议</p>
+                            <p class="text-xs text-slate-500 mt-2">涉及代理: AGT1002, AGT1005</p>
+                        </div>
+                        <div class="border border-yellow-200 rounded-lg p-3 bg-yellow-50">
+                            <p class="font-medium">返佣计算争议</p>
+                            <p class="text-slate-600 text-sm mt-1">代理 AGT1003 对返佣金额有异议</p>
+                            <p class="text-xs text-slate-500 mt-2">涉及金额: $320</p>
+                        </div>
+                        <button class="w-full bg-yellow-500 text-white py-2 rounded hover:bg-yellow-600">
+                            <i class="fas fa-gavel mr-2"></i>处理争议
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-8">
+            <div class="card">
+                <div class="flex justify-between items-center mb-6">
+                    <h3 class="text-lg font-semibold">代理增长趋势</h3>
+                    <select class="border rounded px-2 py-1 text-sm">
+                        <option>月度趋势</option>
+                        <option>季度趋势</option>
+                    </select>
+                </div>
+                <div id="agentChart" style="height: 250px;"></div>
+            </div>
+            
+            <div class="card">
+                <div class="flex justify-between items-center mb-6">
+                    <h3 class="text-lg font-semibold">返佣分布</h3>
+                    <span class="text-slate-500 text-sm">本月总计: $28,450</span>
+                </div>
+                <div id="commissionChart" style="height: 250px;"></div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // 选项卡切换
+            const tabs = document.querySelectorAll('.tab-item');
+            tabs.forEach(tab => {
+                tab.addEventListener('click', function() {
+                    tabs.forEach(t => t.classList.remove('active'));
+                    this.classList.add('active');
+                });
+            });
+            
+            // 代理增长图表
+            const agentOptions = {
+                series: [{
+                    name: '新增代理',
+                    data: [8, 12, 15, 10, 18, 22, 25, 20, 28, 32, 35, 42]
+                }],
+                chart: {
+                    type: 'line',
+                    height: 250,
+                    toolbar: {
+                        show: false
+                    }
+                },
+                colors: ['#2563eb'],
+                stroke: {
+                    curve: 'smooth',
+                    width: 3
+                },
+                fill: {
+                    type: 'gradient',
+                    gradient: {
+                        shadeIntensity: 1,
+                        opacityFrom: 0.7,
+                        opacityTo: 0.2,
+                        stops: [0, 90, 100]
+                    }
+                },
+                xaxis: {
+                    categories: ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月']
+                },
+                yaxis: {
+                    title: {
+                        text: '代理数量'
+                    }
+                }
+            };
+            
+            const agentChart = new ApexCharts(document.querySelector("#agentChart"), agentOptions);
+            agentChart.render();
+            
+            // 返佣分布图表
+            const commissionOptions = {
+                series: [44, 28, 17, 11],
+                chart: {
+                    type: 'pie',
+                    height: 250
+                },
+                colors: ['#2563eb', '#0ea5e9', '#7c3aed', '#10b981'],
+                labels: ['白金代理', '黄金代理', '基础代理', '新人代理'],
+                responsive: [{
+                    breakpoint: 480,
+                    options: {
+                        chart: {
+                            width: 200
+                        },
+                        legend: {
+                            position: 'bottom'
+                        }
+                    }
+                }]
+            };
+            
+            const commissionChart = new ApexCharts(document.querySelector("#commissionChart"), commissionOptions);
+            commissionChart.render();
+            
+            // 发放返佣按钮事件
+            const payoutButtons = document.querySelectorAll('.bg-green-500');
+            payoutButtons.forEach(button => {
+                button.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const agentName = this.closest('.border').querySelector('.font-medium').textContent;
+                    const amount = this.closest('.border').querySelectorAll('.font-medium')[1].textContent;
+                    alert(`向代理 ${agentName} 发放返佣 ${amount}`);
+                });
+            });
+        });
+    </script>
+</body>
+</html>

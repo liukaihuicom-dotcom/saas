@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KYC审核中心 - Broker SaaS 运营平台</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #2563eb;
+            --secondary: #f8fafc;
+            --accent: #0ea5e9;
+            --muted: #64748b;
+            --border: #e2e8f0;
+            --radius: 0.5rem;
+            --sidebar-width: 260px;
+            --header-height: 64px;
+        }
+        
+        * {
+            font-family: 'Inter', sans-serif;
+        }
+        
+        body {
+            background-color: #f8fafc;
+            margin: 0;
+        }
+        
+        .sidebar {
+            width: var(--sidebar-width);
+            height: 100vh;
+            background: linear-gradient(180deg, #1e293b 0%, #0f172a 100%);
+            position: fixed;
+            left: 0;
+            top: 0;
+            padding: 24px 0;
+            transition: all 0.3s ease;
+        }
+        
+        .main-content {
+            margin-left: var(--sidebar-width);
+            padding: 24px;
+            min-height: 100vh;
+        }
+        
+        .header {
+            height: var(--header-height);
+            background: white;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 24px;
+            position: sticky;
+            top: 0;
+            z-index: 50;
+        }
+        
+        .card {
+            background: white;
+            border-radius: var(--radius);
+            border: 1px solid var(--border);
+            padding: 20px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        }
+        
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 2px 8px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+        
+        .badge-success {
+            background-color: #dcfce7;
+            color: #166534;
+        }
+        
+        .badge-warning {
+            background-color: #fef3c7;
+            color: #92400e;
+        }
+        
+        .badge-danger {
+            background-color: #fee2e2;
+            color: #991b1b;
+        }
+        
+        .badge-info {
+            background-color: #dbeafe;
+            color: #1e40af;
+        }
+        
+        .tab-container {
+            display: flex;
+            border-bottom: 1px solid var(--border);
+            margin-bottom: 20px;
+            overflow-x: auto;
+        }
+        
+        .tab-item {
+            padding: 12px 20px;
+            cursor: pointer;
+            border-bottom: 2px solid transparent;
+            transition: all 0.2s;
+            white-space: nowrap;
+        }
+        
+        .tab-item.active {
+            border-bottom-color: var(--primary);
+            color: var(--primary);
+            font-weight: 500;
+        }
+        
+        .review-panel {
+            border-radius: var(--radius);
+            border: 1px solid var(--border);
+            overflow: hidden;
+        }
+        
+        .review-header {
+            background-color: #f8fafc;
+            padding: 16px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .review-content {
+            padding: 24px;
+            background: white;
+        }
+        
+        .document-viewer {
+            background: #f8fafc;
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            height: 400px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+            position: relative;
+        }
+    </style>
+</head>
+<body>
+    <div class="sidebar">
+        <div class="px-6 py-4">
+            <h1 class="text-white text-xl font-bold">Broker SaaS</h1>
+            <p class="text-slate-400 text-sm mt-1">运营平台</p>
+        </div>
+        
+        <nav class="mt-8">
+            <a href="dashboard.html" class="block px-6 py-3 text-slate-300 hover:text-white hover:bg-blue-900/30 flex items-center gap-3">
+                <i class="fas fa-chart-line w-5"></i>
+                <span>经营总览</span>
+            </a>
+            <a href="crm.html" class="block px-6 py-3 text-slate-300 hover:text-white hover:bg-blue-900/30 flex items-center gap-3">
+                <i class="fas fa-users w-5"></i>
+                <span>客户中心</span>
+            </a>
+            <a href="kyc.html" class="block px-6 py-3 text-white bg-blue-900/30 flex items-center gap-3">
+                <i class="fas fa-id-card w-5"></i>
+                <span>KYC审核中心</span>
+            </a>
+            <a href="wallet.html" class="block px-6 py-3 text-slate-300 hover:text-white hover:bg-blue-900/30 flex items-center gap-3">
+                <i class="fas fa-wallet w-5"></i>
+                <span>钱包与支付</span>
+            </a>
+            <a href="agent.html" class="block px-6 py-3 text-slate-300 hover:text-white hover:bg-blue-900/30 flex items-center gap-3">
+                <i class="fas fa-handshake w-5"></i>
+                <span>代理中心</span>
+            </a>
+            <a href="index.html" class="block px-6 py-3 text-slate-300 hover:text-white hover:bg-blue-900/30 flex items-center gap-3 mt-8">
+                <i class="fas fa-home w-5"></i>
+                <span>返回首页</span>
+            </a>
+        </nav>
+        
+        <div class="absolute bottom-0 w-full p-6 border-t border-slate-700">
+            <div class="flex items-center gap-3">
+                <div class="w-8 h-8 bg-purple-500 rounded-full flex items-center justify-center text-white">
+                    <i class="fas fa-shield-alt"></i>
+                </div>
+                <div>
+                    <p class="text-white text-sm">审核专员</p>
+                    <p class="text-slate-400 text-xs">kyc@broker.com</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="main-content">
+        <div class="header">
+            <div>
+                <h2 class="text-xl font-semibold">KYC / AML 审核中心</h2>
+                <p class="text-slate-600 mt-1">客户身份核验与风险评估</p>
+            </div>
+            <div class="flex items-center gap-4">
+                <div class="flex items-center gap-2">
+                    <div class="w-2 h-2 bg-red-500 rounded-full"></div>
+                    <span>高风险: <span class="font-medium">7</span> 个</span>
+                </div>
+                <div class="flex items-center gap-2">
+                    <div class="w-2 h-2 bg-yellow-500 rounded-full"></div>
+                    <span>待处理: <span class="font-medium">28</span> 个</span>
+                </div>
+                <button class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600">
+                    <i class="fas fa-cog mr-2"></i>审核规则设置
+                </button>
+            </div>
+        </div>
+        
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-6">
+            <div class="bg-white border rounded-lg p-4">
+                <div class="flex justify-between">
+                    <div>
+                        <p class="text-slate-600">待审核KYC</p>
+                        <p class="text-2xl font-bold mt-1">28</p>
+                    </div>
+                    <div class="w-10 h-10 bg-yellow-100 rounded-full flex items-center justify-center">
+                        <i class="fas fa-clock text-yellow-500"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white border rounded-lg p-4">
+                <div class="flex justify-between">
+                    <div>
+                        <p class="text-slate-600">高风险账户</p>
+                        <p class="text-2xl font-bold mt-1">7</p>
+                    </div>
+                    <div class="w-10 h-10 bg-red-100 rounded-full flex items-center justify-center">
+                        <i class="fas fa-exclamation-triangle text-red-500"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white border rounded-lg p-4">
+                <div class="flex justify-between">
+                    <div>
+                        <p class="text-slate-600">黑名单命中</p>
+                        <p class="text-2xl font-bold mt-1">3</p>
+                    </div>
+                    <div class="w-10 h-10 bg-orange-100 rounded-full flex items-center justify-center">
+                        <i class="fas fa-ban text-orange-500"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white border rounded-lg p-4">
+                <div class="flex justify-between">
+                    <div>
+                        <p class="text-slate-600">补件超时</p>
+                        <p class="text-2xl font-bold mt-1">5</p>
+                    </div>
+                    <div class="w-10 h-10 bg-purple-100 rounded-full flex items-center justify-center">
+                        <i class="fas fa-hourglass-end text-purple-500"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="tab-container">
+            <div class="tab-item active">待审核队列</div>
+            <div class="tab-item">高风险队列</div>
+            <div class="tab-item">已审核记录</div>
+            <div class="tab-item">补件任务</div>
+            <div class="tab-item">黑名单管理</div>
+        </div>
+        
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <div class="lg:col-span-1">
+                <div class="card">
+                    <div class="flex justify-between items-center mb-4">
+                        <h3 class="font-semibold">审核队列</h3>
+                        <span class="text-slate-500 text-sm">按提交时间排序</span>
+                    </div>
+                    <div class="space-y-3 max-h-[600px] overflow-y-auto">
+                        <!-- 队列项 -->
+                        <div class="border rounded-lg p-4 hover:border-blue-500 hover:bg-blue-50 cursor-pointer bg-white">
+                            <div class="flex justify-between items-start">
+                                <div>
+                                    <div class="flex items-center gap-2 mb-2">
+                                        <div class="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
+                                            <i class="fas fa-user text-blue-600"></i>
+                                        </div>
+                                        <div>
+                                            <p class="font-medium">John Smith</p>
+                                            <p class="text-slate-500 text-sm">美国</p>
+                                        </div>
+                                    </div>
+                                    <div class="text-sm bg-yellow-50 p-2 rounded">
+                                        <p class="font-medium">高风险标识</p>
+                                        <p class="text-slate-600">黑名单匹配检查</p>
+                                    </div>
+                                </div>
+                                <span class="badge badge-danger">高风险</span>
+                            </div>
+                            <div class="mt-3 text-sm text-slate-600">
+                                <p>提交时间: 今天 14:30</p>
+                                <p>等待时长: 2小时15分</p>
+                            </div>
+                        </div>
+                        
+                        <div class="border rounded-lg p-4 hover:border-blue-500 hover:bg-blue-50 cursor-pointer bg-white">
+                            <div class="flex justify-between items-start">
+                                <div>
+                                    <div class="flex items-center gap-2 mb-2">
+                                        <div class="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center">
+                                            <i class="fas fa-user text-green-600"></i>
+                                        </div>
+                                        <div>
+                                            <p class="font-medium">Emma Johnson</p>
+                                            <p class="text-slate-500 text-sm">英国</p>
+                                        </div>
+                                    </div>
+                                    <div class="text-sm bg-blue-50 p-2 rounded">
+                                        <p class="font-medium">证件清晰</p>
+                                        <p class="text-slate-600">人脸识别通过</p>
+                                    </div>
+                                </div>
+                                <span class="badge badge-info">标准</span>
+                            </div>
+                            <div class="mt-3 text-sm text-slate-600">
+                                <p>提交时间: 今天 13:45</p>
+                                <p>等待时长: 3小时</p>
+                            </div>
+                        </div>
+                        
+                        <div class="border rounded-lg p-4 hover:border-blue-500 hover:bg-blue-50 cursor-pointer bg-white">
+                            <div class="flex justify-between items-start">
+                                <div>
+                                    <div class="flex items-center gap-2 mb-2">
+                                        <div class="w-8 h-8 bg-purple-100 rounded-full flex items-center justify-center">
+                                            <i class="fas fa-user text-purple-600"></i>
+                                        </div>
+                                        <div>
+                                            <p class="font-medium">Robert Chen</p>
+                                            <p class="text-slate-500 text-sm">新加坡</p>
+                                        </div>
+                                    </div>
+                                    <div class="text-sm bg-green-50 p-2 rounded">
+                                        <p class="font-medium">优质客户</p>
+                                        <p class="text-slate-600">企业账户</p>
+                                    </div>
+                                </div>
+                                <span class="badge badge-info">标准</span>
+                            </div>
+                            <div class="mt-3 text-sm text-slate-600">
+                                <p>提交时间: 今天 11:20</p>
+                                <p>等待时长: 5小时25分</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="lg:col-span-2">
+                <div class="review-panel">
+                    <div class="review-header">
+                        <div>
+                            <h3 class="font-semibold">KYC审核详情</h3>
+                            <p class="text-slate-600 text-sm">客户: John Smith • ID: USR1001</p>
+                        </div>
+                        <div>
+                            <span class="badge badge-danger mr-2">高风险</span>
+                            <span class="badge badge-warning">黑名单检查</span>
+                        </div>
+                    </div>
+                    
+                    <div class="review-content">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                            <div>
+                                <h4 class="font-medium mb-3">客户基本信息</h4>
+                                <div class="space-y-3">
+                                    <div class="flex justify-between">
+                                        <span class="text-slate-600">姓名</span>
+                                        <span class="font-medium">John Smith</span>
+                                    </div>
+                                    <div class="flex justify-between">
+                                        <span class="text-slate-600">国籍</span>
+                                        <span class="font-medium">美国</span>
+                                    </div>
+                                    <div class="flex justify-between">
+                                        <span class="text-slate-600">出生日期</span>
+                                        <span class="font-medium">1985-03-15</span>
+                                    </div>
+                                    <div class="flex justify-between">
+                                        <span class="text-slate-600">证件类型</span>
+                                        <span class="font-medium">护照</span>
+                                    </div>
+                                    <div class="flex justify-between">
+                                        <span class="text-slate-600">证件号码</span>
+                                        <span class="font-medium">US123456789</span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div>
+                                <h4 class="font-medium mb-3">风险检测结果</h4>
+                                <div class="space-y-3">
+                                    <div class="flex justify-between">
+                                        <span class="text-slate-600">黑名单匹配</span>
+                                        <span class="badge badge-danger">命中</span>
+                                    </div>
+                                    <div class="flex justify-between">
+                                        <span class="text-slate-600">PEP 检查</span>
+                                        <span class="badge badge-success">未命中</span>
+                                    </div>
+                                    <div class="flex justify-between">
+                                        <span class="text-slate-600">负面新闻</span>
+                                        <span class="badge badge-success">无</span>
+                                    </div>
+                                    <div class="flex justify-between">
+                                        <span class="text-slate-600">重复账户</span>
+                                        <span class="badge badge-warning">检测中</span>
+                                    </div>
+                                    <div class="flex justify-between">
+                                        <span class="text-slate-600">设备指纹</span>
+                                        <span class="badge badge-danger">异常</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <h4 class="font-medium mb-3">上传资料</h4>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+                            <div class="document-viewer">
+                                <div class="text-center">
+                                    <i class="fas fa-passport text-4xl text-slate-400 mb-2"></i>
+                                    <p class="font-medium">护照首页</p>
+                                    <p class="text-slate-500 text-sm mt-1">上传时间: 14:30</p>
+                                    <button class="mt-3 text-blue-500 hover:text-blue-700">
+                                        <i class="fas fa-expand mr-1"></i>放大查看
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="document-viewer">
+                                <div class="text-center">
+                                    <i class="fas fa-id-card text-4xl text-slate-400 mb-2"></i>
+                                    <p class="font-medium">地址证明</p>
+                                    <p class="text-slate-500 text-sm mt-1">上传时间: 14:32</p>
+                                    <button class="mt-3 text-blue-500 hover:text-blue-700">
+                                        <i class="fas fa-expand mr-1"></i>放大查看
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="document-viewer">
+                                <div class="text-center">
+                                    <i class="fas fa-camera text-4xl text-slate-400 mb-2"></i>
+                                    <p class="font-medium">人脸识别</p>
+                                    <p class="text-slate-500 text-sm mt-1">匹配度: 92%</p>
+                                    <button class="mt-3 text-blue-500 hover:text-blue-700">
+                                        <i class="fas fa-expand mr-1"></i>放大查看
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <h4 class="font-medium mb-3">黑名单匹配详情</h4>
+                        <div class="bg-red-50 border border-red-200 rounded-lg p-4 mb-6">
+                            <div class="flex items-start gap-3">
+                                <i class="fas fa-exclamation-triangle text-red-500 mt-1"></i>
+                                <div>
+                                    <p class="font-medium text-red-700">发现黑名单匹配</p>
+                                    <p class="text-red-600 text-sm mt-1">姓名 "John Smith" 在OFAC制裁名单中发现部分匹配。建议进行人工复核。</p>
+                                    <p class="text-slate-600 text-sm mt-2">匹配理由: 姓名相似度85%，出生年份一致</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <h4 class="font-medium mb-3">审核意见</h4>
+                        <div class="mb-6">
+                            <textarea 
+                                class="w-full border rounded-lg p-3 focus:ring-2 focus:ring-blue-500 focus:border-blue-500" 
+                                rows="4" 
+                                placeholder="填写审核意见..."></textarea>
+                        </div>
+                        
+                        <div class="flex gap-4">
+                            <button class="bg-green-500 text-white px-6 py-3 rounded-lg hover:bg-green-600 flex items-center gap-2">
+                                <i class="fas fa-check"></i>审核通过
+                            </button>
+                            <button class="bg-red-500 text-white px-6 py-3 rounded-lg hover:bg-red-600 flex items-center gap-2">
+                                <i class="fas fa-times"></i>审核拒绝
+                            </button>
+                            <button class="bg-yellow-500 text-white px-6 py-3 rounded-lg hover:bg-yellow-600 flex items-center gap-2">
+                                <i class="fas fa-clipboard-list"></i>要求补件
+                            </button>
+                            <button class="border border-blue-500 text-blue-500 px-6 py-3 rounded-lg hover:bg-blue-50 flex items-center gap-2">
+                                <i class="fas fa-pause"></i>暂存处理
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="card mt-8">
+            <h3 class="font-semibold mb-4">审核统计</h3>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div>
+                    <h4 class="text-sm font-medium text-slate-600 mb-2">今日审核概况</h4>
+                    <div class="space-y-3">
+                        <div class="flex justify-between">
+                            <span>已审核</span>
+                            <span class="font-medium">42个</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>通过率</span>
+                            <span class="font-medium">78.6%</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>平均处理时间</span>
+                            <span class="font-medium">5.2分钟</span>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <h4 class="text-sm font-medium text-slate-600 mb-2">审核员效率</h4>
+                    <div class="space-y-3">
+                        <div class="flex justify-between">
+                            <span>审核员A</span>
+                            <span class="font-medium">18个 / 4.8分钟</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>审核员B</span>
+                            <span class="font-medium">15个 / 5.5分钟</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>审核员C</span>
+                            <span class="font-medium">9个 / 6.1分钟</span>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <h4 class="text-sm font-medium text-slate-600 mb-2">风险分类</h4>
+                    <div class="space-y-3">
+                        <div class="flex justify-between">
+                            <span>高风险</span>
+                            <span class="font-medium">7个 (16.7%)</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>标准风险</span>
+                            <span class="font-medium">33个 (78.6%)</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>拒绝/补件</span>
+                            <span class="font-medium">2个 (4.8%)</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // 选项卡切换
+            const tabs = document.querySelectorAll('.tab-item');
+            tabs.forEach(tab => {
+                tab.addEventListener('click', function() {
+                    tabs.forEach(t => t.classList.remove('active'));
+                    this.classList.add('active');
+                });
+            });
+            
+            // 队列项点击
+            const queueItems = document.querySelectorAll('.card .border.rounded-lg');
+            queueItems.forEach(item => {
+                item.addEventListener('click', function() {
+                    queueItems.forEach(i => i.classList.remove('border-blue-500', 'bg-blue-50'));
+                    this.classList.add('border-blue-500', 'bg-blue-50');
+                });
+            });
+            
+            // 审核按钮事件
+            const reviewButtons = document.querySelectorAll('.review-content button');
+            reviewButtons.forEach(button => {
+                button.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const action = this.textContent.trim();
+                    alert(`执行审核操作: ${action}`);
+                });
+            });
+        });
+    </script>
+</body>
+</html>
