@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>签署协议 - Broker SaaS</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="snowui-styles.css">
+    <style>
+        body { background: var(--snow-bg); min-height: 100vh; padding: 20px; display: flex; align-items: center; justify-content: center; }
+        .form-container { background: white; border: 1px solid var(--snow-border); border-radius: var(--snow-radius-xl); box-shadow: var(--snow-shadow-md); width: 100%; max-width: 640px; max-height: 90vh; overflow-y: auto; }
+        .form-header { padding: 28px 32px 0; }
+        .form-logo { display: flex; align-items: center; gap: 10px; margin-bottom: 24px; }
+        .logo-icon { width: 32px; height: 32px; background: linear-gradient(135deg, #4361ee, #7c3aed); border-radius: 8px; display: flex; align-items: center; justify-content: center; color: white; font-size: 14px; }
+        .form-title { font-size: 20px; font-weight: 700; color: var(--snow-text); }
+        .form-subtitle { font-size: 13.5px; color: var(--snow-text-muted); margin-top: 4px; }
+        .form-body { padding: 20px 32px 32px; }
+        .back-link { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; color: var(--snow-text-muted); cursor: pointer; margin-bottom: 16px; }
+        .form-btn { width: 100%; padding: 11px; background: var(--snow-primary); color: white; border: none; border-radius: var(--snow-radius-sm); font-size: 14px; font-weight: 600; cursor: pointer; transition: all 0.15s; font-family: inherit; }
+        .form-btn:hover { background: #3451d1; box-shadow: 0 4px 12px rgba(67,97,238,0.3); }
+        .form-btn:disabled { opacity: 0.5; cursor: not-allowed; box-shadow: none; }
+        .agree-item { display: flex; align-items: flex-start; gap: 10px; padding: 14px 16px; border: 1px solid var(--snow-border); border-radius: var(--snow-radius-sm); margin-bottom: 8px; cursor: pointer; transition: all 0.15s; }
+        .agree-item:hover { border-color: #cbd5e1; background: var(--snow-bg); }
+        .agree-item.checked { border-color: #bbf7d0; background: #f0fdf4; }
+        .agree-item input { accent-color: var(--snow-primary); width: 16px; height: 16px; margin-top: 2px; flex-shrink: 0; }
+        .agree-item .agree-label { font-size: 13.5px; font-weight: 600; color: var(--snow-text); }
+        .agree-item .agree-desc { font-size: 12px; color: var(--snow-text-muted); margin-top: 2px; line-height: 1.5; }
+        .agree-item .agree-link { color: var(--snow-primary); font-weight: 600; font-size: 12.5px; }
+        .summary-box { background: var(--snow-bg); border-radius: var(--snow-radius); padding: 16px; margin-bottom: 20px; }
+        .summary-row { display: flex; justify-content: space-between; font-size: 13px; padding: 4px 0; }
+        .summary-label { color: var(--snow-text-muted); }
+        .summary-value { font-weight: 600; color: var(--snow-text); }
+        .e-sign { border: 2px solid var(--snow-border); border-radius: var(--snow-radius); padding: 20px; text-align: center; margin-bottom: 16px; background: linear-gradient(135deg, #fafafa, #f5f5f5); }
+        .e-sign-text { font-size: 22px; font-weight: 700; color: var(--snow-text); font-style: italic; }
+        .e-sign-label { font-size: 12px; color: var(--snow-text-muted); margin-top: 6px; }
+    </style>
+</head>
+<body>
+<div class="form-container snow-fade-up">
+    <div class="form-header">
+        <div class="form-logo">
+            <div class="logo-icon"><i class="fas fa-snowflake"></i></div>
+            <span style="font-size:15px;font-weight:700">Broker SaaS</span>
+        </div>
+        <a href="onboarding-hub.html" class="back-link"><i class="fas fa-arrow-left"></i> 返回开户中心</a>
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:16px">
+            <span style="font-size:12px;color:var(--snow-text-muted)">开户进度</span>
+            <div class="snow-progress" style="flex:1"><div class="snow-progress-bar" style="width:95%"></div></div>
+            <span style="font-size:12px;font-weight:600;color:var(--snow-primary)">最后一步</span>
+        </div>
+        <div class="form-title">确认协议与声明</div>
+        <div class="form-subtitle">请仔细阅读以下条款并逐一确认</div>
+    </div>
+    <div class="form-body">
+
+        <!-- 信息摘要 -->
+        <div class="summary-box">
+            <div style="font-size:13px;font-weight:700;color:var(--snow-text);margin-bottom:10px"><i class="fas fa-clipboard-list" style="margin-right:6px;color:var(--snow-primary)"></i>开户信息摘要</div>
+            <div class="summary-row"><span class="summary-label">姓名</span><span class="summary-value">Ahmad Rizki</span></div>
+            <div class="summary-row"><span class="summary-label">证件号</span><span class="summary-value">3174**********0001</span></div>
+            <div class="summary-row"><span class="summary-label">账户类型</span><span class="summary-value">Standard Micro</span></div>
+            <div class="summary-row"><span class="summary-label">最低入金</span><span class="summary-value">$100</span></div>
+            <div class="summary-row"><span class="summary-label">上传文件</span><span class="summary-value" style="color:var(--snow-success)">5/5 项已通过预检</span></div>
+        </div>
+
+        <!-- 风险披露 -->
+        <div style="margin-bottom:16px">
+            <div style="font-size:14px;font-weight:700;color:var(--snow-text);margin-bottom:10px"><i class="fas fa-exclamation-triangle" style="margin-right:6px;color:var(--snow-danger)"></i>风险披露声明</div>
+            <div style="background:#fef2f2;border:1px solid #fecaca;border-radius:var(--snow-radius-sm);padding:14px;font-size:13px;color:#7f1d1d;line-height:1.7;max-height:120px;overflow-y:auto">
+                <p style="margin-bottom:8px"><strong>高风险投资警告</strong></p>
+                <p>外汇及差价合约（CFD）交易涉及高杠杆，可能带来巨大收益，同时也可能导致您损失全部投资本金。这些产品可能不适合所有投资者。请确保您完全理解相关风险，并在自身承受能力范围内进行交易。</p>
+                <p style="margin-top:8px"><strong>保证金交易风险</strong></p>
+                <p>杠杆交易允许您用较少的资金控制较大金额的头寸。杠杆放大了潜在收益，同时也放大了潜在亏损。如果市场走势对您不利，您可能被要求追加保证金，或在强制平仓后仍需承担超出保证金的亏损。</p>
+            </div>
+        </div>
+
+        <!-- 协议勾选 -->
+        <div style="margin-bottom:20px">
+            <div style="font-size:14px;font-weight:700;color:var(--snow-text);margin-bottom:10px">协议确认</div>
+
+            <label class="agree-item" id="agree1">
+                <input type="checkbox" onchange="updateCheckStatus()">
+                <div>
+                    <div class="agree-label">风险披露声明 <span style="color:var(--snow-danger)">*</span></div>
+                    <div class="agree-desc">我已阅读并完全理解上述风险披露内容，知悉外汇/CFD 交易可能导致亏损超过初始投资。</div>
+                </div>
+            </label>
+
+            <label class="agree-item" id="agree2">
+                <input type="checkbox" onchange="updateCheckStatus()">
+                <div>
+                    <div class="agree-label">客户协议 <span style="color:var(--snow-danger)">*</span></div>
+                    <div class="agree-desc">我已阅读并同意 <a href="#" class="agree-link">客户服务协议</a> 及 <a href="#" class="agree-link">交易规则</a> 的全部条款。</div>
+                </div>
+            </label>
+
+            <label class="agree-item" id="agree3">
+                <input type="checkbox" onchange="updateCheckStatus()">
+                <div>
+                    <div class="agree-label">隐私与数据保护 <span style="color:var(--snow-danger)">*</span></div>
+                    <div class="agree-desc">我已阅读并同意 <a href="#" class="agree-link">隐私政策</a>，同意 Broker SaaS 收集、处理和使用我的个人信息用于开户审核及合规目的。</div>
+                </div>
+            </label>
+
+            <label class="agree-item" id="agree4">
+                <input type="checkbox" onchange="updateCheckStatus()">
+                <div>
+                    <div class="agree-label">Rekening Terpisah（隔离账户）确认 <span style="color:var(--snow-danger)">*</span></div>
+                    <div class="agree-desc">我知悉并确认我的交易资金将存放在符合 Bappebti 要求的隔离账户（Rekening Terpisah）中。</div>
+                </div>
+            </label>
+
+            <label class="agree-item" id="agree5">
+                <input type="checkbox" onchange="updateCheckStatus()">
+                <div>
+                    <div class="agree-label">电子签名确认 <span style="color:var(--snow-danger)">*</span></div>
+                    <div class="agree-desc">我确认本页面的所有勾选操作即代表我的电子签名，具有与手写签名同等的法律效力。</div>
+                </div>
+            </label>
+
+            <label class="agree-item" id="agree6">
+                <input type="checkbox" onchange="updateCheckStatus()">
+                <div>
+                    <div class="agree-label">WP 合规视频核验同意 <span style="color:var(--snow-danger)">*</span></div>
+                    <div class="agree-desc">我同意在开户审核通过后，配合 WP 合规人员进行视频核验，回答身份确认、风险认知及交易经验相关问题。</div>
+                </div>
+            </label>
+        </div>
+
+        <!-- 电子签名 -->
+        <div class="e-sign">
+            <div class="e-sign-text">Ahmad Rizki</div>
+            <div class="e-sign-label"><i class="fas fa-pen-nib" style="margin-right:4px"></i>电子签名（勾选上方所有协议后自动生成）</div>
+        </div>
+
+        <div class="snow-alert warning" style="margin-bottom:16px">
+            <i class="fas fa-info-circle"></i>
+            <div style="font-size:13px">提交审核申请后，您的资料将进入 KYC 审核流程。审核结果将通过站内通知和短信告知您。</div>
+        </div>
+
+        <div style="display:flex;gap:10px">
+            <button class="form-btn" style="background:var(--snow-white);color:var(--snow-text-secondary);border:1px solid var(--snow-border);flex:none;padding:11px 20px" onclick="window.location.href='upload-documents.html'">上一步</button>
+            <button class="form-btn" id="submitBtn" onclick="submitApplication()" disabled>
+                <i class="fas fa-paper-plane" style="margin-right:6px"></i>提交审核申请
+            </button>
+        </div>
+    </div>
+</div>
+
+<script>
+function updateCheckStatus() {
+    const all = document.querySelectorAll('.agree-item input');
+    const checked = document.querySelectorAll('.agree-item input:checked');
+    all.forEach(input => {
+        input.closest('.agree-item').classList.toggle('checked', input.checked);
+    });
+    document.getElementById('submitBtn').disabled = checked.length < all.length;
+}
+
+function submitApplication() {
+    const btn = document.getElementById('submitBtn');
+    btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> 提交中...';
+    btn.disabled = true;
+    setTimeout(() => {
+        window.location.href = 'onboarding-hub.html';
+    }, 1500);
+}
+</script>
+</body>
+</html>

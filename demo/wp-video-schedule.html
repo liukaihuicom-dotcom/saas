@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WP 视频预约 - Broker SaaS</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="snowui-styles.css">
+    <style>
+        body { background: var(--snow-bg); min-height: 100vh; padding: 20px; display: flex; align-items: center; justify-content: center; }
+        .form-container { background: white; border: 1px solid var(--snow-border); border-radius: var(--snow-radius-xl); box-shadow: var(--snow-shadow-md); width: 100%; max-width: 600px; max-height: 90vh; overflow-y: auto; }
+        .form-header { padding: 28px 32px 0; }
+        .form-logo { display: flex; align-items: center; gap: 10px; margin-bottom: 24px; }
+        .logo-icon { width: 32px; height: 32px; background: linear-gradient(135deg, #4361ee, #7c3aed); border-radius: 8px; display: flex; align-items: center; justify-content: center; color: white; font-size: 14px; }
+        .form-title { font-size: 20px; font-weight: 700; color: var(--snow-text); }
+        .form-subtitle { font-size: 13.5px; color: var(--snow-text-muted); margin-top: 4px; }
+        .form-body { padding: 20px 32px 32px; }
+        .back-link { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; color: var(--snow-text-muted); cursor: pointer; margin-bottom: 16px; }
+        .form-btn { width: 100%; padding: 11px; background: var(--snow-primary); color: white; border: none; border-radius: var(--snow-radius-sm); font-size: 14px; font-weight: 600; cursor: pointer; transition: all 0.15s; font-family: inherit; }
+        .form-btn:hover { background: #3451d1; box-shadow: 0 4px 12px rgba(67,97,238,0.3); }
+        /* 日历 */
+        .calendar-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
+        .calendar-header .month-title { font-size: 15px; font-weight: 700; color: var(--snow-text); }
+        .calendar-header button { width: 32px; height: 32px; border: 1px solid var(--snow-border); border-radius: var(--snow-radius-xs); background: white; cursor: pointer; display: flex; align-items: center; justify-content: center; color: var(--snow-text-secondary); transition: all 0.15s; }
+        .calendar-header button:hover { background: var(--snow-bg); }
+        .calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 2px; margin-bottom: 16px; }
+        .cal-day-label { font-size: 11px; font-weight: 600; color: var(--snow-text-muted); text-align: center; padding: 6px 0; }
+        .cal-day { aspect-ratio: 1; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 500; border-radius: var(--snow-radius-xs); cursor: pointer; transition: all 0.15s; color: var(--snow-text); }
+        .cal-day:hover { background: var(--snow-bg); }
+        .cal-day.disabled { color: var(--snow-text-muted); opacity: 0.4; cursor: not-allowed; }
+        .cal-day.today { background: var(--snow-primary-soft); color: var(--snow-primary); font-weight: 700; }
+        .cal-day.selected { background: var(--snow-primary); color: white; font-weight: 700; }
+        .cal-day.has-slots::after { content: ''; position: absolute; bottom: 4px; width: 4px; height: 4px; border-radius: 50%; background: var(--snow-success); }
+        .cal-day { position: relative; }
+        /* 时段选择 */
+        .slot-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 16px; }
+        .time-slot { padding: 10px 12px; border: 1px solid var(--snow-border); border-radius: var(--snow-radius-sm); text-align: center; cursor: pointer; transition: all 0.15s; }
+        .time-slot:hover { border-color: var(--snow-primary); background: var(--snow-primary-soft); }
+        .time-slot.selected { border-color: var(--snow-primary); background: var(--snow-primary); color: white; }
+        .time-slot.selected .slot-label { color: rgba(255,255,255,0.8); }
+        .time-slot.unavailable { opacity: 0.4; cursor: not-allowed; text-decoration: line-through; }
+        .slot-time { font-size: 14px; font-weight: 700; }
+        .slot-label { font-size: 11px; color: var(--snow-text-muted); margin-top: 2px; }
+        .section-title { font-size: 14px; font-weight: 700; color: var(--snow-text); margin-bottom: 10px; display: flex; align-items: center; gap: 6px; }
+    </style>
+</head>
+<body>
+<div class="form-container snow-fade-up">
+    <div class="form-header">
+        <div class="form-logo">
+            <div class="logo-icon"><i class="fas fa-snowflake"></i></div>
+            <span style="font-size:15px;font-weight:700">Broker SaaS</span>
+        </div>
+        <a href="onboarding-hub.html" class="back-link"><i class="fas fa-arrow-left"></i> 返回开户中心</a>
+        <div class="form-title"><i class="fas fa-video" style="color:var(--snow-success);margin-right:8px"></i>预约 WP 合规视频</div>
+        <div class="form-subtitle">选择合适的日期和时段，完成合规视频核验</div>
+    </div>
+    <div class="form-body">
+
+        <!-- 准备提示 -->
+        <div class="snow-alert info" style="margin-bottom:16px">
+            <i class="fas fa-shield-alt"></i>
+            <div style="font-size:13px">
+                <strong>视频核验须知：</strong>请提前准备 KTP/护照原件，确保网络稳定、光线充足、环境安静。视频时长约 10-15 分钟。
+            </div>
+        </div>
+
+        <!-- 日历 -->
+        <div class="section-title"><i class="fas fa-calendar" style="color:var(--snow-primary)"></i> 选择日期</div>
+        <div style="border:1px solid var(--snow-border);border-radius:var(--snow-radius);padding:14px;margin-bottom:16px">
+            <div class="calendar-header">
+                <button><i class="fas fa-chevron-left" style="font-size:12px"></i></button>
+                <span class="month-title">2026 年 4 月</span>
+                <button><i class="fas fa-chevron-right" style="font-size:12px"></i></button>
+            </div>
+            <div class="calendar-grid">
+                <div class="cal-day-label">日</div><div class="cal-day-label">一</div><div class="cal-day-label">二</div><div class="cal-day-label">三</div><div class="cal-day-label">四</div><div class="cal-day-label">五</div><div class="cal-day-label">六</div>
+                <div class="cal-day disabled"></div><div class="cal-day disabled"></div><div class="cal-day disabled"></div>
+                <div class="cal-day">1</div><div class="cal-day">2</div><div class="cal-day has-slots" onclick="selectDate(this)">3</div><div class="cal-day has-slots" onclick="selectDate(this)">4</div>
+                <div class="cal-day has-slots" onclick="selectDate(this)">5</div><div class="cal-day has-slots" onclick="selectDate(this)">6</div><div class="cal-day has-slots" onclick="selectDate(this)">7</div>
+                <div class="cal-day has-slots" onclick="selectDate(this)">8</div><div class="cal-day has-slots" onclick="selectDate(this)">9</div>
+                <div class="cal-day today has-slots" onclick="selectDate(this)">10</div>
+                <div class="cal-day has-slots" onclick="selectDate(this)">11</div><div class="cal-day has-slots" onclick="selectDate(this)">12</div>
+                <div class="cal-day has-slots" onclick="selectDate(this)">13</div><div class="cal-day has-slots" onclick="selectDate(this)">14</div>
+                <div class="cal-day has-slots" onclick="selectDate(this)">15</div><div class="cal-day has-slots" onclick="selectDate(this)">16</div>
+                <div class="cal-day has-slots" onclick="selectDate(this)">17</div><div class="cal-day has-slots" onclick="selectDate(this)">18</div>
+            </div>
+        </div>
+
+        <!-- 时段选择 -->
+        <div class="section-title"><i class="fas fa-clock" style="color:var(--snow-purple)"></i> 选择时段 <span style="font-size:12px;color:var(--snow-text-muted);font-weight:400;margin-left:auto">WIB (UTC+7)</span></div>
+        <div class="slot-grid">
+            <div class="time-slot" onclick="selectSlot(this)"><div class="slot-time">09:00</div><div class="slot-label">可预约</div></div>
+            <div class="time-slot unavailable"><div class="slot-time">09:30</div><div class="slot-label">已满</div></div>
+            <div class="time-slot" onclick="selectSlot(this)"><div class="slot-time">10:00</div><div class="slot-label">可预约</div></div>
+            <div class="time-slot" onclick="selectSlot(this)"><div class="slot-time">10:30</div><div class="slot-label">可预约</div></div>
+            <div class="time-slot" onclick="selectSlot(this)"><div class="slot-time">11:00</div><div class="slot-label">可预约</div></div>
+            <div class="time-slot unavailable"><div class="slot-time">11:30</div><div class="slot-label">已满</div></div>
+            <div class="time-slot" onclick="selectSlot(this)"><div class="slot-time">13:00</div><div class="slot-label">可预约</div></div>
+            <div class="time-slot" onclick="selectSlot(this)"><div class="slot-time">14:00</div><div class="slot-label">可预约</div></div>
+            <div class="time-slot" onclick="selectSlot(this)"><div class="slot-time">15:00</div><div class="slot-label">可预约</div></div>
+        </div>
+
+        <!-- 联系方式 -->
+        <div class="section-title"><i class="fas fa-phone" style="color:var(--snow-info)"></i> 视频联系方式</div>
+        <div style="display:flex;gap:8px;margin-bottom:16px">
+            <label style="flex:1;display:flex;align-items:center;gap:8px;padding:10px 12px;border:1px solid var(--snow-border);border-radius:var(--snow-radius-sm);cursor:pointer;font-size:13px;font-weight:500;color:var(--snow-text);transition:all 0.15s">
+                <input type="radio" name="channel" value="app" checked style="accent-color:var(--snow-primary)"> <i class="fas fa-mobile-alt" style="color:var(--snow-primary)"></i> App 内视频
+            </label>
+            <label style="flex:1;display:flex;align-items:center;gap:8px;padding:10px 12px;border:1px solid var(--snow-border);border-radius:var(--snow-radius-sm);cursor:pointer;font-size:13px;font-weight:500;color:var(--snow-text);transition:all 0.15s">
+                <input type="radio" name="channel" value="wa" style="accent-color:var(--snow-primary)"> <i class="fab fa-whatsapp" style="color:#25d366"></i> WhatsApp
+            </label>
+            <label style="flex:1;display:flex;align-items:center;gap:8px;padding:10px 12px;border:1px solid var(--snow-border);border-radius:var(--snow-radius-sm);cursor:pointer;font-size:13px;font-weight:500;color:var(--snow-text);transition:all 0.15s">
+                <input type="radio" name="channel" value="zoom" style="accent-color:var(--snow-primary)"> <i class="fas fa-video" style="color:var(--snow-info)"></i> Zoom
+            </label>
+        </div>
+
+        <!-- 备注 -->
+        <div style="margin-bottom:20px">
+            <label style="font-size:13px;font-weight:600;color:var(--snow-text-secondary);margin-bottom:4px;display:block">备注（选填）</label>
+            <textarea style="width:100%;padding:8px 12px;border:1px solid var(--snow-border);border-radius:var(--snow-radius-sm);font-size:13.5px;color:var(--snow-text);background:white;outline:none;font-family:inherit;resize:vertical;min-height:60px;transition:all 0.2s" placeholder="如有时段偏好或其他说明..."></textarea>
+        </div>
+
+        <!-- 改期规则 -->
+        <div style="background:var(--snow-bg);border-radius:var(--snow-radius-sm);padding:12px 14px;margin-bottom:16px;font-size:12.5px;color:var(--snow-text-muted);line-height:1.6">
+            <i class="fas fa-info-circle" style="margin-right:4px;color:var(--snow-info)"></i>
+            <strong>改期规则：</strong>距视频开始前 2 小时允许改期 1 次；爽约超过 2 次需人工客服介入。如需紧急改期请联系在线客服。
+        </div>
+
+        <div style="display:flex;gap:10px">
+            <button class="form-btn" style="background:var(--snow-white);color:var(--snow-text-secondary);border:1px solid var(--snow-border);flex:none;padding:11px 20px" onclick="window.location.href='onboarding-hub.html'">取消</button>
+            <button class="form-btn" id="bookBtn" onclick="bookAppointment()" disabled>确认预约</button>
+        </div>
+    </div>
+</div>
+
+<script>
+let selectedDate = null, selectedSlot = null;
+function selectDate(el) {
+    if (el.classList.contains('disabled')) return;
+    document.querySelectorAll('.cal-day').forEach(d => d.classList.remove('selected'));
+    el.classList.add('selected');
+    selectedDate = el.textContent;
+    checkReady();
+}
+function selectSlot(el) {
+    if (el.classList.contains('unavailable')) return;
+    document.querySelectorAll('.time-slot').forEach(s => s.classList.remove('selected'));
+    el.classList.add('selected');
+    selectedSlot = el.querySelector('.slot-time').textContent;
+    checkReady();
+}
+function checkReady() { document.getElementById('bookBtn').disabled = !(selectedDate && selectedSlot); }
+function bookAppointment() {
+    const btn = document.getElementById('bookBtn');
+    btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> 预约中...';
+    btn.disabled = true;
+    setTimeout(() => { alert('预约成功！\n\n日期：4月' + selectedDate + '日\n时段：' + selectedSlot + ' WIB\n\n视频开始前 1 小时将通过短信和站内通知提醒您。'); window.location.href = 'onboarding-hub.html'; }, 1200);
+}
+</script>
+</body>
+</html>

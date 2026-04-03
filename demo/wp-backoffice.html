@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WP 合规审核后台 - Broker SaaS</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="snowui-styles.css">
+    <style>
+        .wp-badge { display: inline-flex; align-items: center; gap: 4px; padding: 2px 8px; border-radius: 12px; font-size: 11px; font-weight: 600; }
+    </style>
+</head>
+<body>
+<div class="snow-layout">
+    <aside class="snow-sidebar">
+        <div class="snow-logo">
+            <div class="snow-logo-icon"><i class="fas fa-snowflake"></i></div>
+            <span class="snow-logo-text">Broker SaaS</span>
+        </div>
+        <div class="snow-user-info">
+            <div class="snow-user-avatar" style="background:#f0fdf4;color:#15803d">D</div>
+            <div>
+                <div class="snow-user-name">Dewi S.</div>
+                <div style="font-size:11px;color:var(--snow-text-muted)">WP 合规人员</div>
+            </div>
+        </div>
+        <div class="snow-nav-group"><span class="snow-nav-group-label">WP 工作台</span></div>
+        <a href="wp-backoffice.html" class="snow-nav-link active"><i class="fas fa-chart-pie"></i>WP 仪表盘</a>
+        <a href="#" class="snow-nav-link"><i class="fas fa-calendar-alt"></i>排期工作台</a>
+        <a href="#" class="snow-nav-link"><i class="fas fa-video"></i>视频审核 <span style="margin-left:auto;background:var(--snow-danger);color:white;font-size:10px;padding:1px 6px;border-radius:10px;font-weight:700">3</span></a>
+        <a href="#" class="snow-nav-link"><i class="fas fa-history"></i>催时处理 <span style="margin-left:auto;background:var(--snow-warning);color:white;font-size:10px;padding:1px 6px;border-radius:10px;font-weight:700">5</span></a>
+        <div class="snow-nav-group" style="margin-top:8px"><span class="snow-nav-group-label">Admin</span></div>
+        <a href="kyc.html" class="snow-nav-link"><i class="fas fa-shield-alt"></i>KYC 审核</a>
+        <a href="dashboard.html" class="snow-nav-link"><i class="fas fa-chart-bar"></i>经营总览</a>
+        <a href="index.html" class="snow-nav-link"><i class="fas fa-home"></i>首页导航</a>
+        <div class="snow-sidebar-footer"><span style="font-size:12px;color:var(--snow-text-muted)">© 2026 Broker SaaS</span></div>
+    </aside>
+
+    <div class="snow-main">
+        <header class="snow-topbar">
+            <div class="snow-sidebar-toggle"><span></span><span></span><span></span></div>
+            <nav class="snow-breadcrumb">
+                <span class="snow-breadcrumb-item">WP 工作台</span>
+                <span class="snow-breadcrumb-sep">/</span>
+                <span class="snow-breadcrumb-current">仪表盘</span>
+            </nav>
+            <div class="snow-search"><i class="fas fa-search"></i><input type="text" placeholder="搜索案件..."></div>
+            <button class="snow-topbar-btn"><i class="fas fa-bell"></i></button>
+        </header>
+
+        <main class="snow-content">
+
+            <!-- 指标卡片 -->
+            <div class="snow-grid snow-grid-4" style="margin-bottom:20px">
+                <div class="snow-metric-card blue snow-fade-up snow-fade-up-1">
+                    <div class="snow-metric-icon"><i class="fas fa-calendar-check"></i></div>
+                    <div class="snow-metric-label">待排期</div>
+                    <div class="snow-metric-value">12</div>
+                    <div class="snow-metric-change"><i class="fas fa-arrow-up"></i> +3 今日新增</div>
+                </div>
+                <div class="snow-metric-card dark snow-fade-up snow-fade-up-2">
+                    <div class="snow-metric-icon"><i class="fas fa-video"></i></div>
+                    <div class="snow-metric-label">今日视频</div>
+                    <div class="snow-metric-value">6</div>
+                    <div class="snow-metric-change"><i class="fas fa-clock"></i> 下一场 10:30</div>
+                </div>
+                <div class="snow-metric-card blue snow-fade-up snow-fade-up-3">
+                    <div class="snow-metric-icon"><i class="fas fa-user-times"></i></div>
+                    <div class="snow-metric-label">爽约/重约</div>
+                    <div class="snow-metric-value">2</div>
+                    <div class="snow-metric-change down"><i class="fas fa-arrow-trend-down"></i> 本周 -1</div>
+                </div>
+                <div class="snow-metric-card dark snow-fade-up snow-fade-up-4">
+                    <div class="snow-metric-icon"><i class="fas fa-bell"></i></div>
+                    <div class="snow-metric-label">待回复催时</div>
+                    <div class="snow-metric-value">5</div>
+                    <div class="snow-metric-change down"><i class="fas fa-exclamation-circle"></i> 2 件超时</div>
+                </div>
+            </div>
+
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:20px">
+
+                <!-- 今日视频排期 -->
+                <div class="snow-card snow-fade-up">
+                    <div class="snow-card-header">
+                        <span class="snow-card-title"><i class="fas fa-video" style="margin-right:6px;color:var(--snow-primary)"></i>今日视频场次</span>
+                        <span class="snow-badge info">6 场</span>
+                    </div>
+                    <div style="padding:4px 0">
+                        <div style="padding:12px 24px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--snow-border-light)">
+                            <div style="display:flex;align-items:center;gap:10px">
+                                <div style="width:36px;height:36px;border-radius:50%;background:#fce7f3;color:#be185d;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700">N</div>
+                                <div>
+                                    <div style="font-size:13px;font-weight:600">Natali Craig</div>
+                                    <div style="font-size:11.5px;color:var(--snow-text-muted)">KYC 通过 · Demo 已完成</div>
+                                </div>
+                            </div>
+                            <div style="text-align:right">
+                                <div style="font-size:13px;font-weight:700;color:var(--snow-primary)">10:30</div>
+                                <span class="wp-badge" style="background:#f0fdf4;color:#15803d"><i class="fas fa-clock" style="font-size:9px"></i> 30分钟后</span>
+                            </div>
+                        </div>
+                        <div style="padding:12px 24px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--snow-border-light)">
+                            <div style="display:flex;align-items:center;gap:10px">
+                                <div style="width:36px;height:36px;border-radius:50%;background:#dcfce7;color:#15803d;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700">B</div>
+                                <div>
+                                    <div style="font-size:13px;font-weight:600">Budi Santoso</div>
+                                    <div style="font-size:11.5px;color:var(--snow-text-muted)">KYC 通过 · Demo 已完成</div>
+                                </div>
+                            </div>
+                            <div style="text-align:right">
+                                <div style="font-size:13px;font-weight:700">11:00</div>
+                                <span class="wp-badge" style="background:var(--snow-bg);color:var(--snow-text-secondary)">待开始</span>
+                            </div>
+                        </div>
+                        <div style="padding:12px 24px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--snow-border-light)">
+                            <div style="display:flex;align-items:center;gap:10px">
+                                <div style="width:36px;height:36px;border-radius:50%;background:#eff6ff;color:#1d4ed8;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700">S</div>
+                                <div>
+                                    <div style="font-size:13px;font-weight:600">Sari Dewi</div>
+                                    <div style="font-size:11.5px;color:var(--snow-text-muted)">改约 1 次</div>
+                                </div>
+                            </div>
+                            <div style="text-align:right">
+                                <div style="font-size:13px;font-weight:700">13:00</div>
+                                <span class="wp-badge" style="background:var(--snow-bg);color:var(--snow-text-secondary)">待开始</span>
+                            </div>
+                        </div>
+                        <div style="padding:12px 24px;display:flex;align-items:center;justify-content:space-between">
+                            <div style="display:flex;align-items:center;gap:10px">
+                                <div style="width:36px;height:36px;border-radius:50%;background:#f0fdf4;color:#15803d;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700">A</div>
+                                <div>
+                                    <div style="font-size:13px;font-weight:600">Ahmad Rizki</div>
+                                    <div style="font-size:11.5px;color:var(--snow-text-muted)">催时 2 次</div>
+                                </div>
+                            </div>
+                            <div style="text-align:right">
+                                <div style="font-size:13px;font-weight:700">14:00</div>
+                                <span class="wp-badge" style="background:var(--snow-bg);color:var(--snow-text-secondary)">待开始</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="padding:10px 24px;border-top:1px solid var(--snow-border-light);text-align:right">
+                        <a href="#" style="font-size:12.5px;color:var(--snow-primary);font-weight:600">查看全部排期 →</a>
+                    </div>
+                </div>
+
+                <!-- 催时处理 -->
+                <div class="snow-card snow-fade-up">
+                    <div class="snow-card-header">
+                        <span class="snow-card-title"><i class="fas fa-bell" style="margin-right:6px;color:var(--snow-warning)"></i>待回复催时</span>
+                        <span class="snow-badge warning">5 件</span>
+                    </div>
+                    <div class="snow-table-wrap">
+                        <table class="snow-table">
+                            <thead>
+                                <tr>
+                                    <th>用户</th>
+                                    <th>类型</th>
+                                    <th>发起时间</th>
+                                    <th>操作</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <div style="display:flex;align-items:center;gap:6px">
+                                            <div class="snow-avatar-sm" style="background:#fce7f3;color:#be185d;font-size:10px;width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center">N</div>
+                                            <span style="font-weight:600">Natali C.</span>
+                                        </div>
+                                    </td>
+                                    <td><span class="wp-badge" style="background:#fffbeb;color:#b45309">视频排期</span></td>
+                                    <td style="color:var(--snow-text-muted);font-size:12px">2天前</td>
+                                    <td><button class="snow-btn snow-btn-primary snow-btn-sm" onclick="replyChase()">回复</button></td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div style="display:flex;align-items:center;gap:6px">
+                                            <div class="snow-avatar-sm" style="background:#eff6ff;color:#1d4ed8;font-size:10px;width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center">A</div>
+                                            <span style="font-weight:600">Ahmad R.</span>
+                                        </div>
+                                    </td>
+                                    <td><span class="wp-badge" style="background:#eff6ff;color:#2563eb">视频结果</span></td>
+                                    <td style="color:var(--snow-text-muted);font-size:12px">1天前</td>
+                                    <td><button class="snow-btn snow-btn-primary snow-btn-sm" onclick="replyChase()">回复</button></td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div style="display:flex;align-items:center;gap:6px">
+                                            <div class="snow-avatar-sm" style="background:#dcfce7;color:#15803d;font-size:10px;width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center">B</div>
+                                            <span style="font-weight:600">Budi S.</span>
+                                        </div>
+                                    </td>
+                                    <td><span class="wp-badge" style="background:#fffbeb;color:#b45309">视频排期</span></td>
+                                    <td style="color:var(--snow-text-muted);font-size:12px">3小时前</td>
+                                    <td><button class="snow-btn snow-btn-primary snow-btn-sm" onclick="replyChase()">回复</button></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div style="padding:10px 24px;border-top:1px solid var(--snow-border-light);text-align:right">
+                        <a href="#" style="font-size:12.5px;color:var(--snow-primary);font-weight:600">查看全部催时 →</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 通过率统计 -->
+            <div class="snow-card">
+                <div class="snow-card-header">
+                    <span class="snow-card-title"><i class="fas fa-chart-bar" style="margin-right:6px;color:var(--snow-success)"></i>本周 WP 审核统计</span>
+                    <div class="snow-select-btn">本周 <i class="fas fa-chevron-down" style="font-size:10px"></i></div>
+                </div>
+                <div class="snow-card-body">
+                    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:16px;text-align:center">
+                        <div>
+                            <div style="font-size:24px;font-weight:700;color:var(--snow-success)">28</div>
+                            <div style="font-size:12px;color:var(--snow-text-muted);margin-top:2px">通过</div>
+                            <div style="font-size:11px;color:var(--snow-success)"><i class="fas fa-arrow-up"></i> +5 vs 上周</div>
+                        </div>
+                        <div>
+                            <div style="font-size:24px;font-weight:700;color:var(--snow-danger)">4</div>
+                            <div style="font-size:12px;color:var(--snow-text-muted);margin-top:2px">拒绝</div>
+                            <div style="font-size:11px;color:var(--snow-text-muted)">拒绝率 12.5%</div>
+                        </div>
+                        <div>
+                            <div style="font-size:24px;font-weight:700;color:var(--snow-warning)">3</div>
+                            <div style="font-size:12px;color:var(--snow-text-muted);margin-top:2px">需重约</div>
+                            <div style="font-size:11px;color:var(--snow-text-muted)">重约率 9.4%</div>
+                        </div>
+                        <div>
+                            <div style="font-size:24px;font-weight:700;color:var(--snow-text)">2</div>
+                            <div style="font-size:12px;color:var(--snow-text-muted);margin-top:2px">爽约</div>
+                            <div style="font-size:11px;color:var(--snow-text-muted)">爽约率 6.3%</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </main>
+        <footer class="snow-footer">
+            <span>© 2026 Broker SaaS</span>
+            <div class="snow-footer-links"><a href="#">About</a><a href="#">Support</a><a href="#">Contact Us</a></div>
+        </footer>
+    </div>
+</div>
+
+<script>
+function replyChase() { alert('催时回复功能 — 输入回复内容后回写给用户端'); }
+</script>
+</body>
+</html>

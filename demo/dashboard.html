@@ -3,863 +3,376 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>经营总览 - Broker SaaS 运营平台</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <title>经营总览 - Broker SaaS</title>
     <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --primary: #4361ee;
-            --primary-light: #e8f0fe;
-            --secondary: #f8f9fa;
-            --accent: #7209b7;
-            --muted: #6c757d;
-            --border: #dee2e6;
-            --radius: 16px;
-            --radius-sm: 8px;
-            --sidebar-width: 280px;
-            --header-height: 64px;
-            --shadow-sm: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
-            --shadow-md: 0 10px 15px -3px rgba(0, 0, 0, 0.08);
-            --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
-        }
-        
-        * {
-            font-family: 'Inter', sans-serif;
-            box-sizing: border-box;
-        }
-        
-        body {
-            background-color: #f8f9fa;
-            margin: 0;
-            color: #2d3748;
-        }
-        
-        .sidebar {
-            width: var(--sidebar-width);
-            height: 100vh;
-            background: linear-gradient(180deg, #1e293b 0%, #0f172a 100%);
-            position: fixed;
-            left: 0;
-            top: 0;
-            padding: 32px 0;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            box-shadow: 8px 0 30px rgba(0, 0, 0, 0.15);
-            border-right: 1px solid rgba(255, 255, 255, 0.08);
-            backdrop-filter: blur(10px);
-        }
-        
-        .main-content {
-            margin-left: var(--sidebar-width);
-            padding: 32px;
-            min-height: 100vh;
-            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
-        }
-        
-        .header {
-            height: var(--header-height);
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            border-bottom: 1px solid rgba(222, 226, 230, 0.6);
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 0 32px;
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            border-radius: var(--radius);
-            margin-bottom: 24px;
-            box-shadow: var(--shadow-sm);
-        }
-        
-        .card {
-            background: white;
-            border-radius: var(--radius);
-            border: 1px solid rgba(222, 226, 230, 0.5);
-            padding: 24px;
-            box-shadow: var(--shadow-md);
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 4px;
-            background: linear-gradient(90deg, #4361ee, #7209b7);
-            opacity: 0.7;
-        }
-        
-        .card:hover {
-            transform: translateY(-4px);
-            box-shadow: var(--shadow-lg);
-            border-color: rgba(67, 97, 238, 0.3);
-        }
-        
-        .stat-card {
-            background: white;
-            border-radius: var(--radius);
-            padding: 32px 24px;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            border: 2px solid transparent;
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .stat-card::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: linear-gradient(45deg, transparent, rgba(67, 97, 238, 0.1), transparent);
-            transform: rotate(45deg);
-            transition: transform 0.6s ease;
-        }
-        
-        .stat-card:hover::before {
-            transform: rotate(225deg);
-        }
-        
-        .stat-card:hover {
-            transform: translateY(-8px);
-            box-shadow: var(--shadow-lg);
-            border-color: rgba(67, 97, 238, 0.3);
-        }
-        
-        .badge {
-            display: inline-flex;
-            align-items: center;
-            padding: 6px 16px;
-            border-radius: 24px;
-            font-size: 13px;
-            font-weight: 600;
-            letter-spacing: 0.3px;
-            text-transform: uppercase;
-        }
-        
-        .badge-success {
-            background: linear-gradient(135deg, #10b981 0%, #34d399 100%);
-            color: white;
-            box-shadow: 0 2px 4px rgba(16, 185, 129, 0.3);
-        }
-        
-        .badge-warning {
-            background: linear-gradient(135deg, #f59e0b 0%, #fbbf24 100%);
-            color: white;
-            box-shadow: 0 2px 4px rgba(245, 158, 11, 0.3);
-        }
-        
-        .badge-danger {
-            background: linear-gradient(135deg, #ef4444 0%, #f87171 100%);
-            color: white;
-            box-shadow: 0 2px 4px rgba(239, 68, 68, 0.3);
-        }
-        
-        .badge-primary {
-            background: linear-gradient(135deg, #4361ee 0%, #3a56d4 100%);
-            color: white;
-            box-shadow: 0 2px 4px rgba(67, 97, 238, 0.3);
-        }
-        
-        .badge-info {
-            background: linear-gradient(135deg, #06b6d4 0%, #22d3ee 100%);
-            color: white;
-            box-shadow: 0 2px 4px rgba(6, 182, 212, 0.3);
-        }
-        
-        .table-container {
-            overflow-x: auto;
-        }
-        
-        .table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-        
-        .table th {
-            text-align: left;
-            padding: 12px 16px;
-            background-color: #f8fafc;
-            border-bottom: 1px solid var(--border);
-            font-weight: 600;
-            color: #475569;
-        }
-        
-        .table td {
-            padding: 12px 16px;
-            border-bottom: 1px solid var(--border);
-        }
-        
-        .table tr:hover {
-            background-color: #f8fafc;
-        }
-    </style>
+    <link rel="stylesheet" href="snowui-styles.css">
 </head>
 <body>
-    <div class="sidebar">
-        <div class="px-6 py-6 border-b border-white/10 mb-6">
-            <div class="flex items-center gap-3 mb-4">
-                <div class="w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-600 rounded-2xl flex items-center justify-center shadow-lg">
-                    <i class="fas fa-chart-network text-white text-lg"></i>
-                </div>
-                <div>
-                    <h1 class="text-white text-xl font-bold tracking-tight">Broker SaaS</h1>
-                    <p class="text-slate-300 text-sm mt-1">企业级运营平台</p>
-                </div>
-            </div>
-            <div class="bg-white/5 rounded-xl p-3">
-                <p class="text-white/70 text-xs font-medium">系统状态</p>
-                <div class="flex items-center justify-between mt-2">
-                    <div class="flex items-center gap-2">
-                        <div class="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
-                        <span class="text-white text-sm">正常运行</span>
-                    </div>
-                    <span class="text-white/50 text-xs">v2.4.1</span>
-                </div>
-            </div>
+<div class="snow-layout">
+
+    <!-- 侧边栏 -->
+    <aside class="snow-sidebar">
+        <div class="snow-logo">
+            <div class="snow-logo-icon"><i class="fas fa-snowflake"></i></div>
+            <span class="snow-logo-text">Broker SaaS</span>
         </div>
-        
-        <nav class="px-3 space-y-1">
-            <div class="px-3 py-2 mb-2">
-                <p class="text-slate-400 text-xs uppercase tracking-wider font-semibold">核心功能</p>
-            </div>
-            
-            <a href="dashboard.html" class="flex items-center gap-3 px-4 py-3 rounded-xl text-white bg-gradient-to-r from-blue-600/30 to-blue-600/10 backdrop-blur-sm border border-blue-500/20 shadow-sm">
-                <div class="w-8 h-8 bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl flex items-center justify-center">
-                    <i class="fas fa-chart-line text-sm"></i>
-                </div>
-                <span class="font-medium">经营总览</span>
-                <span class="ml-auto">
-                    <div class="w-2 h-2 bg-blue-400 rounded-full"></div>
-                </span>
-            </a>
-            
-            <a href="crm.html" class="flex items-center gap-3 px-4 py-3 rounded-xl text-slate-300 hover:text-white hover:bg-white/10 transition-all duration-300 hover:translate-x-2">
-                <div class="w-8 h-8 bg-gradient-to-br from-green-500 to-green-600 rounded-xl flex items-center justify-center">
-                    <i class="fas fa-users text-sm"></i>
-                </div>
-                <span class="font-medium">客户中心</span>
-            </a>
-            
-            <a href="kyc.html" class="flex items-center gap-3 px-4 py-3 rounded-xl text-slate-300 hover:text-white hover:bg-white/10 transition-all duration-300 hover:translate-x-2">
-                <div class="w-8 h-8 bg-gradient-to-br from-purple-500 to-purple-600 rounded-xl flex items-center justify-center">
-                    <i class="fas fa-id-card text-sm"></i>
-                </div>
-                <span class="font-medium">KYC审核中心</span>
-            </a>
-            
-            <a href="wallet.html" class="flex items-center gap-3 px-4 py-3 rounded-xl text-slate-300 hover:text-white hover:bg-white/10 transition-all duration-300 hover:translate-x-2">
-                <div class="w-8 h-8 bg-gradient-to-br from-yellow-500 to-yellow-600 rounded-xl flex items-center justify-center">
-                    <i class="fas fa-wallet text-sm"></i>
-                </div>
-                <span class="font-medium">钱包与支付</span>
-            </a>
-            
-            <a href="agent.html" class="flex items-center gap-3 px-4 py-3 rounded-xl text-slate-300 hover:text-white hover:bg-white/10 transition-all duration-300 hover:translate-x-2">
-                <div class="w-8 h-8 bg-gradient-to-br from-red-500 to-red-600 rounded-xl flex items-center justify-center">
-                    <i class="fas fa-handshake text-sm"></i>
-                </div>
-                <span class="font-medium">代理中心</span>
-            </a>
-            
-            <div class="px-3 py-2 mb-2 mt-8">
-                <p class="text-slate-400 text-xs uppercase tracking-wider font-semibold">系统管理</p>
-            </div>
-            
-            <a href="index.html" class="flex items-center gap-3 px-4 py-3 rounded-xl text-slate-300 hover:text-white hover:bg-white/10 transition-all duration-300 hover:translate-x-2">
-                <div class="w-8 h-8 bg-gradient-to-br from-slate-500 to-slate-600 rounded-xl flex items-center justify-center">
-                    <i class="fas fa-home text-sm"></i>
-                </div>
-                <span class="font-medium">系统主页</span>
-            </a>
-        </nav>
-        
-        <div class="absolute bottom-0 w-full p-6 border-t border-white/10">
-            <div class="flex items-center gap-3 bg-white/5 backdrop-blur-sm rounded-2xl p-4 hover:bg-white/10 transition-all duration-300 cursor-pointer">
-                <div class="relative">
-                    <div class="w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-600 rounded-2xl flex items-center justify-center shadow-lg">
-                        <i class="fas fa-user text-white"></i>
-                    </div>
-                    <div class="absolute -bottom-1 -right-1 w-4 h-4 bg-green-400 rounded-full border-2 border-slate-800"></div>
-                </div>
-                <div class="flex-1">
-                    <p class="text-white font-medium">管理员账号</p>
-                    <p class="text-slate-300 text-sm">admin@broker.com</p>
-                </div>
-                <button class="text-slate-400 hover:text-white transition-colors">
-                    <i class="fas fa-chevron-right"></i>
-                </button>
-            </div>
-            <div class="mt-4 flex justify-around">
-                <button class="text-slate-400 hover:text-white transition-colors p-2 hover:bg-white/5 rounded-xl">
-                    <i class="fas fa-cog"></i>
-                </button>
-                <button class="text-slate-400 hover:text-white transition-colors p-2 hover:bg-white/5 rounded-xl">
-                    <i class="fas fa-bell"></i>
-                    <span class="absolute -top-1 -right-1 w-2 h-2 bg-red-500 rounded-full"></span>
-                </button>
-                <button class="text-slate-400 hover:text-white transition-colors p-2 hover:bg-white/5 rounded-xl">
-                    <i class="fas fa-question-circle"></i>
-                </button>
-                <button class="text-slate-400 hover:text-white transition-colors p-2 hover:bg-white/5 rounded-xl">
-                    <i class="fas fa-sign-out-alt"></i>
-                </button>
-            </div>
+
+        <div class="snow-user-info">
+            <div class="snow-user-avatar">A</div>
+            <span class="snow-user-name">Admin</span>
         </div>
-    </div>
-    
-    <div class="main-content">
-        <div class="header">
-            <div>
-                <h2 class="text-xl font-semibold">经营总览 Dashboard</h2>
-                <p class="text-slate-600 mt-1">核心业务数据实时监控</p>
-            </div>
-            <div class="flex items-center gap-4">
-                <div class="flex items-center gap-2">
-                    <span class="text-slate-600">时间段:</span>
-                    <select class="border rounded px-3 py-1">
-                        <option>今日</option>
-                        <option>本周</option>
-                        <option selected>本月</option>
-                        <option>本季度</option>
-                    </select>
-                </div>
-                <div class="flex items-center gap-2">
-                    <span class="text-slate-600">品牌:</span>
-                    <select class="border rounded px-3 py-1">
-                        <option selected>全部</option>
-                        <option>品牌A</option>
-                        <option>品牌B</option>
-                    </select>
-                </div>
-                <button class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600">
-                    <i class="fas fa-download mr-2"></i>导出报表
-                </button>
-            </div>
+
+        <div class="snow-nav-group">
+            <span class="snow-nav-group-label">Dashboards</span>
         </div>
-        
-        <div class="mt-8">
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-                <div class="stat-card" style="background: linear-gradient(135deg, #4361ee 0%, #4895ef 100%); color: white; box-shadow: 0 10px 25px rgba(67, 97, 238, 0.3); border: none;">
-                    <div class="flex justify-between">
-                        <div>
-                            <p class="text-white/80 text-sm font-medium">注册人数</p>
-                            <p class="text-3xl font-bold mt-3">1,428</p>
-                            <div class="flex items-center mt-3 bg-white/20 rounded-full px-3 py-1 w-fit">
-                                <i class="fas fa-arrow-up mr-1 text-xs"></i>
-                                <span class="text-sm font-semibold">+12.5%</span>
-                                <span class="text-sm ml-2 text-white/70">vs 上月</span>
-                            </div>
-                        </div>
-                        <div class="w-16 h-16 bg-white/30 rounded-2xl flex items-center justify-center backdrop-blur bg-white/10">
-                            <i class="fas fa-user-plus text-white text-2xl"></i>
-                        </div>
+        <a href="dashboard.html" class="snow-nav-link active">
+            <i class="fas fa-chart-pie"></i>经营总览
+        </a>
+        <a href="index.html" class="snow-nav-link">
+            <i class="fas fa-home"></i>首页导航
+        </a>
+
+        <div class="snow-nav-group" style="margin-top:8px">
+            <span class="snow-nav-group-label">Pages</span>
+        </div>
+        <a href="crm.html" class="snow-nav-link">
+            <i class="fas fa-users"></i>客户管理
+        </a>
+        <a href="kyc.html" class="snow-nav-link">
+            <i class="fas fa-shield-alt"></i>KYC审核
+        </a>
+        <a href="wallet.html" class="snow-nav-link">
+            <i class="fas fa-wallet"></i>资金管理
+        </a>
+        <a href="agent.html" class="snow-nav-link">
+            <i class="fas fa-handshake"></i>代理中心
+        </a>
+
+        <div class="snow-nav-group" style="margin-top:8px">
+            <span class="snow-nav-group-label">用户端</span>
+        </div>
+        <a href="user-login.html" class="snow-nav-link">
+            <i class="fas fa-user"></i>用户前台
+        </a>
+
+        <div class="snow-sidebar-footer">
+            <span style="font-size:12px;color:var(--snow-text-muted)">© 2024 Broker SaaS</span>
+        </div>
+    </aside>
+
+    <!-- 主内容 -->
+    <div class="snow-main">
+        <!-- 顶部栏 -->
+        <header class="snow-topbar">
+            <div class="snow-sidebar-toggle">
+                <span></span><span></span><span></span>
+            </div>
+            <nav class="snow-breadcrumb">
+                <span class="snow-breadcrumb-item">Dashboards</span>
+                <span class="snow-breadcrumb-sep">/</span>
+                <span class="snow-breadcrumb-current">经营总览</span>
+            </nav>
+            <div class="snow-search">
+                <i class="fas fa-search"></i>
+                <input type="text" placeholder="Search">
+                <span style="font-size:11px;color:var(--snow-text-muted);background:var(--snow-border);padding:1px 5px;border-radius:3px;margin-left:4px">⌘/</span>
+            </div>
+            <button class="snow-topbar-btn"><i class="fas fa-sun"></i></button>
+            <button class="snow-topbar-btn"><i class="fas fa-clock-rotate-left"></i></button>
+            <button class="snow-topbar-btn snow-badge-dot"><i class="fas fa-bell"></i></button>
+        </header>
+
+        <!-- 内容 -->
+        <main class="snow-content">
+
+            <!-- 指标卡片 -->
+            <div class="snow-grid snow-grid-4 snow-fade-up" style="margin-bottom:20px">
+                <div class="snow-metric-card blue snow-fade-up snow-fade-up-1">
+                    <div class="snow-metric-icon"><i class="fas fa-eye"></i></div>
+                    <div class="snow-metric-label">新增客户</div>
+                    <div class="snow-metric-value">1,428</div>
+                    <div class="snow-metric-change up"><i class="fas fa-arrow-trend-up"></i> +11.01% 本月</div>
+                </div>
+                <div class="snow-metric-card dark snow-fade-up snow-fade-up-2">
+                    <div class="snow-metric-icon"><i class="fas fa-users"></i></div>
+                    <div class="snow-metric-label">活跃客户</div>
+                    <div class="snow-metric-value">3,671</div>
+                    <div class="snow-metric-change down"><i class="fas fa-arrow-trend-down"></i> -0.03% 本月</div>
+                </div>
+                <div class="snow-metric-card blue snow-fade-up snow-fade-up-3">
+                    <div class="snow-metric-icon"><i class="fas fa-chart-line"></i></div>
+                    <div class="snow-metric-label">入金总额</div>
+                    <div class="snow-metric-value">$256K</div>
+                    <div class="snow-metric-change up"><i class="fas fa-arrow-trend-up"></i> +15.03% 本月</div>
+                </div>
+                <div class="snow-metric-card dark snow-fade-up snow-fade-up-4">
+                    <div class="snow-metric-icon"><i class="fas fa-dollar-sign"></i></div>
+                    <div class="snow-metric-label">KYC通过</div>
+                    <div class="snow-metric-value">2,318</div>
+                    <div class="snow-metric-change up"><i class="fas fa-arrow-trend-up"></i> +6.08% 本月</div>
+                </div>
+            </div>
+
+            <!-- 用户趋势图 -->
+            <div class="snow-card snow-fade-up" style="margin-bottom:20px">
+                <div class="snow-tabs">
+                    <div class="snow-tab active">客户增长</div>
+                    <div class="snow-tab">入金趋势</div>
+                    <div class="snow-tab">交易量</div>
+                    <div style="margin-left:auto;display:flex;gap:8px;align-items:center;padding-bottom:2px">
+                        <div class="snow-select-btn">Week <i class="fas fa-chevron-down" style="font-size:10px"></i></div>
+                        <div class="snow-select-btn"><i class="fas fa-chart-line" style="font-size:11px"></i> <i class="fas fa-chevron-down" style="font-size:10px"></i></div>
+                        <button class="snow-btn-ghost snow-btn snow-btn-icon"><i class="fas fa-ellipsis"></i></button>
                     </div>
                 </div>
-                
-                <div class="stat-card" style="background: linear-gradient(135deg, #10b981 0%, #34d399 100%); color: white; box-shadow: 0 10px 25px rgba(16, 185, 129, 0.3); border: none;">
-                    <div class="flex justify-between">
-                        <div>
-                            <p class="text-white/80 text-sm font-medium">KYC通过率</p>
-                            <p class="text-3xl font-bold mt-3">78.2%</p>
-                            <div class="flex items-center mt-3 bg-white/20 rounded-full px-3 py-1 w-fit">
-                                <i class="fas fa-arrow-up mr-1 text-xs"></i>
-                                <span class="text-sm font-semibold">+3.2%</span>
-                                <span class="text-sm ml-2 text-white/70">vs 上月</span>
-                            </div>
-                        </div>
-                        <div class="w-16 h-16 bg-white/30 rounded-2xl flex items-center justify-center backdrop-blur bg-white/10">
-                            <i class="fas fa-check-circle text-white text-2xl"></i>
-                        </div>
+                <div class="snow-card-body">
+                    <div id="trendChart" style="height:200px"></div>
+                </div>
+            </div>
+
+            <!-- 设备流量 + 地区流量 -->
+            <div class="snow-grid snow-grid-2 snow-fade-up" style="margin-bottom:20px">
+                <div class="snow-card">
+                    <div class="snow-card-header">
+                        <span class="snow-card-title" style="color:var(--snow-primary)">账户类型分布</span>
+                        <button class="snow-btn-ghost snow-btn snow-btn-icon"><i class="fas fa-ellipsis"></i></button>
+                    </div>
+                    <div class="snow-card-body">
+                        <div id="accountTypeChart" style="height:160px"></div>
                     </div>
                 </div>
-                
-                <div class="stat-card" style="background: linear-gradient(135deg, #7209b7 0%, #9d4edd 100%); color: white; box-shadow: 0 10px 25px rgba(114, 9, 183, 0.3); border: none;">
-                    <div class="flex justify-between">
-                        <div>
-                            <p class="text-white/80 text-sm font-medium">首入金人数</p>
-                            <p class="text-3xl font-bold mt-3">842</p>
-                            <div class="flex items-center mt-3 bg-white/20 rounded-full px-3 py-1 w-fit">
-                                <i class="fas fa-arrow-up mr-1 text-xs"></i>
-                                <span class="text-sm font-semibold">+8.7%</span>
-                                <span class="text-sm ml-2 text-white/70">vs 上月</span>
-                            </div>
-                        </div>
-                        <div class="w-16 h-16 bg-white/30 rounded-2xl flex items-center justify-center backdrop-blur bg-white/10">
-                            <i class="fas fa-dollar-sign text-white text-2xl"></i>
-                        </div>
+                <div class="snow-card">
+                    <div class="snow-card-header">
+                        <span class="snow-card-title" style="color:var(--snow-success)">地区客户分布</span>
+                        <button class="snow-btn-ghost snow-btn snow-btn-icon"><i class="fas fa-ellipsis"></i></button>
                     </div>
-                </div>
-                
-                <div class="stat-card" style="background: linear-gradient(135deg, #f59e0b 0%, #fbbf24 100%); color: white; box-shadow: 0 10px 25px rgba(245, 158, 11, 0.3); border: none;">
-                    <div class="flex justify-between">
-                        <div>
-                            <p class="text-white/80 text-sm font-medium">活跃交易人数</p>
-                            <p class="text-3xl font-bold mt-3">623</p>
-                            <div class="flex items-center mt-3 bg-white/20 rounded-full px-3 py-1 w-fit">
-                                <i class="fas fa-arrow-up mr-1 text-xs"></i>
-                                <span class="text-sm font-semibold">+5.4%</span>
-                                <span class="text-sm ml-2 text-white/70">vs 上月</span>
-                            </div>
-                        </div>
-                        <div class="w-16 h-16 bg-white/30 rounded-2xl flex items-center justify-center backdrop-blur bg-white/10">
-                            <i class="fas fa-chart-line text-white text-2xl"></i>
-                        </div>
+                    <div class="snow-card-body">
+                        <div id="regionChart" style="height:160px"></div>
                     </div>
                 </div>
             </div>
-            
-            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mt-8">
-                <div class="card lg:col-span-2">
-                    <div class="flex justify-between items-center mb-6">
-                        <h3 class="text-lg font-semibold">注册转化漏斗</h3>
-                        <div class="flex gap-2">
-                            <button class="px-3 py-1 border rounded hover:bg-slate-50">分渠道</button>
-                            <button class="px-3 py-1 border rounded hover:bg-slate-50">分国家</button>
-                            <button class="px-3 py-1 border rounded hover:bg-slate-50">分品牌</button>
-                        </div>
+
+            <!-- 入金走势 -->
+            <div class="snow-card snow-fade-up" style="margin-bottom:20px">
+                <div class="snow-card-header">
+                    <span class="snow-card-title" style="color:var(--snow-danger)">入金 / 出金走势</span>
+                    <div style="display:flex;align-items:center;gap:12px">
+                        <span style="font-size:12px;color:var(--snow-text-muted);display:flex;align-items:center;gap:4px"><span style="width:8px;height:8px;border-radius:50%;background:#1e293b;display:inline-block"></span>全部</span>
+                        <span style="font-size:12px;color:var(--snow-text-muted);display:flex;align-items:center;gap:4px"><span style="width:8px;height:8px;border-radius:50%;background:var(--snow-primary);display:inline-block"></span>入金</span>
+                        <span style="font-size:12px;color:var(--snow-text-muted);display:flex;align-items:center;gap:4px"><span style="width:8px;height:8px;border-radius:50%;background:var(--snow-danger);display:inline-block"></span>出金</span>
+                        <button class="snow-btn-ghost snow-btn snow-btn-icon"><i class="fas fa-ellipsis"></i></button>
                     </div>
-                    <div id="funnelChart" style="height: 300px;"></div>
                 </div>
-                
-                <div class="card">
-                    <h3 class="text-lg font-semibold mb-6">待处理任务</h3>
-                    <div class="space-y-4">
-                        <div class="flex justify-between items-center p-3 border rounded hover:bg-slate-50">
-                            <div>
-                                <p class="font-medium">待审核 KYC</p>
-                                <p class="text-slate-500 text-sm">身份资料待审核</p>
-                            </div>
-                            <span class="badge badge-warning">28个</span>
-                        </div>
-                        <div class="flex justify-between items-center p-3 border rounded hover:bg-slate-50">
-                            <div>
-                                <p class="font-medium">待审批出金</p>
-                                <p class="text-slate-500 text-sm">用户出金申请</p>
-                            </div>
-                            <span class="badge badge-warning">15个</span>
-                        </div>
-                        <div class="flex justify-between items-center p-3 border rounded hover:bg-slate-50">
-                            <div>
-                                <p class="font-medium">高风险账户</p>
-                                <p class="text-slate-500 text-sm">需要风控复核</p>
-                            </div>
-                            <span class="badge badge-danger">7个</span>
-                        </div>
-                        <div class="flex justify-between items-center p-3 border rounded hover:bg-slate-50">
-                            <div>
-                                <p class="font-medium">佣金争议</p>
-                                <p class="text-slate-500 text-sm">代理佣金争议处理</p>
-                            </div>
-                            <span class="badge badge-warning">3个</span>
-                        </div>
-                    </div>
+                <div class="snow-card-body">
+                    <div id="depositChart" style="height:200px"></div>
                 </div>
             </div>
-            
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-8">
-                <div class="card">
-                    <div class="flex justify-between items-center mb-6">
-                        <h3 class="text-lg font-semibold">趋势图表</h3>
-                        <select class="border rounded px-2 py-1 text-sm">
-                            <option>注册趋势</option>
-                            <option>入金趋势</option>
-                            <option>交易趋势</option>
-                        </select>
-                    </div>
-                    <div id="trendChart" style="height: 250px;"></div>
+
+            <!-- 最新申请表格 -->
+            <div class="snow-card snow-fade-up">
+                <div class="snow-card-header">
+                    <span class="snow-card-title" style="color:var(--snow-info)">最新客户申请</span>
+                    <button class="snow-btn-ghost snow-btn snow-btn-icon"><i class="fas fa-ellipsis"></i></button>
                 </div>
-                
-                <div class="card">
-                    <div class="flex justify-between items-center mb-6">
-                        <h3 class="text-lg font-semibold">渠道分布</h3>
-                        <div>
-                            <span class="text-slate-600 text-sm">本月注册来源</span>
-                        </div>
-                    </div>
-                    <div id="channelChart" style="height: 250px;"></div>
-                </div>
-            </div>
-            
-            <div class="card mt-8">
-                <div class="flex justify-between items-center mb-6">
-                    <h3 class="text-lg font-semibold">高价值客户列表</h3>
-                    <a href="crm.html" class="text-blue-500 hover:text-blue-700 flex items-center gap-2">
-                        <span>查看更多</span>
-                        <i class="fas fa-arrow-right"></i>
-                    </a>
-                </div>
-                <div class="table-container">
-                    <table class="table">
+                <div class="snow-table-wrap">
+                    <table class="snow-table">
                         <thead>
                             <tr>
+                                <th style="width:36px"><input type="checkbox"></th>
+                                <th>申请编号</th>
                                 <th>客户</th>
-                                <th>国家</th>
-                                <th>注册时间</th>
-                                <th>总入金</th>
-                                <th>交易量</th>
-                                <th>客户等级</th>
-                                <th>操作</th>
+                                <th>账户类型</th>
+                                <th>入金</th>
+                                <th>日期</th>
+                                <th>状态</th>
+                                <th></th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr>
+                                <td><input type="checkbox"></td>
+                                <td style="color:var(--snow-text-secondary);font-weight:600">#CM9801</td>
                                 <td>
-                                    <div class="flex items-center gap-3">
-                                        <div class="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
-                                            <i class="fas fa-user text-blue-600"></i>
-                                        </div>
-                                        <div>
-                                            <p class="font-medium">John Smith</p>
-                                            <p class="text-slate-500 text-sm">john@example.com</p>
-                                        </div>
+                                    <div style="display:flex;align-items:center;gap:8px">
+                                        <div class="snow-avatar" style="background:#fce7f3;color:#be185d">N</div>
+                                        <span>Natali Craig</span>
                                     </div>
                                 </td>
-                                <td>美国</td>
-                                <td>2024-03-15</td>
-                                <td class="font-medium">$28,500</td>
-                                <td>$142,300</td>
-                                <td><span class="badge badge-success">VIP</span></td>
-                                <td>
-                                    <button class="text-blue-500 hover:text-blue-700">
-                                        <i class="fas fa-eye"></i>
-                                    </button>
-                                </td>
+                                <td>标准账户</td>
+                                <td>$942.00</td>
+                                <td style="color:var(--snow-text-muted)"><i class="fas fa-calendar" style="font-size:11px;margin-right:4px"></i>Just now</td>
+                                <td><span class="snow-status info">In Progress</span></td>
+                                <td></td>
                             </tr>
                             <tr>
+                                <td><input type="checkbox"></td>
+                                <td style="color:var(--snow-text-secondary);font-weight:600">#CM9802</td>
                                 <td>
-                                    <div class="flex items-center gap-3">
-                                        <div class="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center">
-                                            <i class="fas fa-user text-green-600"></i>
-                                        </div>
-                                        <div>
-                                            <p class="font-medium">Emma Johnson</p>
-                                            <p class="text-slate-500 text-sm">emma.j@email.com</p>
-                                        </div>
+                                    <div style="display:flex;align-items:center;gap:8px">
+                                        <div class="snow-avatar" style="background:#ecfdf5;color:#047857">K</div>
+                                        <span>Kate Morrison</span>
                                     </div>
                                 </td>
-                                <td>英国</td>
-                                <td>2024-03-10</td>
-                                <td class="font-medium">$15,200</td>
-                                <td>$89,400</td>
-                                <td><span class="badge badge-warning">高级</span></td>
-                                <td>
-                                    <button class="text-blue-500 hover:text-blue-700">
-                                        <i class="fas fa-eye"></i>
-                                    </button>
-                                </td>
+                                <td>VIP账户</td>
+                                <td>$881.00</td>
+                                <td style="color:var(--snow-text-muted)"><i class="fas fa-calendar" style="font-size:11px;margin-right:4px"></i>1分钟前</td>
+                                <td><span class="snow-status success">Complete</span></td>
+                                <td></td>
                             </tr>
                             <tr>
+                                <td><input type="checkbox"></td>
+                                <td style="color:var(--snow-text-secondary);font-weight:600">#CM9803</td>
                                 <td>
-                                    <div class="flex items-center gap-3">
-                                        <div class="w-8 h-8 bg-purple-100 rounded-full flex items-center justify-center">
-                                            <i class="fas fa-user text-purple-600"></i>
-                                        </div>
-                                        <div>
-                                            <p class="font-medium">Robert Chen</p>
-                                            <p class="text-slate-500 text-sm">r.chen@company.com</p>
-                                        </div>
+                                    <div style="display:flex;align-items:center;gap:8px">
+                                        <div class="snow-avatar" style="background:#fef2f2;color:#b91c1c">D</div>
+                                        <span>Drew Cano</span>
                                     </div>
                                 </td>
-                                <td>新加坡</td>
-                                <td>2024-03-05</td>
-                                <td class="font-medium">$43,800</td>
-                                <td>$218,900</td>
-                                <td><span class="badge badge-success">VIP</span></td>
+                                <td>标准账户</td>
+                                <td>$409.00</td>
+                                <td style="color:var(--snow-text-muted)"><i class="fas fa-calendar" style="font-size:11px;margin-right:4px"></i>1小时前</td>
+                                <td><span class="snow-status muted">Pending</span></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td><input type="checkbox"></td>
+                                <td style="color:var(--snow-text-secondary);font-weight:600">#CM9804</td>
                                 <td>
-                                    <button class="text-blue-500 hover:text-blue-700">
-                                        <i class="fas fa-eye"></i>
-                                    </button>
+                                    <div style="display:flex;align-items:center;gap:8px">
+                                        <div class="snow-avatar" style="background:#f0fdf4;color:#15803d">O</div>
+                                        <span>Orlando Diggs</span>
+                                    </div>
                                 </td>
+                                <td>专业账户</td>
+                                <td>$953.00</td>
+                                <td style="color:var(--snow-text-muted)"><i class="fas fa-calendar" style="font-size:11px;margin-right:4px"></i>昨天</td>
+                                <td><span class="snow-status warning">Approved</span></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td><input type="checkbox"></td>
+                                <td style="color:var(--snow-text-secondary);font-weight:600">#CM9805</td>
+                                <td>
+                                    <div style="display:flex;align-items:center;gap:8px">
+                                        <div class="snow-avatar" style="background:#eff6ff;color:#1d4ed8">A</div>
+                                        <span>Andi Lane</span>
+                                    </div>
+                                </td>
+                                <td>VIP账户</td>
+                                <td>$907.00</td>
+                                <td style="color:var(--snow-text-muted)"><i class="fas fa-calendar" style="font-size:11px;margin-right:4px"></i>Feb 2, 2025</td>
+                                <td><span class="snow-status danger">Rejected</span></td>
+                                <td><button class="snow-btn-ghost snow-btn snow-btn-icon"><i class="fas fa-ellipsis"></i></button></td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
+                <div class="snow-pagination">
+                    <button class="snow-page-btn"><i class="fas fa-chevron-left" style="font-size:10px"></i></button>
+                    <button class="snow-page-btn active">1</button>
+                    <button class="snow-page-btn">2</button>
+                    <button class="snow-page-btn">3</button>
+                    <button class="snow-page-btn">4</button>
+                    <button class="snow-page-btn">5</button>
+                    <button class="snow-page-btn"><i class="fas fa-chevron-right" style="font-size:10px"></i></button>
+                </div>
             </div>
-        </div>
+
+        </main>
+
+        <!-- 页脚 -->
+        <footer class="snow-footer">
+            <span>© 2024 Broker SaaS</span>
+            <div class="snow-footer-links">
+                <a href="#">About</a>
+                <a href="#">Support</a>
+                <a href="#">Contact Us</a>
+            </div>
+        </footer>
     </div>
-    
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // 漏斗图表 - SnowUI风格
-            const funnelOptions = {
-                series: [{
-                    name: '注册转化漏斗',
-                    data: [1428, 1120, 875, 842, 623]
-                }],
-                chart: {
-                    type: 'bar',
-                    height: 300,
-                    toolbar: {
-                        show: false
-                    },
-                    foreColor: '#2d3748',
-                    background: 'transparent'
-                },
-                colors: ['#4361ee', '#4895ef', '#7209b7', '#10b981', '#f59e0b'],
-                plotOptions: {
-                    bar: {
-                        borderRadius: 12,
-                        horizontal: true,
-                        distributed: true,
-                        dataLabels: {
-                            position: 'center'
-                        },
-                        columnWidth: '80%'
-                    }
-                },
-                dataLabels: {
-                    enabled: true,
-                    offsetX: 20,
-                    style: {
-                        fontSize: '12px',
-                        fontWeight: 600,
-                        colors: ['#2d3748']
-                    },
-                    background: {
-                        enabled: false
-                    },
-                    formatter: function(val, opt) {
-                        const labels = ['注册人数', '完成KYC', '开通账户', '首次入金', '开始交易'];
-                        return labels[opt.dataPointIndex] + ': ' + val.toLocaleString()
-                    }
-                },
-                grid: {
-                    borderColor: '#e9ecef',
-                    strokeDashArray: 4
-                },
-                xaxis: {
-                    labels: {
-                        style: {
-                            colors: '#6c757d',
-                            fontSize: '12px'
-                        }
-                    },
-                    axisBorder: {
-                        show: false
-                    },
-                    axisTicks: {
-                        show: false
-                    }
-                },
-                yaxis: {
-                    labels: {
-                        style: {
-                            colors: '#6c757d',
-                            fontSize: '12px'
-                        }
-                    }
-                },
-                tooltip: {
-                    theme: 'light',
-                    style: {
-                        fontSize: '12px'
-                    },
-                    y: {
-                        formatter: function(val) {
-                            return val.toLocaleString()
-                        }
-                    }
-                }
-            };
-            
-            const funnelChart = new ApexCharts(document.querySelector("#funnelChart"), funnelOptions);
-            funnelChart.render();
-            
-            // 趋势图表 - SnowUI风格
-            const trendOptions = {
-                series: [{
-                    name: '注册人数',
-                    data: [30, 40, 35, 50, 49, 60, 70, 91, 125, 142]
-                }],
-                chart: {
-                    type: 'area',
-                    height: 250,
-                    toolbar: {
-                        show: false
-                    },
-                    foreColor: '#2d3748',
-                    background: 'transparent'
-                },
-                colors: ['#4361ee'],
-                dataLabels: {
-                    enabled: false
-                },
-                stroke: {
-                    curve: 'smooth',
-                    width: 3,
-                    colors: ['#4361ee']
-                },
-                fill: {
-                    type: 'gradient',
-                    gradient: {
-                        shadeIntensity: 1,
-                        opacityFrom: 0.5,
-                        opacityTo: 0.1,
-                        stops: [0, 80, 100],
-                        colorStops: [
-                            {
-                                offset: 0,
-                                color: '#4361ee',
-                                opacity: 0.5
-                            },
-                            {
-                                offset: 100,
-                                color: '#4361ee',
-                                opacity: 0.1
-                            }
-                        ]
-                    }
-                },
-                grid: {
-                    borderColor: '#e9ecef',
-                    strokeDashArray: 4
-                },
-                xaxis: {
-                    categories: ['3月1日', '3月5日', '3月9日', '3月13日', '3月17日', '3月21日', '3月25日', '3月29日', '4月1日', '4月2日'],
-                    labels: {
-                        style: {
-                            colors: '#6c757d',
-                            fontSize: '11px'
-                        }
-                    },
-                    axisBorder: {
-                        show: false
-                    },
-                    axisTicks: {
-                        show: false
-                    }
-                },
-                yaxis: {
-                    labels: {
-                        style: {
-                            colors: '#6c757d',
-                            fontSize: '11px'
-                        },
-                        formatter: function(val) {
-                            return val.toLocaleString()
-                        }
-                    }
-                },
-                tooltip: {
-                    theme: 'light',
-                    style: {
-                        fontSize: '12px'
-                    },
-                    x: {
-                        show: true
-                    },
-                    marker: {
-                        show: true
-                    }
-                }
-            };
-            
-            const trendChart = new ApexCharts(document.querySelector("#trendChart"), trendOptions);
-            trendChart.render();
-            
-            // 渠道分布图表 - SnowUI风格
-            const channelOptions = {
-                series: [44, 55, 41, 17],
-                chart: {
-                    type: 'donut',
-                    height: 250,
-                    foreColor: '#2d3748',
-                    background: 'transparent',
-                    dropShadow: {
-                        enabled: true,
-                        top: 10,
-                        left: 0,
-                        blur: 10,
-                        color: '#000',
-                        opacity: 0.1
-                    }
-                },
-                colors: ['#4361ee', '#4895ef', '#7209b7', '#10b981'],
-                labels: ['Google Ads', '社交媒体', '代理推荐', '自然流量'],
-                dataLabels: {
-                    enabled: true,
-                    style: {
-                        fontSize: '12px',
-                        fontWeight: 600
-                    },
-                    dropShadow: {
-                        enabled: false
-                    },
-                    formatter: function(val, opts) {
-                        return Math.round(val) + '%'
-                    }
-                },
-                legend: {
-                    position: 'bottom',
-                    horizontalAlign: 'center',
-                    fontSize: '12px',
-                    fontFamily: 'Inter',
-                    labels: {
-                        colors: '#6c757d'
-                    }
-                },
-                plotOptions: {
-                    pie: {
-                        donut: {
-                            size: '60%',
-                            labels: {
-                                show: true,
-                                name: {
-                                    show: true,
-                                    fontSize: '14px',
-                                    fontWeight: 600
-                                },
-                                value: {
-                                    show: true,
-                                    fontSize: '24px',
-                                    fontWeight: 700
-                                },
-                                total: {
-                                    show: true,
-                                    showAlways: true,
-                                    label: '渠道占比',
-                                    fontSize: '12px',
-                                    fontWeight: 500
-                                }
-                            }
-                        }
-                    }
-                },
-                responsive: [{
-                    breakpoint: 480,
-                    options: {
-                        chart: {
-                            width: 200
-                        },
-                        legend: {
-                            position: 'bottom'
-                        }
-                    }
-                }]
-            };
-            
-            const channelChart = new ApexCharts(document.querySelector("#channelChart"), channelOptions);
-            channelChart.render();
-            
-            // 为表格行添加点击效果
-            document.querySelectorAll('.table tbody tr').forEach(row => {
-                row.addEventListener('click', function() {
-                    this.style.backgroundColor = '#f8f9fa';
-                    setTimeout(() => {
-                        this.style.backgroundColor = '';
-                    }, 300);
-                });
-            });
-        });
-    </script>
+</div>
+
+<script>
+// 客户增长趋势图
+const trendChart = new ApexCharts(document.querySelector('#trendChart'), {
+    series: [{ name: '新增客户', data: [42, 38, 55, 47, 82, 78, 95, 88, 110, 102, 125, 118] }],
+    chart: { type: 'line', height: 200, toolbar: { show: false }, sparkline: { enabled: false } },
+    colors: ['#8b5cf6'],
+    stroke: { curve: 'smooth', width: 2 },
+    markers: { size: 5, colors: ['white'], strokeColors: '#8b5cf6', strokeWidth: 2 },
+    xaxis: {
+        categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+        axisBorder: { show: false }, axisTicks: { show: false },
+        labels: { style: { colors: '#94a3b8', fontSize: '11px' } }
+    },
+    yaxis: { labels: { style: { colors: '#94a3b8', fontSize: '11px' } } },
+    grid: { borderColor: '#f1f5f9', strokeDashArray: 4 },
+    tooltip: { theme: 'light' }
+});
+trendChart.render();
+
+// 账户类型分布
+const accountTypeChart = new ApexCharts(document.querySelector('#accountTypeChart'), {
+    series: [{ name: '账户数', data: [320, 180, 90, 260, 140, 55] }],
+    chart: { type: 'bar', height: 160, toolbar: { show: false } },
+    colors: ['#e2e8f0', '#e2e8f0', '#e2e8f0', '#4361ee', '#e2e8f0', '#e2e8f0'],
+    plotOptions: { bar: { borderRadius: 4, columnWidth: '55%', distributed: true } },
+    dataLabels: { enabled: false },
+    xaxis: {
+        categories: ['标准', 'VIP', '专业', '伊斯兰', '迷你', '其他'],
+        axisBorder: { show: false }, axisTicks: { show: false },
+        labels: { style: { colors: '#94a3b8', fontSize: '11px' } }
+    },
+    yaxis: { show: false },
+    grid: { show: false },
+    legend: { show: false },
+    tooltip: {
+        y: { formatter: (v) => v + ' 个' }
+    }
+});
+accountTypeChart.render();
+
+// 地区分布
+const regionChart = new ApexCharts(document.querySelector('#regionChart'), {
+    series: [{ name: '客户数', data: [480, 320, 290, 220, 180, 150] }],
+    chart: { type: 'bar', height: 160, toolbar: { show: false } },
+    colors: ['#e2e8f0'],
+    plotOptions: { bar: { borderRadius: 4, columnWidth: '55%' } },
+    dataLabels: { enabled: false },
+    xaxis: {
+        categories: ['中国', '东南亚', '中东', '欧洲', '美洲', '其他'],
+        axisBorder: { show: false }, axisTicks: { show: false },
+        labels: { style: { colors: '#94a3b8', fontSize: '11px' } }
+    },
+    yaxis: { show: false },
+    grid: { show: false },
+    tooltip: { y: { formatter: (v) => v + ' 人' } }
+});
+regionChart.render();
+
+// 入金/出金走势
+const depositChart = new ApexCharts(document.querySelector('#depositChart'), {
+    series: [
+        { name: '入金', data: [65,48,72,58,90,75,88,62,95,80,105,92].map((v,i)=>[i,v]) },
+        { name: '出金', data: [45,30,52,38,60,48,62,40,70,55,78,65].map((v,i)=>[i,v*0.6]) }
+    ],
+    chart: { type: 'bar', height: 200, toolbar: { show: false }, stacked: false },
+    colors: ['#1e293b', '#ef4444'],
+    plotOptions: { bar: { borderRadius: 2, columnWidth: '40%', grouped: true } },
+    dataLabels: { enabled: false },
+    xaxis: {
+        categories: ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'],
+        axisBorder: { show: false }, axisTicks: { show: false },
+        labels: { style: { colors: '#94a3b8', fontSize: '11px' } }
+    },
+    yaxis: { labels: { style: { colors: '#94a3b8', fontSize: '11px' }, formatter: v => '$'+v+'K' } },
+    grid: { borderColor: '#f1f5f9', strokeDashArray: 4 },
+    legend: { show: false },
+    tooltip: { y: { formatter: v => '$'+v+'K' } }
+});
+depositChart.render();
+</script>
 </body>
 </html>

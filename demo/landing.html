@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>开户中心 - Broker SaaS</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="snowui-styles.css">
+    <style>
+        .landing-wrap { min-height: 100vh; background: var(--snow-bg); }
+        .landing-nav { background: white; border-bottom: 1px solid var(--snow-border); padding: 0 32px; display: flex; align-items: center; height: 60px; position: sticky; top: 0; z-index: 50; }
+        .landing-logo { display: flex; align-items: center; gap: 10px; }
+        .landing-logo-icon { width: 32px; height: 32px; background: linear-gradient(135deg, #4361ee, #7c3aed); border-radius: 8px; display: flex; align-items: center; justify-content: center; color: white; font-size: 14px; }
+        .landing-logo-text { font-size: 15px; font-weight: 700; color: var(--snow-text); }
+        .landing-nav-links { display: flex; gap: 24px; margin-left: 40px; }
+        .landing-nav-links a { font-size: 13.5px; font-weight: 500; color: var(--snow-text-secondary); transition: color 0.15s; }
+        .landing-nav-links a:hover { color: var(--snow-text); }
+        .landing-nav-actions { margin-left: auto; display: flex; gap: 8px; align-items: center; }
+        .hero { padding: 60px 32px; text-align: center; max-width: 680px; margin: 0 auto; }
+        .hero h1 { font-size: 36px; font-weight: 800; color: var(--snow-text); letter-spacing: -0.5px; line-height: 1.2; margin-bottom: 12px; }
+        .hero h1 span { background: linear-gradient(135deg, #4361ee, #7c3aed); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .hero p { font-size: 16px; color: var(--snow-text-secondary); line-height: 1.7; max-width: 520px; margin: 0 auto 28px; }
+        .hero-ctas { display: flex; gap: 12px; justify-content: center; }
+        .hero-cta-primary { display: inline-flex; align-items: center; gap: 8px; padding: 12px 28px; background: var(--snow-primary); color: white; border-radius: var(--snow-radius-sm); font-size: 14px; font-weight: 700; transition: all 0.2s; text-decoration: none; box-shadow: 0 4px 12px rgba(67,97,238,0.25); }
+        .hero-cta-primary:hover { background: #3451d1; box-shadow: 0 6px 16px rgba(67,97,238,0.35); transform: translateY(-1px); }
+        .hero-cta-secondary { display: inline-flex; align-items: center; gap: 8px; padding: 12px 28px; background: white; color: var(--snow-text); border: 1px solid var(--snow-border); border-radius: var(--snow-radius-sm); font-size: 14px; font-weight: 600; transition: all 0.2s; text-decoration: none; }
+        .hero-cta-secondary:hover { border-color: #cbd5e1; background: var(--snow-bg); }
+        /* 信任指标 */
+        .trust-bar { display: flex; align-items: center; justify-content: center; gap: 24px; padding: 20px 32px; border-top: 1px solid var(--snow-border-light); border-bottom: 1px solid var(--snow-border-light); background: white; flex-wrap: wrap; }
+        .trust-item { display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--snow-text-secondary); }
+        .trust-item i { color: var(--snow-success); font-size: 14px; }
+        /* 准备清单 */
+        .prep-section { max-width: 720px; margin: 40px auto; padding: 0 32px; }
+        .section-title { font-size: 18px; font-weight: 700; color: var(--snow-text); margin-bottom: 16px; text-align: center; }
+        .prep-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 20px; }
+        .prep-card { background: white; border: 1px solid var(--snow-border); border-radius: var(--snow-radius); padding: 16px; text-align: center; }
+        .prep-card .icon { width: 40px; height: 40px; border-radius: var(--snow-radius-sm); display: flex; align-items: center; justify-content: center; margin: 0 auto 10px; font-size: 16px; }
+        .prep-card .title { font-size: 13px; font-weight: 700; color: var(--snow-text); margin-bottom: 4px; }
+        .prep-card .desc { font-size: 12px; color: var(--snow-text-muted); line-height: 1.5; }
+        /* 风险提示 */
+        .risk-section { max-width: 720px; margin: 0 auto 40px; padding: 0 32px; }
+        .risk-box { background: #fef2f2; border: 1px solid #fecaca; border-radius: var(--snow-radius-lg); padding: 20px 24px; }
+        .risk-box .title { font-size: 14px; font-weight: 700; color: #b91c1c; margin-bottom: 8px; display: flex; align-items: center; gap: 6px; }
+        .risk-box p { font-size: 13px; color: #7f1d1d; line-height: 1.7; }
+        /* FAQ */
+        .faq-section { max-width: 720px; margin: 0 auto 60px; padding: 0 32px; }
+        .faq-item { border: 1px solid var(--snow-border); border-radius: var(--snow-radius-sm); margin-bottom: 8px; overflow: hidden; background: white; }
+        .faq-q { padding: 14px 16px; display: flex; align-items: center; justify-content: space-between; cursor: pointer; font-size: 14px; font-weight: 600; color: var(--snow-text); transition: background 0.15s; }
+        .faq-q:hover { background: var(--snow-bg); }
+        .faq-q i { color: var(--snow-text-muted); font-size: 12px; transition: transform 0.2s; }
+        .faq-q.open i { transform: rotate(180deg); }
+        .faq-a { padding: 0 16px 14px; font-size: 13.5px; color: var(--snow-text-secondary); line-height: 1.7; display: none; }
+        .faq-a.open { display: block; }
+        /* 页脚 */
+        .landing-footer { text-align: center; padding: 24px 32px; border-top: 1px solid var(--snow-border-light); font-size: 12px; color: var(--snow-text-muted); }
+    </style>
+</head>
+<body>
+<div class="landing-wrap">
+
+    <!-- 顶部导航 -->
+    <nav class="landing-nav">
+        <div class="landing-logo">
+            <div class="landing-logo-icon"><i class="fas fa-snowflake"></i></div>
+            <span class="landing-logo-text">Broker SaaS</span>
+        </div>
+        <div class="landing-nav-links">
+            <a href="#prep">开户准备</a>
+            <a href="#faq">常见问题</a>
+            <a href="#">监管说明</a>
+            <a href="#">账户类型</a>
+        </div>
+        <div class="landing-nav-actions">
+            <a href="user-login.html" style="font-size:13px;font-weight:600;color:var(--snow-text-secondary)">登录</a>
+            <a href="register.html" class="snow-btn snow-btn-primary snow-btn-sm">开始开户</a>
+        </div>
+    </nav>
+
+    <!-- Hero -->
+    <div class="hero snow-fade-up">
+        <div style="display:inline-flex;align-items:center;gap:6px;background:var(--snow-primary-soft);color:var(--snow-primary);padding:5px 14px;border-radius:20px;font-size:12px;font-weight:600;margin-bottom:20px">
+            <i class="fas fa-shield-alt"></i> Bappebti 持牌合规经纪商
+        </div>
+        <h1>开启您的<span>外汇交易</span>之旅</h1>
+        <p>受印尼 Bappebti 监管，资金存放于隔离账户（Rekening Terpisah）。最快 3 个工作日完成开户，安全、透明、高效。</p>
+        <div class="hero-ctas">
+            <a href="register.html" class="hero-cta-primary"><i class="fas fa-rocket"></i> 开始开户</a>
+            <a href="account-type.html" class="hero-cta-secondary"><i class="fas fa-flask"></i> 先开 Demo 体验</a>
+        </div>
+    </div>
+
+    <!-- 信任指标 -->
+    <div class="trust-bar">
+        <div class="trust-item"><i class="fas fa-check-circle"></i> Bappebti 持牌监管</div>
+        <div class="trust-item"><i class="fas fa-check-circle"></i> Rekening Terpisah 资金隔离</div>
+        <div class="trust-item"><i class="fas fa-check-circle"></i> KYC + WP 双重合规审核</div>
+        <div class="trust-item"><i class="fas fa-check-circle"></i> SSL 加密数据传输</div>
+        <div class="trust-item"><i class="fas fa-check-circle"></i> 24/7 在线客服支持</div>
+    </div>
+
+    <!-- 开户准备 -->
+    <div class="prep-section" id="prep">
+        <div class="section-title"><i class="fas fa-clipboard-list" style="margin-right:6px;color:var(--snow-primary)"></i>开户前需要准备什么？</div>
+        <div class="prep-grid">
+            <div class="prep-card snow-fade-up snow-fade-up-1">
+                <div class="icon" style="background:#eff6ff;color:var(--snow-primary)"><i class="fas fa-id-card"></i></div>
+                <div class="title">KTP / 护照</div>
+                <div class="desc">有效的身份证明文件，确保证件在有效期内</div>
+            </div>
+            <div class="prep-card snow-fade-up snow-fade-up-2">
+                <div class="icon" style="background:#f0fdf4;color:var(--snow-success)"><i class="fas fa-mobile-alt"></i></div>
+                <div class="title">手机号 & 邮箱</div>
+                <div class="desc">有效的印尼手机号和邮箱，用于验证和通知</div>
+            </div>
+            <div class="prep-card snow-fade-up snow-fade-up-3">
+                <div class="icon" style="background:#fffbeb;color:var(--snow-warning)"><i class="fas fa-university"></i></div>
+                <div class="title">银行账户</div>
+                <div class="desc">本人同名的印尼银行账户，用于出入金</div>
+            </div>
+            <div class="prep-card snow-fade-up snow-fade-up-1">
+                <div class="icon" style="background:#f5f3ff;color:var(--snow-purple)"><i class="fas fa-file-invoice-dollar"></i></div>
+                <div class="title">NPWP 税号</div>
+                <div class="desc">税务编号文件（如适用，部分情况可选）</div>
+            </div>
+            <div class="prep-card snow-fade-up snow-fade-up-2">
+                <div class="icon" style="background:#fef2f2;color:var(--snow-danger)"><i class="fas fa-map-marker-alt"></i></div>
+                <div class="title">地址证明</div>
+                <div class="desc">近 3 个月的水电账单、电话账单或户口本</div>
+            </div>
+            <div class="prep-card snow-fade-up snow-fade-up-3">
+                <div class="icon" style="background:var(--snow-bg);color:var(--snow-text-secondary)"><i class="fas fa-clock"></i></div>
+                <div class="title">约 30 分钟</div>
+                <div class="desc">填写资料和上传文件预计需要的时间</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 风险提示 -->
+    <div class="risk-section">
+        <div class="risk-box">
+            <div class="title"><i class="fas fa-exclamation-triangle"></i> 高风险投资警告</div>
+            <p>外汇及差价合约（CFD）交易涉及高杠杆，可能带来巨大收益，同时也可能导致您损失全部投资本金。这些产品可能不适合所有投资者。请确保您完全理解相关风险，并在自身承受能力范围内进行交易。过往业绩不代表未来表现。</p>
+        </div>
+    </div>
+
+    <!-- FAQ -->
+    <div class="faq-section" id="faq">
+        <div class="section-title"><i class="fas fa-question-circle" style="margin-right:6px;color:var(--snow-info)"></i>常见问题</div>
+        <div class="faq-item">
+            <div class="faq-q" onclick="toggleFaq(this)">开户需要多长时间？<i class="fas fa-chevron-down"></i></div>
+            <div class="faq-a">资料提交后，KYC 审核通常 1-3 个工作日完成。通过后如满足 Demo 交易条件，即可预约 WP 合规视频，视频通过后即可入金激活。整个流程最快 3-5 个工作日。</div>
+        </div>
+        <div class="faq-item">
+            <div class="faq-q" onclick="toggleFaq(this)">最低入金是多少？<i class="fas fa-chevron-down"></i></div>
+            <div class="faq-a">根据账户类型不同，最低入金从 $100（Micro 账户）到 $25,000（VIP 账户）不等。Standard Micro 账户最低入金 $100 即可开始交易。</div>
+        </div>
+        <div class="faq-item">
+            <div class="faq-q" onclick="toggleFaq(this)">什么是 WP 合规视频核验？<i class="fas fa-chevron-down"></i></div>
+            <div class="faq-a">WP（Wakil Pialang Berjangka）是印尼监管指定的合规核验人员。视频核验是 Bappebti 监管要求的一部分，旨在确认开户者身份真实性、风险认知程度和交易经验。视频时长约 10-15 分钟。</div>
+        </div>
+        <div class="faq-item">
+            <div class="faq-q" onclick="toggleFaq(this)">为什么需要完成 Demo 交易？<i class="fas fa-chevron-down"></i></div>
+            <div class="faq-a">根据监管要求和适当性原则，开户者需具备基本交易经验认知。Demo 交易帮助您熟悉平台操作，理解杠杆、保证金等核心概念，为真实交易做好准备。</div>
+        </div>
+        <div class="faq-item">
+            <div class="faq-q" onclick="toggleFaq(this)">我的资金安全吗？<i class="fas fa-chevron-down"></i></div>
+            <div class="faq-a">是的。所有客户资金存放于符合 Bappebti 要求的隔离账户（Rekening Terpisah）中，与经纪商自有资金完全分离。您的资金不会用于经纪商的日常运营。</div>
+        </div>
+    </div>
+
+    <!-- 页脚 -->
+    <div class="landing-footer">
+        <span>© 2026 Broker SaaS — 受 Bappebti 监管</span>
+        <div style="margin-top:8px;display:flex;justify-content:center;gap:16px">
+            <a href="#" style="color:var(--snow-text-muted)">隐私政策</a>
+            <a href="#" style="color:var(--snow-text-muted)">服务条款</a>
+            <a href="#" style="color:var(--snow-text-muted)">风险披露</a>
+            <a href="#" style="color:var(--snow-text-muted)">联系我们</a>
+        </div>
+    </div>
+
+</div>
+
+<script>
+function toggleFaq(el) {
+    el.classList.toggle('open');
+    el.nextElementSibling.classList.toggle('open');
+}
+</script>
+</body>
+</html>

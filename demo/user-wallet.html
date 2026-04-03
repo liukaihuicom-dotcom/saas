@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>入金 / 出金 - Broker SaaS</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="snowui-styles.css">
+</head>
+<body>
+<div class="snow-layout">
+
+    <!-- 侧边栏 -->
+    <aside class="snow-sidebar">
+        <div class="snow-logo">
+            <div class="snow-logo-icon"><i class="fas fa-snowflake"></i></div>
+            <span class="snow-logo-text">Broker SaaS</span>
+        </div>
+        <div class="snow-user-info">
+            <div class="snow-user-avatar" style="background:#eff6ff;color:#2563eb">L</div>
+            <div>
+                <div class="snow-user-name">Liu Kaihui</div>
+                <div style="font-size:11px;color:var(--snow-text-muted)">标准账户</div>
+            </div>
+        </div>
+        <div class="snow-nav-group"><span class="snow-nav-group-label">Favorites</span></div>
+        <a href="user-dashboard.html" class="snow-nav-link"><i class="fas fa-home"></i>账户总览</a>
+        <a href="user-accounts.html" class="snow-nav-link"><i class="fas fa-layer-group"></i>交易账户</a>
+        <div class="snow-nav-group" style="margin-top:8px"><span class="snow-nav-group-label">Pages</span></div>
+        <a href="user-wallet.html" class="snow-nav-link active"><i class="fas fa-wallet"></i>入金 / 出金</a>
+        <a href="user-kyc.html" class="snow-nav-link"><i class="fas fa-shield-alt"></i>KYC认证</a>
+        <a href="#" class="snow-nav-link"><i class="fas fa-chart-line"></i>交易历史</a>
+        <a href="#" class="snow-nav-link"><i class="fas fa-bell"></i>通知中心</a>
+        <a href="#" class="snow-nav-link"><i class="fas fa-cog"></i>账户设置</a>
+        <div class="snow-sidebar-footer">
+            <a href="index.html" style="font-size:12px;color:var(--snow-text-muted);display:flex;align-items:center;gap:6px">
+                <i class="fas fa-arrow-left" style="font-size:10px"></i>返回导航
+            </a>
+        </div>
+    </aside>
+
+    <!-- 主内容 -->
+    <div class="snow-main">
+        <header class="snow-topbar">
+            <div class="snow-sidebar-toggle"><span></span><span></span><span></span></div>
+            <nav class="snow-breadcrumb">
+                <span class="snow-breadcrumb-item">Dashboards</span>
+                <span class="snow-breadcrumb-sep">/</span>
+                <span class="snow-breadcrumb-current">钱包中心</span>
+            </nav>
+            <div class="snow-search">
+                <i class="fas fa-search"></i>
+                <input type="text" placeholder="Search">
+            </div>
+            <button class="snow-topbar-btn"><i class="fas fa-sun"></i></button>
+            <button class="snow-topbar-btn"><i class="fas fa-clock-rotate-left"></i></button>
+            <button class="snow-topbar-btn snow-badge-dot"><i class="fas fa-bell"></i></button>
+        </header>
+
+        <main class="snow-content">
+
+            <!-- 余额卡片 -->
+            <div class="snow-grid snow-grid-3" style="margin-bottom:20px">
+                <div class="snow-metric-card blue">
+                    <div class="snow-metric-icon"><i class="fas fa-wallet"></i></div>
+                    <div class="snow-metric-label">可用余额</div>
+                    <div class="snow-metric-value">$8,240.00</div>
+                    <div class="snow-metric-change up"><i class="fas fa-arrow-trend-up"></i> 本月入金 +$3,000</div>
+                </div>
+                <div class="snow-metric-card dark">
+                    <div class="snow-metric-icon"><i class="fas fa-arrow-down"></i></div>
+                    <div class="snow-metric-label">本月入金</div>
+                    <div class="snow-metric-value">$3,000</div>
+                    <div class="snow-metric-change up"><i class="fas fa-check-circle"></i> 已到账</div>
+                </div>
+                <div class="snow-metric-card blue">
+                    <div class="snow-metric-icon"><i class="fas fa-arrow-up"></i></div>
+                    <div class="snow-metric-label">本月出金</div>
+                    <div class="snow-metric-value">$1,200</div>
+                    <div class="snow-metric-change up"><i class="fas fa-check-circle"></i> 已到账</div>
+                </div>
+            </div>
+
+            <!-- 操作区 + 历史 -->
+            <div style="display:grid;grid-template-columns:380px 1fr;gap:20px">
+
+                <!-- 操作面板 -->
+                <div class="snow-card">
+                    <!-- 操作类型选择 -->
+                    <div style="padding:20px 24px 0">
+                        <div class="tab-switch-bar" style="display:flex;background:var(--snow-bg);border-radius:var(--snow-radius-sm);padding:3px;gap:0;margin-bottom:20px">
+                            <div class="op-tab active" onclick="switchOp('deposit',this)" style="flex:1;text-align:center;padding:7px;border-radius:6px;font-size:13px;font-weight:600;cursor:pointer;background:white;color:var(--snow-text);box-shadow:var(--snow-shadow-sm);transition:all 0.15s">
+                                入金
+                            </div>
+                            <div class="op-tab" onclick="switchOp('withdraw',this)" style="flex:1;text-align:center;padding:7px;border-radius:6px;font-size:13px;font-weight:500;cursor:pointer;color:var(--snow-text-muted);transition:all 0.15s">
+                                出金
+                            </div>
+                            <div class="op-tab" onclick="switchOp('transfer',this)" style="flex:1;text-align:center;padding:7px;border-radius:6px;font-size:13px;font-weight:500;cursor:pointer;color:var(--snow-text-muted);transition:all 0.15s">
+                                划转
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 入金面板 -->
+                    <div id="depositPanel" class="snow-card-body" style="padding-top:0">
+                        <!-- 目标账户 -->
+                        <div class="snow-input-group" style="margin-bottom:16px">
+                            <label class="snow-label">目标账户</label>
+                            <select class="snow-input" style="cursor:pointer">
+                                <option>MT5-1024856（标准账户）</option>
+                                <option>MT5-1024907（VIP账户）</option>
+                            </select>
+                        </div>
+
+                        <!-- 支付方式 -->
+                        <div style="margin-bottom:16px">
+                            <label class="snow-label" style="display:block;margin-bottom:8px">支付方式</label>
+                            <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+                                <div class="pay-method active" onclick="selectPay(this)" style="padding:10px;border:2px solid var(--snow-primary);border-radius:var(--snow-radius-sm);cursor:pointer;background:var(--snow-primary-soft);display:flex;align-items:center;gap:8px;transition:all 0.15s">
+                                    <i class="fas fa-university" style="color:var(--snow-primary);font-size:14px;width:16px;text-align:center"></i>
+                                    <span style="font-size:12.5px;font-weight:600;color:var(--snow-primary)">银行转账</span>
+                                </div>
+                                <div class="pay-method" onclick="selectPay(this)" style="padding:10px;border:1px solid var(--snow-border);border-radius:var(--snow-radius-sm);cursor:pointer;display:flex;align-items:center;gap:8px;transition:all 0.15s">
+                                    <i class="fab fa-weixin" style="color:#07c160;font-size:14px;width:16px;text-align:center"></i>
+                                    <span style="font-size:12.5px;font-weight:600;color:var(--snow-text-secondary)">微信支付</span>
+                                </div>
+                                <div class="pay-method" onclick="selectPay(this)" style="padding:10px;border:1px solid var(--snow-border);border-radius:var(--snow-radius-sm);cursor:pointer;display:flex;align-items:center;gap:8px;transition:all 0.15s">
+                                    <i class="fab fa-alipay" style="color:#1677ff;font-size:14px;width:16px;text-align:center"></i>
+                                    <span style="font-size:12.5px;font-weight:600;color:var(--snow-text-secondary)">支付宝</span>
+                                </div>
+                                <div class="pay-method" onclick="selectPay(this)" style="padding:10px;border:1px solid var(--snow-border);border-radius:var(--snow-radius-sm);cursor:pointer;display:flex;align-items:center;gap:8px;transition:all 0.15s">
+                                    <i class="fab fa-bitcoin" style="color:#f7931a;font-size:14px;width:16px;text-align:center"></i>
+                                    <span style="font-size:12.5px;font-weight:600;color:var(--snow-text-secondary)">USDT</span>
+                                </div>
+                                <div class="pay-method" onclick="selectPay(this)" style="padding:10px;border:1px solid var(--snow-border);border-radius:var(--snow-radius-sm);cursor:pointer;display:flex;align-items:center;gap:8px;transition:all 0.15s">
+                                    <i class="fas fa-credit-card" style="color:#6366f1;font-size:14px;width:16px;text-align:center"></i>
+                                    <span style="font-size:12.5px;font-weight:600;color:var(--snow-text-secondary)">信用卡</span>
+                                </div>
+                                <div class="pay-method" onclick="selectPay(this)" style="padding:10px;border:1px solid var(--snow-border);border-radius:var(--snow-radius-sm);cursor:pointer;display:flex;align-items:center;gap:8px;transition:all 0.15s">
+                                    <i class="fas fa-globe" style="color:#0ea5e9;font-size:14px;width:16px;text-align:center"></i>
+                                    <span style="font-size:12.5px;font-weight:600;color:var(--snow-text-secondary)">跨境汇款</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 金额 -->
+                        <div class="snow-input-group" style="margin-bottom:12px">
+                            <label class="snow-label">入金金额（USD）</label>
+                            <div style="position:relative">
+                                <span style="position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--snow-text-muted);font-size:13px;font-weight:600">$</span>
+                                <input class="snow-input" type="number" placeholder="0.00" id="depositAmt" oninput="calcFee()" style="padding-left:24px">
+                            </div>
+                        </div>
+
+                        <!-- 快速金额 -->
+                        <div style="display:flex;gap:6px;margin-bottom:16px;flex-wrap:wrap">
+                            <button onclick="setAmt(500)" style="flex:1;min-width:60px;padding:5px 8px;border:1px solid var(--snow-border);border-radius:var(--snow-radius-sm);font-size:12px;font-weight:500;cursor:pointer;background:white;color:var(--snow-text-secondary);transition:all 0.15s" onmouseover="this.style.borderColor='var(--snow-primary)';this.style.color='var(--snow-primary)'" onmouseout="this.style.borderColor='var(--snow-border)';this.style.color='var(--snow-text-secondary)'">$500</button>
+                            <button onclick="setAmt(1000)" style="flex:1;min-width:60px;padding:5px 8px;border:1px solid var(--snow-border);border-radius:var(--snow-radius-sm);font-size:12px;font-weight:500;cursor:pointer;background:white;color:var(--snow-text-secondary);transition:all 0.15s" onmouseover="this.style.borderColor='var(--snow-primary)';this.style.color='var(--snow-primary)'" onmouseout="this.style.borderColor='var(--snow-border)';this.style.color='var(--snow-text-secondary)'">$1,000</button>
+                            <button onclick="setAmt(5000)" style="flex:1;min-width:60px;padding:5px 8px;border:1px solid var(--snow-border);border-radius:var(--snow-radius-sm);font-size:12px;font-weight:500;cursor:pointer;background:white;color:var(--snow-text-secondary);transition:all 0.15s" onmouseover="this.style.borderColor='var(--snow-primary)';this.style.color='var(--snow-primary)'" onmouseout="this.style.borderColor='var(--snow-border)';this.style.color='var(--snow-text-secondary)'">$5,000</button>
+                            <button onclick="setAmt(10000)" style="flex:1;min-width:60px;padding:5px 8px;border:1px solid var(--snow-border);border-radius:var(--snow-radius-sm);font-size:12px;font-weight:500;cursor:pointer;background:white;color:var(--snow-text-secondary);transition:all 0.15s" onmouseover="this.style.borderColor='var(--snow-primary)';this.style.color='var(--snow-primary)'" onmouseout="this.style.borderColor='var(--snow-border)';this.style.color='var(--snow-text-secondary)'">$10,000</button>
+                        </div>
+
+                        <!-- 费用明细 -->
+                        <div style="background:var(--snow-bg);border-radius:var(--snow-radius-sm);padding:12px 14px;margin-bottom:16px">
+                            <div style="display:flex;justify-content:space-between;margin-bottom:6px">
+                                <span style="font-size:12.5px;color:var(--snow-text-muted)">入金金额</span>
+                                <span id="feeBase" style="font-size:12.5px;font-weight:600;color:var(--snow-text)">$0.00</span>
+                            </div>
+                            <div style="display:flex;justify-content:space-between;margin-bottom:6px">
+                                <span style="font-size:12.5px;color:var(--snow-text-muted)">手续费</span>
+                                <span id="feeCost" style="font-size:12.5px;font-weight:600;color:var(--snow-success)">免费</span>
+                            </div>
+                            <hr style="border:none;border-top:1px solid var(--snow-border);margin:8px 0">
+                            <div style="display:flex;justify-content:space-between">
+                                <span style="font-size:13px;font-weight:700;color:var(--snow-text)">到账金额</span>
+                                <span id="feeTotal" style="font-size:13px;font-weight:700;color:var(--snow-primary)">$0.00</span>
+                            </div>
+                        </div>
+
+                        <button class="snow-btn snow-btn-primary" style="width:100%;padding:11px" onclick="submitDeposit()">
+                            <i class="fas fa-arrow-right"></i> 立即入金
+                        </button>
+                    </div>
+
+                    <!-- 出金面板 -->
+                    <div id="withdrawPanel" style="display:none" class="snow-card-body" style="padding-top:0">
+                        <div class="snow-alert warning" style="margin-bottom:16px">
+                            <i class="fas fa-exclamation-triangle"></i>
+                            <span style="font-size:13px">出金请求在1-3个工作日内处理，节假日顺延。</span>
+                        </div>
+                        <div class="snow-input-group" style="margin-bottom:16px">
+                            <label class="snow-label">出金账户</label>
+                            <select class="snow-input" style="cursor:pointer">
+                                <option>MT5-1024856（标准账户）可用 $15,240</option>
+                                <option>MT5-1024907（VIP账户）可用 $9,340</option>
+                            </select>
+                        </div>
+                        <div class="snow-input-group" style="margin-bottom:16px">
+                            <label class="snow-label">收款银行</label>
+                            <input class="snow-input" type="text" placeholder="银行名称（如：中国工商银行）">
+                        </div>
+                        <div class="snow-input-group" style="margin-bottom:16px">
+                            <label class="snow-label">银行账号</label>
+                            <input class="snow-input" type="text" placeholder="收款银行账号">
+                        </div>
+                        <div class="snow-input-group" style="margin-bottom:16px">
+                            <label class="snow-label">出金金额（USD）</label>
+                            <div style="position:relative">
+                                <span style="position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--snow-text-muted);font-size:13px;font-weight:600">$</span>
+                                <input class="snow-input" type="number" placeholder="最低 $100" style="padding-left:24px">
+                            </div>
+                        </div>
+                        <button class="snow-btn snow-btn-primary" style="width:100%;padding:11px">
+                            <i class="fas fa-paper-plane"></i> 提交出金申请
+                        </button>
+                    </div>
+
+                    <!-- 划转面板 -->
+                    <div id="transferPanel" style="display:none" class="snow-card-body" style="padding-top:0">
+                        <div class="snow-input-group" style="margin-bottom:16px">
+                            <label class="snow-label">从账户</label>
+                            <select class="snow-input" style="cursor:pointer">
+                                <option>MT5-1024856（标准账户）$15,240</option>
+                                <option>MT5-1024907（VIP账户）$9,340</option>
+                            </select>
+                        </div>
+                        <div style="text-align:center;padding:8px 0;margin-bottom:8px">
+                            <i class="fas fa-exchange-alt" style="color:var(--snow-text-muted);font-size:18px"></i>
+                        </div>
+                        <div class="snow-input-group" style="margin-bottom:16px">
+                            <label class="snow-label">到账户</label>
+                            <select class="snow-input" style="cursor:pointer">
+                                <option>MT5-1024907（VIP账户）$9,340</option>
+                                <option>MT5-1024856（标准账户）$15,240</option>
+                            </select>
+                        </div>
+                        <div class="snow-input-group" style="margin-bottom:20px">
+                            <label class="snow-label">划转金额（USD）</label>
+                            <div style="position:relative">
+                                <span style="position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--snow-text-muted);font-size:13px;font-weight:600">$</span>
+                                <input class="snow-input" type="number" placeholder="0.00" style="padding-left:24px">
+                            </div>
+                        </div>
+                        <button class="snow-btn snow-btn-primary" style="width:100%;padding:11px">
+                            <i class="fas fa-exchange-alt"></i> 确认划转
+                        </button>
+                    </div>
+                </div>
+
+                <!-- 资金记录 -->
+                <div class="snow-card">
+                    <div class="snow-card-header">
+                        <span class="snow-card-title" style="color:var(--snow-info)">资金记录</span>
+                        <div style="display:flex;gap:8px">
+                            <div class="snow-select-btn">全部类型 <i class="fas fa-chevron-down" style="font-size:10px"></i></div>
+                            <div class="snow-toolbar-search">
+                                <i class="fas fa-search"></i>
+                                <input type="text" placeholder="搜索记录">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="snow-table-wrap">
+                        <table class="snow-table">
+                            <thead>
+                                <tr>
+                                    <th>记录编号</th>
+                                    <th>类型</th>
+                                    <th>金额</th>
+                                    <th>账户</th>
+                                    <th>日期</th>
+                                    <th>状态</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td style="color:var(--snow-text-secondary);font-weight:600">#TXN001</td>
+                                    <td><span class="snow-badge info">入金</span></td>
+                                    <td style="font-weight:600;color:var(--snow-success)">+$1,000.00</td>
+                                    <td>MT5-1024856</td>
+                                    <td style="color:var(--snow-text-muted)"><i class="fas fa-calendar" style="font-size:11px;margin-right:4px"></i>Just now</td>
+                                    <td><span class="snow-status success">Complete</span></td>
+                                </tr>
+                                <tr>
+                                    <td style="color:var(--snow-text-secondary);font-weight:600">#TXN002</td>
+                                    <td><span class="snow-badge danger">出金</span></td>
+                                    <td style="font-weight:600;color:var(--snow-danger)">-$500.00</td>
+                                    <td>MT5-1024907</td>
+                                    <td style="color:var(--snow-text-muted)"><i class="fas fa-calendar" style="font-size:11px;margin-right:4px"></i>1小时前</td>
+                                    <td><span class="snow-status success">Complete</span></td>
+                                </tr>
+                                <tr>
+                                    <td style="color:var(--snow-text-secondary);font-weight:600">#TXN003</td>
+                                    <td><span class="snow-badge purple">划转</span></td>
+                                    <td style="font-weight:600">$200.00</td>
+                                    <td>MT5-1024856</td>
+                                    <td style="color:var(--snow-text-muted)"><i class="fas fa-calendar" style="font-size:11px;margin-right:4px"></i>昨天</td>
+                                    <td><span class="snow-status success">Complete</span></td>
+                                </tr>
+                                <tr>
+                                    <td style="color:var(--snow-text-secondary);font-weight:600">#TXN004</td>
+                                    <td><span class="snow-badge info">入金</span></td>
+                                    <td style="font-weight:600;color:var(--snow-success)">+$2,000.00</td>
+                                    <td>MT5-1024907</td>
+                                    <td style="color:var(--snow-text-muted)"><i class="fas fa-calendar" style="font-size:11px;margin-right:4px"></i>Jan 15, 2025</td>
+                                    <td><span class="snow-status success">Complete</span></td>
+                                </tr>
+                                <tr>
+                                    <td style="color:var(--snow-text-secondary);font-weight:600">#TXN005</td>
+                                    <td><span class="snow-badge danger">出金</span></td>
+                                    <td style="font-weight:600;color:var(--snow-danger)">-$700.00</td>
+                                    <td>MT5-1024856</td>
+                                    <td style="color:var(--snow-text-muted)"><i class="fas fa-calendar" style="font-size:11px;margin-right:4px"></i>Jan 10, 2025</td>
+                                    <td><span class="snow-status info">In Progress</span></td>
+                                </tr>
+                                <tr>
+                                    <td style="color:var(--snow-text-secondary);font-weight:600">#TXN006</td>
+                                    <td><span class="snow-badge info">入金</span></td>
+                                    <td style="font-weight:600;color:var(--snow-success)">+$3,000.00</td>
+                                    <td>MT5-1024856</td>
+                                    <td style="color:var(--snow-text-muted)"><i class="fas fa-calendar" style="font-size:11px;margin-right:4px"></i>Jan 5, 2025</td>
+                                    <td><span class="snow-status muted">Pending</span></td>
+                                </tr>
+                                <tr>
+                                    <td style="color:var(--snow-text-secondary);font-weight:600">#TXN007</td>
+                                    <td><span class="snow-badge danger">出金</span></td>
+                                    <td style="font-weight:600;color:var(--snow-danger)">-$1,200.00</td>
+                                    <td>MT5-1024907</td>
+                                    <td style="color:var(--snow-text-muted)"><i class="fas fa-calendar" style="font-size:11px;margin-right:4px"></i>Dec 28, 2024</td>
+                                    <td><span class="snow-status danger">Rejected</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="snow-pagination">
+                        <button class="snow-page-btn"><i class="fas fa-chevron-left" style="font-size:10px"></i></button>
+                        <button class="snow-page-btn active">1</button>
+                        <button class="snow-page-btn">2</button>
+                        <button class="snow-page-btn">3</button>
+                        <button class="snow-page-btn"><i class="fas fa-chevron-right" style="font-size:10px"></i></button>
+                    </div>
+                </div>
+            </div>
+
+        </main>
+
+        <footer class="snow-footer">
+            <span>© 2024 Broker SaaS</span>
+            <div class="snow-footer-links">
+                <a href="#">About</a><a href="#">Support</a><a href="#">Contact Us</a>
+            </div>
+        </footer>
+    </div>
+</div>
+
+<script>
+function switchOp(type, el) {
+    document.querySelectorAll('.op-tab').forEach(t => {
+        t.style.background = 'none';
+        t.style.color = 'var(--snow-text-muted)';
+        t.style.fontWeight = '500';
+        t.style.boxShadow = 'none';
+    });
+    el.style.background = 'white';
+    el.style.color = 'var(--snow-text)';
+    el.style.fontWeight = '600';
+    el.style.boxShadow = 'var(--snow-shadow-sm)';
+
+    document.getElementById('depositPanel').style.display = 'none';
+    document.getElementById('withdrawPanel').style.display = 'none';
+    document.getElementById('transferPanel').style.display = 'none';
+
+    if (type === 'deposit') document.getElementById('depositPanel').style.display = 'block';
+    else if (type === 'withdraw') document.getElementById('withdrawPanel').style.display = 'block';
+    else document.getElementById('transferPanel').style.display = 'block';
+}
+
+function selectPay(el) {
+    document.querySelectorAll('.pay-method').forEach(p => {
+        p.style.borderWidth = '1px';
+        p.style.borderColor = 'var(--snow-border)';
+        p.style.borderStyle = 'solid';
+        p.style.background = 'white';
+        p.querySelector('span').style.color = 'var(--snow-text-secondary)';
+    });
+    el.style.borderWidth = '2px';
+    el.style.borderColor = 'var(--snow-primary)';
+    el.style.background = 'var(--snow-primary-soft)';
+    el.querySelector('span').style.color = 'var(--snow-primary)';
+}
+
+function setAmt(v) {
+    document.getElementById('depositAmt').value = v;
+    calcFee();
+}
+
+function calcFee() {
+    const amt = parseFloat(document.getElementById('depositAmt').value) || 0;
+    document.getElementById('feeBase').textContent = '$' + amt.toFixed(2);
+    document.getElementById('feeCost').textContent = '免费';
+    document.getElementById('feeTotal').textContent = '$' + amt.toFixed(2);
+}
+
+function submitDeposit() {
+    const amt = document.getElementById('depositAmt').value;
+    if (!amt || parseFloat(amt) <= 0) {
+        alert('请输入入金金额');
+        return;
+    }
+    alert('入金申请已提交！金额：$' + parseFloat(amt).toFixed(2));
+}
+</script>
+</body>
+</html>

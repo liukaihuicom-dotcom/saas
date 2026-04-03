@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>选择账户类型 - Broker SaaS</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="snowui-styles.css">
+    <style>
+        body { background: var(--snow-bg); min-height: 100vh; padding: 20px; display: flex; align-items: center; justify-content: center; }
+        .form-container { background: white; border: 1px solid var(--snow-border); border-radius: var(--snow-radius-xl); box-shadow: var(--snow-shadow-md); width: 100%; max-width: 720px; }
+        .form-header { padding: 28px 32px 0; }
+        .form-logo { display: flex; align-items: center; gap: 10px; margin-bottom: 24px; }
+        .logo-icon { width: 32px; height: 32px; background: linear-gradient(135deg, #4361ee, #7c3aed); border-radius: 8px; display: flex; align-items: center; justify-content: center; color: white; font-size: 14px; }
+        .form-title { font-size: 20px; font-weight: 700; color: var(--snow-text); letter-spacing: -0.3px; }
+        .form-subtitle { font-size: 13.5px; color: var(--snow-text-muted); margin-top: 4px; }
+        .form-body { padding: 20px 32px 32px; }
+        /* 账户类型卡片 */
+        .type-switch { display: flex; background: var(--snow-bg); border-radius: var(--snow-radius-sm); padding: 3px; margin-bottom: 20px; }
+        .type-switch-btn { flex: 1; padding: 8px; text-align: center; font-size: 13px; font-weight: 500; color: var(--snow-text-muted); border-radius: 6px; cursor: pointer; transition: all 0.15s; }
+        .type-switch-btn.active { background: white; color: var(--snow-text); font-weight: 600; box-shadow: var(--snow-shadow-sm); }
+        .account-cards { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-bottom: 20px; }
+        .account-card { border: 2px solid var(--snow-border); border-radius: var(--snow-radius); padding: 18px; cursor: pointer; transition: all 0.2s; position: relative; }
+        .account-card:hover { border-color: #cbd5e1; }
+        .account-card.selected { border-color: var(--snow-primary); background: var(--snow-primary-soft); }
+        .account-card.selected::after { content: '\f058'; font-family: 'Font Awesome 6 Free'; font-weight: 900; position: absolute; top: 12px; right: 12px; color: var(--snow-primary); font-size: 16px; }
+        .account-card.locked { opacity: 0.5; cursor: not-allowed; }
+        .account-card .card-icon { width: 40px; height: 40px; border-radius: var(--snow-radius-sm); display: flex; align-items: center; justify-content: center; font-size: 16px; margin-bottom: 12px; }
+        .account-card .card-name { font-size: 14px; font-weight: 700; color: var(--snow-text); margin-bottom: 4px; }
+        .account-card .card-desc { font-size: 12px; color: var(--snow-text-muted); line-height: 1.5; }
+        .account-card .card-specs { display: flex; gap: 12px; margin-top: 12px; flex-wrap: wrap; }
+        .account-card .spec { font-size: 11px; color: var(--snow-text-secondary); background: var(--snow-bg); padding: 3px 8px; border-radius: 12px; }
+        .form-btn { width: 100%; padding: 11px; background: var(--snow-primary); color: white; border: none; border-radius: var(--snow-radius-sm); font-size: 14px; font-weight: 600; cursor: pointer; transition: all 0.15s; font-family: inherit; }
+        .form-btn:hover { background: #3451d1; box-shadow: 0 4px 12px rgba(67,97,238,0.3); }
+        .form-btn:disabled { opacity: 0.5; cursor: not-allowed; box-shadow: none; }
+        .back-link { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; color: var(--snow-text-muted); cursor: pointer; margin-bottom: 16px; transition: color 0.15s; }
+        .back-link:hover { color: var(--snow-text); }
+        .risk-box { background: #fffbeb; border: 1px solid #fde68a; border-radius: var(--snow-radius-sm); padding: 12px 16px; margin-bottom: 16px; font-size: 13px; color: #92400e; }
+    </style>
+</head>
+<body>
+<div class="form-container snow-fade-up">
+    <div class="form-header">
+        <div class="form-logo">
+            <div class="logo-icon"><i class="fas fa-snowflake"></i></div>
+            <span style="font-size:15px;font-weight:700">Broker SaaS</span>
+        </div>
+        <a href="onboarding-hub.html" class="back-link"><i class="fas fa-arrow-left"></i> 返回开户中心</a>
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:16px">
+            <span style="font-size:12px;color:var(--snow-text-muted)">开户进度</span>
+            <div class="snow-progress" style="flex:1"><div class="snow-progress-bar" style="width:25%"></div></div>
+            <span style="font-size:12px;font-weight:600;color:var(--snow-primary)">1/4</span>
+        </div>
+        <div class="form-title">选择账户类型</div>
+        <div class="form-subtitle">根据您的交易需求选择适合的账户类型</div>
+    </div>
+    <div class="form-body">
+        <!-- Demo / Live 切换 -->
+        <div class="type-switch">
+            <div class="type-switch-btn" onclick="switchType('demo',this)"><i class="fas fa-flask" style="margin-right:4px"></i>Demo 模拟账户</div>
+            <div class="type-switch-btn active" onclick="switchType('live',this)"><i class="fas fa-star" style="margin-right:4px"></i>Live 真实账户</div>
+        </div>
+
+        <!-- Live 账户类型 -->
+        <div id="liveCards">
+            <div class="account-cards">
+                <div class="account-card" onclick="selectCard(this,'micro')">
+                    <div class="card-icon" style="background:#eff6ff;color:var(--snow-primary)"><i class="fas fa-seedling"></i></div>
+                    <div class="card-name">Micro</div>
+                    <div class="card-desc">适合新手入门，低门槛体验真实交易</div>
+                    <div class="card-specs">
+                        <span class="spec">最低 $100</span>
+                        <span class="spec">1:500</span>
+                        <span class="spec">0.01 Lot</span>
+                    </div>
+                </div>
+                <div class="account-card" onclick="selectCard(this,'standard')">
+                    <div class="card-icon" style="background:#f0fdf4;color:var(--snow-success)"><i class="fas fa-chart-bar"></i></div>
+                    <div class="card-name">Standard</div>
+                    <div class="card-desc">标准账户，均衡点差与佣金</div>
+                    <div class="card-specs">
+                        <span class="spec">最低 $500</span>
+                        <span class="spec">1:500</span>
+                        <span class="spec">0.01 Lot</span>
+                    </div>
+                </div>
+                <div class="account-card" onclick="selectCard(this,'premium')">
+                    <div class="card-icon" style="background:#f5f3ff;color:var(--snow-purple)"><i class="fas fa-crown"></i></div>
+                    <div class="card-name">Premium</div>
+                    <div class="card-desc">低点差、专属服务、优先执行</div>
+                    <div class="card-specs">
+                        <span class="spec">最低 $5,000</span>
+                        <span class="spec">1:500</span>
+                        <span class="spec">0.01 Lot</span>
+                    </div>
+                </div>
+                <div class="account-card locked">
+                    <div class="card-icon" style="background:var(--snow-bg);color:var(--snow-text-muted)"><i class="fas fa-gem"></i></div>
+                    <div class="card-name">VIP <span style="font-size:11px;background:var(--snow-bg);padding:2px 6px;border-radius:8px;margin-left:4px">需邀请</span></div>
+                    <div class="card-desc">VIP 专属，超低点差与个人顾问</div>
+                    <div class="card-specs">
+                        <span class="spec">最低 $25,000</span>
+                        <span class="spec">1:200</span>
+                        <span class="spec">0.1 Lot</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Demo 账户类型 -->
+        <div id="demoCards" style="display:none">
+            <div class="account-cards">
+                <div class="account-card" onclick="selectCard(this,'demo-standard')">
+                    <div class="card-icon" style="background:#eff6ff;color:var(--snow-primary)"><i class="fas fa-flask"></i></div>
+                    <div class="card-name">Demo Standard</div>
+                    <div class="card-desc">标准模拟账户，体验真实市场行情</div>
+                    <div class="card-specs">
+                        <span class="spec">虚拟 $10,000</span>
+                        <span class="spec">1:500</span>
+                        <span class="spec">30 天有效</span>
+                    </div>
+                </div>
+                <div class="account-card" onclick="selectCard(this,'demo-pro')">
+                    <div class="card-icon" style="background:#f5f3ff;color:var(--snow-purple)"><i class="fas fa-flask-vial"></i></div>
+                    <div class="card-name">Demo Pro</div>
+                    <div class="card-desc">专业模拟账户，更多品种与工具</div>
+                    <div class="card-specs">
+                        <span class="spec">虚拟 $100,000</span>
+                        <span class="spec">1:500</span>
+                        <span class="spec">90 天有效</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="risk-box">
+            <i class="fas fa-exclamation-triangle" style="margin-right:6px"></i>
+            <strong>风险提示：</strong>外汇及差价合约（CFD）交易涉及高杠杆，可能导致亏损超过本金。请确保您了解相关风险。
+        </div>
+
+        <div style="display:flex;gap:10px">
+            <button class="form-btn" style="background:var(--snow-white);color:var(--snow-text-secondary);border:1px solid var(--snow-border);flex:none;padding:11px 20px" onclick="window.location.href='onboarding-hub.html'">稍后</button>
+            <button class="form-btn" id="confirmBtn" onclick="confirmAccount()" disabled>确认账户类型</button>
+        </div>
+    </div>
+</div>
+
+<script>
+let selectedType = null;
+function switchType(type, el) {
+    document.querySelectorAll('.type-switch-btn').forEach(b => b.classList.remove('active'));
+    el.classList.add('active');
+    document.getElementById('liveCards').style.display = type === 'live' ? 'block' : 'none';
+    document.getElementById('demoCards').style.display = type === 'demo' ? 'block' : 'none';
+    selectedType = null;
+    document.querySelectorAll('.account-card').forEach(c => c.classList.remove('selected'));
+    document.getElementById('confirmBtn').disabled = true;
+}
+function selectCard(card, type) {
+    if (card.classList.contains('locked')) return;
+    document.querySelectorAll('.account-card').forEach(c => c.classList.remove('selected'));
+    card.classList.add('selected');
+    selectedType = type;
+    document.getElementById('confirmBtn').disabled = false;
+}
+function confirmAccount() {
+    window.location.href = 'risk-disclosure.html';
+}
+</script>
+</body>
+</html>

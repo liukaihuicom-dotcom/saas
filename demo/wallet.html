@@ -3,630 +3,236 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>钱包与支付 - Broker SaaS 运营平台</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <title>资金管理 - Broker SaaS</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --primary: #2563eb;
-            --secondary: #f8fafc;
-            --accent: #0ea5e9;
-            --muted: #64748b;
-            --border: #e2e8f0;
-            --radius: 0.5rem;
-            --sidebar-width: 260px;
-            --header-height: 64px;
-        }
-        
-        * {
-            font-family: 'Inter', sans-serif;
-        }
-        
-        body {
-            background-color: #f8fafc;
-            margin: 0;
-        }
-        
-        .sidebar {
-            width: var(--sidebar-width);
-            height: 100vh;
-            background: linear-gradient(180deg, #1e293b 0%, #0f172a 100%);
-            position: fixed;
-            left: 0;
-            top: 0;
-            padding: 24px 0;
-            transition: all 0.3s ease;
-        }
-        
-        .main-content {
-            margin-left: var(--sidebar-width);
-            padding: 24px;
-            min-height: 100vh;
-        }
-        
-        .header {
-            height: var(--header-height);
-            background: white;
-            border-bottom: 1px solid var(--border);
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 0 24px;
-            position: sticky;
-            top: 0;
-            z-index: 50;
-        }
-        
-        .card {
-            background: white;
-            border-radius: var(--radius);
-            border: 1px solid var(--border);
-            padding: 20px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
-        }
-        
-        .badge {
-            display: inline-flex;
-            align-items: center;
-            padding: 2px 8px;
-            border-radius: 20px;
-            font-size: 12px;
-            font-weight: 500;
-        }
-        
-        .badge-success {
-            background-color: #dcfce7;
-            color: #166534;
-        }
-        
-        .badge-warning {
-            background-color: #fef3c7;
-            color: #92400e;
-        }
-        
-        .badge-danger {
-            background-color: #fee2e2;
-            color: #991b1b;
-        }
-        
-        .badge-info {
-            background-color: #dbeafe;
-            color: #1e40af;
-        }
-        
-        .badge-pending {
-            background-color: #f3f4f6;
-            color: #374151;
-        }
-        
-        .tab-container {
-            display: flex;
-            border-bottom: 1px solid var(--border);
-            margin-bottom: 20px;
-            overflow-x: auto;
-        }
-        
-        .tab-item {
-            padding: 12px 20px;
-            cursor: pointer;
-            border-bottom: 2px solid transparent;
-            transition: all 0.2s;
-            white-space: nowrap;
-        }
-        
-        .tab-item.active {
-            border-bottom-color: var(--primary);
-            color: var(--primary);
-            font-weight: 500;
-        }
-        
-        .payment-item {
-            border: 1px solid var(--border);
-            border-radius: var(--radius);
-            padding: 16px;
-            transition: all 0.2s;
-        }
-        
-        .payment-item:hover {
-            border-color: var(--primary);
-            background-color: #f0f9ff;
-        }
-        
-        .stat-card {
-            background: white;
-            border-radius: var(--radius);
-            border: 1px solid var(--border);
-            padding: 20px;
-            transition: transform 0.2s;
-        }
-        
-        .stat-card:hover {
-            transform: translateY(-2px);
-        }
-    </style>
+    <link rel="stylesheet" href="snowui-styles.css">
 </head>
 <body>
-    <div class="sidebar">
-        <div class="px-6 py-4">
-            <h1 class="text-white text-xl font-bold">Broker SaaS</h1>
-            <p class="text-slate-400 text-sm mt-1">运营平台</p>
+<div class="snow-layout">
+    <aside class="snow-sidebar">
+        <div class="snow-logo">
+            <div class="snow-logo-icon"><i class="fas fa-snowflake"></i></div>
+            <span class="snow-logo-text">Broker SaaS</span>
         </div>
-        
-        <nav class="mt-8">
-            <a href="dashboard.html" class="block px-6 py-3 text-slate-300 hover:text-white hover:bg-blue-900/30 flex items-center gap-3">
-                <i class="fas fa-chart-line w-5"></i>
-                <span>经营总览</span>
-            </a>
-            <a href="crm.html" class="block px-6 py-3 text-slate-300 hover:text-white hover:bg-blue-900/30 flex items-center gap-3">
-                <i class="fas fa-users w-5"></i>
-                <span>客户中心</span>
-            </a>
-            <a href="kyc.html" class="block px-6 py-3 text-slate-300 hover:text-white hover:bg-blue-900/30 flex items-center gap-3">
-                <i class="fas fa-id-card w-5"></i>
-                <span>KYC审核中心</span>
-            </a>
-            <a href="wallet.html" class="block px-6 py-3 text-white bg-blue-900/30 flex items-center gap-3">
-                <i class="fas fa-wallet w-5"></i>
-                <span>钱包与支付</span>
-            </a>
-            <a href="agent.html" class="block px-6 py-3 text-slate-300 hover:text-white hover:bg-blue-900/30 flex items-center gap-3">
-                <i class="fas fa-handshake w-5"></i>
-                <span>代理中心</span>
-            </a>
-            <a href="index.html" class="block px-6 py-3 text-slate-300 hover:text-white hover:bg-blue-900/30 flex items-center gap-3 mt-8">
-                <i class="fas fa-home w-5"></i>
-                <span>返回首页</span>
-            </a>
-        </nav>
-        
-        <div class="absolute bottom-0 w-full p-6 border-t border-slate-700">
-            <div class="flex items-center gap-3">
-                <div class="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center text-white">
-                    <i class="fas fa-dollar-sign"></i>
+        <div class="snow-user-info">
+            <div class="snow-user-avatar">A</div>
+            <span class="snow-user-name">Admin</span>
+        </div>
+        <div class="snow-nav-group"><span class="snow-nav-group-label">Dashboards</span></div>
+        <a href="dashboard.html" class="snow-nav-link"><i class="fas fa-chart-pie"></i>经营总览</a>
+        <a href="index.html" class="snow-nav-link"><i class="fas fa-home"></i>首页导航</a>
+        <div class="snow-nav-group" style="margin-top:8px"><span class="snow-nav-group-label">Pages</span></div>
+        <a href="crm.html" class="snow-nav-link"><i class="fas fa-users"></i>客户管理</a>
+        <a href="kyc.html" class="snow-nav-link"><i class="fas fa-shield-alt"></i>KYC审核</a>
+        <a href="wallet.html" class="snow-nav-link active"><i class="fas fa-wallet"></i>资金管理</a>
+        <a href="agent.html" class="snow-nav-link"><i class="fas fa-handshake"></i>代理中心</a>
+        <div class="snow-nav-group" style="margin-top:8px"><span class="snow-nav-group-label">用户端</span></div>
+        <a href="user-login.html" class="snow-nav-link"><i class="fas fa-user"></i>用户前台</a>
+        <div class="snow-sidebar-footer"><span style="font-size:12px;color:var(--snow-text-muted)">© 2024 Broker SaaS</span></div>
+    </aside>
+
+    <div class="snow-main">
+        <header class="snow-topbar">
+            <div class="snow-sidebar-toggle"><span></span><span></span><span></span></div>
+            <nav class="snow-breadcrumb">
+                <span class="snow-breadcrumb-item">Dashboards</span>
+                <span class="snow-breadcrumb-sep">/</span>
+                <span class="snow-breadcrumb-current">资金管理</span>
+            </nav>
+            <div class="snow-search">
+                <i class="fas fa-search"></i>
+                <input type="text" placeholder="Search">
+            </div>
+            <button class="snow-topbar-btn"><i class="fas fa-sun"></i></button>
+            <button class="snow-topbar-btn"><i class="fas fa-clock-rotate-left"></i></button>
+            <button class="snow-topbar-btn snow-badge-dot"><i class="fas fa-bell"></i></button>
+        </header>
+
+        <main class="snow-content">
+
+            <div class="snow-grid snow-grid-4" style="margin-bottom:20px">
+                <div class="snow-metric-card blue">
+                    <div class="snow-metric-icon"><i class="fas fa-arrow-down"></i></div>
+                    <div class="snow-metric-label">本月入金</div>
+                    <div class="snow-metric-value">$2.1M</div>
+                    <div class="snow-metric-change up"><i class="fas fa-arrow-trend-up"></i> +12.5%</div>
                 </div>
-                <div>
-                    <p class="text-white text-sm">财务专员</p>
-                    <p class="text-slate-400 text-xs">finance@broker.com</p>
+                <div class="snow-metric-card dark">
+                    <div class="snow-metric-icon"><i class="fas fa-arrow-up"></i></div>
+                    <div class="snow-metric-label">本月出金</div>
+                    <div class="snow-metric-value">$840K</div>
+                    <div class="snow-metric-change down"><i class="fas fa-arrow-trend-down"></i> -3.2%</div>
+                </div>
+                <div class="snow-metric-card blue">
+                    <div class="snow-metric-icon"><i class="fas fa-clock"></i></div>
+                    <div class="snow-metric-label">待审出金</div>
+                    <div class="snow-metric-value">42</div>
+                    <div class="snow-metric-change down"><i class="fas fa-exclamation-circle"></i> 需处理</div>
+                </div>
+                <div class="snow-metric-card dark">
+                    <div class="snow-metric-icon"><i class="fas fa-piggy-bank"></i></div>
+                    <div class="snow-metric-label">总托管资金</div>
+                    <div class="snow-metric-value">$18.4M</div>
+                    <div class="snow-metric-change up"><i class="fas fa-arrow-trend-up"></i> +8.1%</div>
                 </div>
             </div>
-        </div>
+
+            <!-- 出金审批 -->
+            <div class="snow-card">
+                <div class="snow-card-header">
+                    <span class="snow-card-title" style="color:var(--snow-warning)">出金审批队列</span>
+                    <div style="display:flex;gap:8px">
+                        <div class="snow-select-btn">全部方式 <i class="fas fa-chevron-down" style="font-size:10px"></i></div>
+                        <div class="snow-toolbar-search">
+                            <i class="fas fa-search"></i>
+                            <input type="text" placeholder="搜索记录...">
+                        </div>
+                    </div>
+                </div>
+
+                <div style="padding:10px 24px;border-bottom:1px solid var(--snow-border-light);display:flex;gap:4px">
+                    <button style="padding:5px 12px;border:none;background:none;font-size:13px;font-weight:600;color:var(--snow-primary);cursor:pointer;border-bottom:2px solid var(--snow-primary)">全部</button>
+                    <button style="padding:5px 12px;border:none;background:none;font-size:13px;font-weight:500;color:var(--snow-text-muted);cursor:pointer">待审核（42）</button>
+                    <button style="padding:5px 12px;border:none;background:none;font-size:13px;font-weight:500;color:var(--snow-text-muted);cursor:pointer">已通过（248）</button>
+                    <button style="padding:5px 12px;border:none;background:none;font-size:13px;font-weight:500;color:var(--snow-text-muted);cursor:pointer">已拒绝（12）</button>
+                </div>
+
+                <div class="snow-table-wrap">
+                    <table class="snow-table">
+                        <thead>
+                            <tr>
+                                <th style="width:36px"><input type="checkbox"></th>
+                                <th>申请编号</th>
+                                <th>客户</th>
+                                <th>出金金额</th>
+                                <th>出金方式</th>
+                                <th>申请时间</th>
+                                <th>状态</th>
+                                <th>操作</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><input type="checkbox"></td>
+                                <td style="font-weight:600;color:var(--snow-text-secondary)">#WD9801</td>
+                                <td>
+                                    <div style="display:flex;align-items:center;gap:8px">
+                                        <div class="snow-avatar" style="background:#fce7f3;color:#be185d">N</div>
+                                        <span>Natali Craig</span>
+                                    </div>
+                                </td>
+                                <td style="font-weight:700">$942.00</td>
+                                <td><span style="font-size:12.5px;display:flex;align-items:center;gap:4px"><i class="fas fa-university" style="font-size:11px;color:var(--snow-text-muted)"></i>银行转账</span></td>
+                                <td style="color:var(--snow-text-muted)"><i class="fas fa-calendar" style="font-size:11px;margin-right:4px"></i>Just now</td>
+                                <td><span class="snow-status info">待审核</span></td>
+                                <td>
+                                    <div style="display:flex;gap:6px">
+                                        <button class="snow-btn snow-btn-primary snow-btn-sm" onclick="approve('pass')"><i class="fas fa-check"></i> 通过</button>
+                                        <button class="snow-btn snow-btn-secondary snow-btn-sm" onclick="approve('reject')">拒绝</button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><input type="checkbox"></td>
+                                <td style="font-weight:600;color:var(--snow-text-secondary)">#WD9802</td>
+                                <td>
+                                    <div style="display:flex;align-items:center;gap:8px">
+                                        <div class="snow-avatar" style="background:#dcfce7;color:#15803d">K</div>
+                                        <span>Kate Morrison</span>
+                                    </div>
+                                </td>
+                                <td style="font-weight:700">$881.00</td>
+                                <td><span style="font-size:12.5px;display:flex;align-items:center;gap:4px"><i class="fab fa-weixin" style="font-size:11px;color:#07c160"></i>微信支付</span></td>
+                                <td style="color:var(--snow-text-muted)"><i class="fas fa-calendar" style="font-size:11px;margin-right:4px"></i>1分钟前</td>
+                                <td><span class="snow-status success">已通过</span></td>
+                                <td><button class="snow-btn snow-btn-secondary snow-btn-sm">查看</button></td>
+                            </tr>
+                            <tr>
+                                <td><input type="checkbox"></td>
+                                <td style="font-weight:600;color:var(--snow-text-secondary)">#WD9803</td>
+                                <td>
+                                    <div style="display:flex;align-items:center;gap:8px">
+                                        <div class="snow-avatar" style="background:#fef2f2;color:#b91c1c">D</div>
+                                        <span>Drew Cano</span>
+                                    </div>
+                                </td>
+                                <td style="font-weight:700">$409.00</td>
+                                <td><span style="font-size:12.5px;display:flex;align-items:center;gap:4px"><i class="fab fa-bitcoin" style="font-size:11px;color:#f7931a"></i>USDT</span></td>
+                                <td style="color:var(--snow-text-muted)"><i class="fas fa-calendar" style="font-size:11px;margin-right:4px"></i>1小时前</td>
+                                <td><span class="snow-status info">待审核</span></td>
+                                <td>
+                                    <div style="display:flex;gap:6px">
+                                        <button class="snow-btn snow-btn-primary snow-btn-sm" onclick="approve('pass')"><i class="fas fa-check"></i> 通过</button>
+                                        <button class="snow-btn snow-btn-secondary snow-btn-sm" onclick="approve('reject')">拒绝</button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><input type="checkbox"></td>
+                                <td style="font-weight:600;color:var(--snow-text-secondary)">#WD9804</td>
+                                <td>
+                                    <div style="display:flex;align-items:center;gap:8px">
+                                        <div class="snow-avatar" style="background:#f0fdf4;color:#15803d">O</div>
+                                        <span>Orlando Diggs</span>
+                                    </div>
+                                </td>
+                                <td style="font-weight:700">$953.00</td>
+                                <td><span style="font-size:12.5px;display:flex;align-items:center;gap:4px"><i class="fas fa-credit-card" style="font-size:11px;color:#6366f1"></i>信用卡</span></td>
+                                <td style="color:var(--snow-text-muted)"><i class="fas fa-calendar" style="font-size:11px;margin-right:4px"></i>昨天</td>
+                                <td><span class="snow-status warning">待审核</span></td>
+                                <td>
+                                    <div style="display:flex;gap:6px">
+                                        <button class="snow-btn snow-btn-primary snow-btn-sm" onclick="approve('pass')"><i class="fas fa-check"></i> 通过</button>
+                                        <button class="snow-btn snow-btn-secondary snow-btn-sm" onclick="approve('reject')">拒绝</button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><input type="checkbox"></td>
+                                <td style="font-weight:600;color:var(--snow-text-secondary)">#WD9805</td>
+                                <td>
+                                    <div style="display:flex;align-items:center;gap:8px">
+                                        <div class="snow-avatar" style="background:#eff6ff;color:#1d4ed8">A</div>
+                                        <span>Andi Lane</span>
+                                    </div>
+                                </td>
+                                <td style="font-weight:700">$907.00</td>
+                                <td><span style="font-size:12.5px;display:flex;align-items:center;gap:4px"><i class="fas fa-university" style="font-size:11px;color:var(--snow-text-muted)"></i>银行转账</span></td>
+                                <td style="color:var(--snow-text-muted)"><i class="fas fa-calendar" style="font-size:11px;margin-right:4px"></i>Feb 2, 2025</td>
+                                <td><span class="snow-status danger">已拒绝</span></td>
+                                <td><button class="snow-btn snow-btn-secondary snow-btn-sm">详情</button></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="snow-pagination">
+                    <button class="snow-page-btn"><i class="fas fa-chevron-left" style="font-size:10px"></i></button>
+                    <button class="snow-page-btn active">1</button>
+                    <button class="snow-page-btn">2</button>
+                    <button class="snow-page-btn">3</button>
+                    <button class="snow-page-btn">4</button>
+                    <button class="snow-page-btn">5</button>
+                    <button class="snow-page-btn"><i class="fas fa-chevron-right" style="font-size:10px"></i></button>
+                </div>
+            </div>
+
+        </main>
+
+        <footer class="snow-footer">
+            <span>© 2024 Broker SaaS</span>
+            <div class="snow-footer-links">
+                <a href="#">About</a><a href="#">Support</a><a href="#">Contact Us</a>
+            </div>
+        </footer>
     </div>
-    
-    <div class="main-content">
-        <div class="header">
-            <div>
-                <h2 class="text-xl font-semibold">钱包与支付中心</h2>
-                <p class="text-slate-600 mt-1">资金管理、出金审批、支付通道监控</p>
-            </div>
-            <div class="flex items-center gap-4">
-                <button class="bg-blue-500 text-white px-4 py - py-2 rounded-lg hover:bg-blue-600">
-                    <i class="fas fa-plus mr-2"></i>手动入金
-                </button>
-                <button class="border border-blue-500 text-blue-500 px-4 py-2 rounded-lg hover:bg-blue-50">
-                    <i class="fas fa-file-export mr-2"></i>导出账单
-                </button>
-            </div>
-        </div>
-        
-        <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-6">
-            <div class="stat-card">
-                <div class="flex justify-between">
-                    <div>
-                        <p class="text-slate-600">今日入金</p>
-                        <p class="text-2xl font-bold mt-1">$124,580</p>
-                    </div>
-                    <div class="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center">
-                        <i class="fas fa-arrow-down text-blue-500"></i>
-                    </div>
-                </div>
-                <div class="mt-3 text-sm">
-                    <span class="text-green-600">+8.5%</span> <span class="text-slate-500">vs 昨日</span>
-                </div>
-            </div>
-            
-            <div class="stat-card">
-                <div class="flex justify-between">
-                    <div>
-                        <p class="text-slate-600">今日出金</p>
-                        <p class="text-2xl font-bold mt-1">$48,320</p>
-                    </div>
-                    <div class="w-10 h-10 bg-red-100 rounded-full flex items-center justify-center">
-                        <i class="fas fa-arrow-up text-red-500"></i>
-                    </div>
-                </div>
-                <div class="mt-3 text-sm">
-                    <span class="text-green-600">+12.2%</span> <span class="text-slate-500">vs 昨日</span>
-                </div>
-            </div>
-            
-            <div class="stat-card">
-                <div class="flex justify-between">
-                    <div>
-                        <p class="text-slate-600">待处理出金</p>
-                        <p class="text-2xl font-bold mt-1">15</p>
-                    </div>
-                    <div class="w-10 h-10 bg-yellow-100 rounded-full flex items-center justify-center">
-                        <i class="fas fa-clock text-yellow-500"></i>
-                    </div>
-                </div>
-                <div class="mt-3 text-sm">
-                    <span class="text-slate-500">平均等待: 2.3小时</span>
-                </div>
-            </div>
-            
-            <div class="stat-card">
-                <div class="flex justify-between">
-                    <div>
-                        <p class="text-slate-600">异常支付</p>
-                        <p class="text-2xl font-bold mt-1">3</p>
-                    </div>
-                    <div class="w-10 h-10 bg-purple-100 rounded-full flex items-center justify-center">
-                        <i class="fas fa-exclamation-triangle text-purple-500"></i>
-                    </div>
-                </div>
-                <div class="mt-3 text-sm">
-                    <span class="text-slate-500">需要处理</span>
-                </div>
-            </div>
-        </div>
-        
-        <div class="tab-container">
-            <div class="tab-item active">出金审批</div>
-            <div class="tab-item">入金监控</div>
-            <div class="tab-item">支付通道</div>
-            <div class="tab-item">客户钱包</div>
-            <div class="tab-item">结算单</div>
-        </div>
-        
-        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            <div class="lg:col-span-2">
-                <div class="card">
-                    <div class="flex justify-between items-center mb-6">
-                        <h3 class="text-lg font-semibold">待处理出金申请</h3>
-                        <div class="flex items-center gap-2">
-                            <select class="border rounded px-2 py-1 text-sm">
-                                <option>全部</option>
-                                <option>低风险</option>
-                                <option>高风险</option>
-                            </select>
-                            <button class="border rounded px-3 py-1 text-sm hover:bg-slate-50">刷新</button>
-                        </div>
-                    </div>
-                    
-                    <div class="space-y-4">
-                        <div class="payment-item">
-                            <div class="flex justify-between items-start mb-3">
-                                <div>
-                                    <div class="flex items-center gap-3 mb-2">
-                                        <div class="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center">
-                                            <i class="fas fa-user text-blue-600"></i>
-                                        </div>
-                                        <div>
-                                            <p class="font-medium">John Smith</p>
-                                            <p class="text-slate-500 text-sm">ID: USR1001 • 美国</p>
-                                        </div>
-                                    </div>
-                                    <p class="text-slate-600">申请时间: 今天 14:30</p>
-                                    <p class="text-slate-600">支付方式: Bank Transfer</p>
-                                </div>
-                                <div class="text-right">
-                                    <p class="text-2xl font-bold text-green-600">$2,500</p>
-                                    <span class="badge badge-pending">待审批</span>
-                                </div>
-                            </div>
-                            <div class="bg-green-50 border border-green-200 rounded-lg p-3 mb-3">
-                                <div class="flex items-start gap-2">
-                                    <i class="fas fa-check-circle text-green-500 mt-1"></i>
-                                    <div>
-                                        <p class="font-medium text-green-700">KYC已验证</p>
-                                        <p class="text-green-600 text-sm">证件齐全，风险等级：低</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="flex justify-end gap-3">
-                                <button class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">
-                                    批准
-                                </button>
-                                <button class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600">
-                                    拒绝
-                                </button>
-                                <button class="border border-blue-500 text-blue-500 px-4 py-2 rounded hover:bg-blue-50">
-                                    查看详情
-                                </button>
-                            </div>
-                        </div>
-                        
-                        <div class="payment-item">
-                            <div class="flex justify-between items-start mb-3">
-                                <div>
-                                    <div class="flex items-center gap-3 mb-2">
-                                        <div class="w-10 h-10 bg-yellow-100 rounded-full flex items-center justify-center">
-                                            <i class="fas fa-user text-yellow-600"></i>
-                                        </div>
-                                        <div>
-                                            <p class="font-medium">Michael Brown</p>
-                                            <p class="text-slate-500 text-sm">ID: USR1004 • 澳大利亚</p>
-                                        </div>
-                                    </div>
-                                    <p class="text-slate-600">申请时间: 今天 13:45</p>
-                                    <p class="text-slate-600">支付方式: Credit Card</p>
-                                </div>
-                                <div class="text-right">
-                                    <p class="text-2xl font-bold text-yellow-600">$8,000</p>
-                                    <span class="badge badge-danger">高风险</span>
-                                </div>
-                            </div>
-                            <div class="bg-red-50 border border-red-200 rounded-lg p-3 mb-3">
-                                <div class="flex items-start gap-2">
-                                    <i class="fas fa-exclamation-triangle text-red-500 mt-1"></i>
-                                    <div>
-                                        <p class="font-medium text-red-700">高风险警报</p>
-                                        <p class="text-red-600 text-sm">注册7日内大量入金并立即申请出金</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="flex justify-end gap-3">
-                                <button class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">
-                                    批准
-                                </button>
-                                <button class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600">
-                                    拒绝
-                                </button>
-                                <button class="border border-blue-500 text-blue-500 px-4 py-2 rounded hover:bg-blue-50">
-                                    查看详情
-                                </button>
-                            </div>
-                        </div>
-                        
-                        <div class="payment-item">
-                            <div class="flex justify-between items-start mb-3">
-                                <div>
-                                    <div class="flex items-center gap-3 mb-2">
-                                        <div class="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center">
-                                            <i class="fas fa-user text-green-600"></i>
-                                        </div>
-                                        <div>
-                                            <p class="font-medium">Emma Johnson</p>
-                                            <p class="text-slate-500 text-sm">ID: USR1002 • 英国</p>
-                                        </div>
-                                    </div>
-                                    <p class="text-slate-600">申请时间: 今天 12:20</p>
-                                    <p class="text-slate-600">支付方式: Skrill</p>
-                                </div>
-                                <div class="text-right">
-                                    <p class="text-2xl font-bold text-green-600">$500</p>
-                                    <span class="badge badge-pending">待审批</span>
-                                </div>
-                            </div>
-                            <div class="bg-blue-50 border border-blue-200 rounded-lg p-3 mb-3">
-                                <div class="flex items-start gap-2">
-                                    <i class="fas fa-info-circle text-blue-500 mt-1"></i>
-                                    <div>
-                                        <p class="font-medium text-blue-700">标准提现</p>
-                                        <p class="text-blue-600 text-sm">历史提现记录良好</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="flex justify-end gap-3">
-                                <button class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">
-                                    批准
-                                </button>
-                                <button class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600">
-                                    拒绝
-                                </button>
-                                <button class="border border-blue-500 text-blue-500 px-4 py-2 rounded hover:bg-blue-50">
-                                    查看详情
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="lg:col-span-1">
-                <div class="card">
-                    <h3 class="text-lg font-semibold mb-6">出金审批统计</h3>
-                    <div class="space-y-6">
-                        <div>
-                            <h4 class="text-sm font-medium text-slate-600 mb-2">今日审批</h4>
-                            <div class="flex justify-between items-center mb-1">
-                                <span>已批准</span>
-                                <span class="font-medium">24笔 / $42,800</span>
-                            </div>
-                            <div class="flex justify-between items-center mb-1">
-                                <span>已拒绝</span>
-                                <span class="font-medium">3笔 / $12,500</span>
-                            </div>
-                            <div class="flex justify-between items-center">
-                                <span>待处理</span>
-                                <span class="font-medium">15笔 / $38,000</span>
-                            </div>
-                        </div>
-                        
-                        <div>
-                            <h4 class="text-sm font-medium text-slate-600 mb-2">支付通道成功率</h4>
-                            <div class="space-y-3">
-                                <div>
-                                    <div class="flex justify-between mb-1">
-                                        <span>Bank Transfer</span>
-                                        <span class="font-medium">98.2%</span>
-                                    </div>
-                                    <div class="w-full bg-slate-200 rounded-full h-2">
-                                        <div class="bg-green-500 h-2 rounded-full" style="width: 98.2%"></div>
-                                    </div>
-                                </div>
-                                <div>
-                                    <div class="flex justify-between mb-1">
-                                        <span>Credit Card</span>
-                                        <span class="font-medium">95.4%</span>
-                                    </div>
-                                    <div class="w-full bg-slate-200 rounded-full h-2">
-                                        <div class="bg-blue-500 h-2 rounded-full" style="width: 95.4%"></div>
-                                    </div>
-                                </div>
-                                <div>
-                                    <div class="flex justify-between mb-1">
-                                        <span>Skrill</span>
-                                        <span class="font-medium">96.8%</span>
-                                    </div>
-                                    <div class="w-full bg-slate-200 rounded-full h-2">
-                                        <div class="bg-purple-500 h-2 rounded-full" style="width: 96.8%"></div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div>
-                            <h4 class="text-sm font-medium text-slate-600 mb-2">快速批准</h4>
-                            <div class="space-y-2">
-                                <div class="flex items-center justify-between">
-                                    <div class="flex items-center gap-2">
-                                        <input type="checkbox" class="rounded">
-                                        <span class="text-sm">自动批准小额出金 (< $500)</span>
-                                    </div>
-                                    <div>
-                                        <label class="relative inline-flex items-center cursor-pointer">
-                                            <input type="checkbox" class="sr-only peer">
-                                            <div class="w-11 h-6 bg-slate-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-500"></div>
-                                        </label>
-                                    </div>
-                                </div>
-                                <div class="flex items-center justify-between">
-                                    <div class="flex items-center gap-2">
-                                        <input type="checkbox" class="rounded">
-                                        <span class="text-sm">VIP客户自动优先处理</span>
-                                    </div>
-                                    <div>
-                                        <label class="relative inline-flex items-center cursor-pointer">
-                                            <input type="checkbox" class="sr-only peer" checked>
-                                            <div class="w-11 h-6 bg-slate-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-500"></div>
-                                        </label>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-8">
-            <div class="card">
-                <div class="flex justify-between items-center mb-6">
-                    <h3 class="text-lg font-semibold">异常支付监控</h3>
-                    <span class="badge badge-danger">3个异常</span>
-                </div>
-                <div class="space-y-4">
-                    <div class="border border-red-200 rounded-lg p-4 bg-red-50">
-                        <div class="flex justify-between items-start">
-                            <div>
-                                <p class="font-medium text-red-700">重复支付</p>
-                                <p class="text-red-600 text-sm mt-1">同一订单号多次支付尝试</p>
-                                <p class="text-slate-600 text-xs mt-2">订单号: PAY20240328001</p>
-                            </div>
-                            <button class="text-red-500 hover:text-red-700">
-                                <i class="fas fa-times"></i>
-                            </button>
-                        </div>
-                    </div>
-                    <div class="border border-yellow-200 rounded-lg p-4 bg-yellow-50">
-                        <div class="flex justify-between items-start">
-                            <div>
-                                <p class="font-medium text-yellow-700">大额支付异常</p>
-                                <p class="text-yellow-600 text-sm mt-1">单笔支付金额超过限额</p>
-                                <p class="text-slate-600 text-xs mt-2">金额: $25,000 / 限额: $20,000</p>
-                            </div>
-                            <button class="text-yellow-500 hover:text-yellow-700">
-                                <i class="fas fa-times"></i>
-                            </button>
-                        </div>
-                    </div>
-                    <div class="border border-red-200 rounded-lg p-4 bg-red-50">
-                        <div class="flex justify-between items-start">
-                            <div>
-                                <p class="font-medium text-red-700">通道故障</p>
-                                <p class="text-red-600 text-sm mt-1">支付通道响应超时</p>
-                                <p class="text-slate-600 text-xs mt-2">通道: Bank A • 超时: 30秒</p>
-                            </div>
-                            <button class="text-red-500 hover:text-red-700">
-                                <i class="fas fa-times"></i>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="card">
-                <div class="flex justify-between items-center mb-6">
-                    <h3 class="text-lg font-semibold">今日入金概览</h3>
-                    <select class="border rounded px-2 py-1 text-sm">
-                        <option>按支付方式</option>
-                        <option>按国家</option>
-                        <option>按品牌</option>
-                    </select>
-                </div>
-                <div class="space-y-4">
-                    <div>
-                        <div class="flex justify-between mb-1">
-                            <span>Bank Transfer</span>
-                            <span class="font-medium">$58,400</span>
-                        </div>
-                        <div class="w-full bg-slate-200 rounded-full h-2">
-                            <div class="bg-blue-500 h-2 rounded-full" style="width: 55%"></div>
-                        </div>
-                        <p class="text-slate-500 text-xs mt-1">占比: 55% • 78笔</p>
-                    </div>
-                    <div>
-                        <div class="flex justify-between mb-1">
-                            <span>Credit Card</span>
-                            <span class="font-medium">$32,800</span>
-                        </div>
-                        <div class="w-full bg-slate-200 rounded-full h-2">
-                            <div class="bg-green-500 h-2 rounded-full" style="width: 31%"></div>
-                        </div>
-                        <p class="text-slate-500 text-xs mt-1">占比: 31% • 123笔</p>
-                    </div>
-                    <div>
-                        <div class="flex justify-between mb-1">
-                            <span>Skrill</span>
-                            <span class="font-medium">$15,600</span>
-                        </div>
-                        <div class="w-full bg-slate-200 rounded-full h-2">
-                            <div class="bg-purple-500 h-2 rounded-full" style="width: 18%"></div>
-                        </div>
-                        <p class="text-slate-500 text-xs mt-1">占比: 18% • 42笔</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // 选项卡切换
-            const tabs = document.querySelectorAll('.tab-item');
-            tabs.forEach(tab => {
-                tab.addEventListener('click', function() {
-                    tabs.forEach(t => t.classList.remove('active'));
-                    this.classList.add('active');
-                });
-            });
-            
-            // 批准/拒绝按钮事件
-            const actionButtons = document.querySelectorAll('.payment-item button');
-            actionButtons.forEach(button => {
-                button.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    if (this.textContent.includes('批准') || this.textContent.includes('拒绝')) {
-                        const action = this.textContent.trim();
-                        const amount = this.closest('.payment-item').querySelector('.text-2xl').textContent;
-                        const customer = this.closest('.payment-item').querySelector('.font-medium').textContent;
-                        alert(`${action} 客户 ${customer} 的 ${amount} 出金申请`);
-                    }
-                });
-            });
-        });
-    </script>
+</div>
+
+<script>
+function approve(action) {
+    const msgs = { pass: '出金已审批通过，资金将在1-3个工作日内到账。', reject: '出金申请已拒绝，拒绝通知已发送至客户。' };
+    alert(msgs[action]);
+}
+</script>
 </body>
 </html>

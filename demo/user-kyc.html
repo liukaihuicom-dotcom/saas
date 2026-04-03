@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KYC 认证 - Broker SaaS</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="snowui-styles.css">
+</head>
+<body>
+<div class="snow-layout">
+
+    <!-- 侧边栏 -->
+    <aside class="snow-sidebar">
+        <div class="snow-logo">
+            <div class="snow-logo-icon"><i class="fas fa-snowflake"></i></div>
+            <span class="snow-logo-text">Broker SaaS</span>
+        </div>
+        <div class="snow-user-info">
+            <div class="snow-user-avatar" style="background:#eff6ff;color:#2563eb">L</div>
+            <div>
+                <div class="snow-user-name">Liu Kaihui</div>
+                <div style="font-size:11px;color:var(--snow-text-muted)">标准账户</div>
+            </div>
+        </div>
+        <div class="snow-nav-group"><span class="snow-nav-group-label">Favorites</span></div>
+        <a href="user-dashboard.html" class="snow-nav-link"><i class="fas fa-home"></i>账户总览</a>
+        <a href="user-accounts.html" class="snow-nav-link"><i class="fas fa-layer-group"></i>交易账户</a>
+        <div class="snow-nav-group" style="margin-top:8px"><span class="snow-nav-group-label">Pages</span></div>
+        <a href="user-wallet.html" class="snow-nav-link"><i class="fas fa-wallet"></i>入金 / 出金</a>
+        <a href="user-kyc.html" class="snow-nav-link active"><i class="fas fa-shield-alt"></i>KYC认证</a>
+        <a href="#" class="snow-nav-link"><i class="fas fa-chart-line"></i>交易历史</a>
+        <a href="#" class="snow-nav-link"><i class="fas fa-bell"></i>通知中心</a>
+        <a href="#" class="snow-nav-link"><i class="fas fa-cog"></i>账户设置</a>
+        <div class="snow-sidebar-footer">
+            <a href="index.html" style="font-size:12px;color:var(--snow-text-muted);display:flex;align-items:center;gap:6px">
+                <i class="fas fa-arrow-left" style="font-size:10px"></i>返回导航
+            </a>
+        </div>
+    </aside>
+
+    <!-- 主内容 -->
+    <div class="snow-main">
+        <header class="snow-topbar">
+            <div class="snow-sidebar-toggle"><span></span><span></span><span></span></div>
+            <nav class="snow-breadcrumb">
+                <span class="snow-breadcrumb-item">Dashboards</span>
+                <span class="snow-breadcrumb-sep">/</span>
+                <span class="snow-breadcrumb-current">KYC 身份认证</span>
+            </nav>
+            <div class="snow-search">
+                <i class="fas fa-search"></i>
+                <input type="text" placeholder="Search">
+            </div>
+            <button class="snow-topbar-btn"><i class="fas fa-sun"></i></button>
+            <button class="snow-topbar-btn"><i class="fas fa-clock-rotate-left"></i></button>
+            <button class="snow-topbar-btn snow-badge-dot"><i class="fas fa-bell"></i></button>
+        </header>
+
+        <main class="snow-content">
+
+            <!-- 认证状态横幅 -->
+            <div style="background:linear-gradient(135deg,#f0fdf4,#dcfce7);border:1px solid #bbf7d0;border-radius:var(--snow-radius-lg);padding:20px 24px;display:flex;align-items:center;justify-content:space-between;margin-bottom:20px">
+                <div style="display:flex;align-items:center;gap:14px">
+                    <div style="width:44px;height:44px;background:var(--snow-success);border-radius:50%;display:flex;align-items:center;justify-content:center;color:white;font-size:18px">
+                        <i class="fas fa-check"></i>
+                    </div>
+                    <div>
+                        <div style="font-size:15px;font-weight:700;color:#15803d">KYC 认证已通过</div>
+                        <div style="font-size:13px;color:#16a34a;margin-top:2px">您的身份已验证，可使用全部功能</div>
+                    </div>
+                </div>
+                <div style="text-align:right">
+                    <div style="font-size:12px;color:#16a34a">认证等级</div>
+                    <div style="font-size:20px;font-weight:700;color:#15803d">Level 2</div>
+                    <div style="font-size:11.5px;color:#16a34a">专业投资者认证</div>
+                </div>
+            </div>
+
+            <!-- 进度步骤 -->
+            <div class="snow-card" style="margin-bottom:20px">
+                <div class="snow-card-header">
+                    <span class="snow-card-title">认证进度</span>
+                </div>
+                <div class="snow-card-body">
+                    <div class="snow-steps">
+                        <div class="snow-step done">
+                            <div class="snow-step-circle"><i class="fas fa-check" style="font-size:10px"></i></div>
+                            <div class="snow-step-label">基本信息</div>
+                        </div>
+                        <div class="snow-step done">
+                            <div class="snow-step-circle"><i class="fas fa-check" style="font-size:10px"></i></div>
+                            <div class="snow-step-label">证件验证</div>
+                        </div>
+                        <div class="snow-step done">
+                            <div class="snow-step-circle"><i class="fas fa-check" style="font-size:10px"></i></div>
+                            <div class="snow-step-label">人脸识别</div>
+                        </div>
+                        <div class="snow-step done">
+                            <div class="snow-step-circle"><i class="fas fa-check" style="font-size:10px"></i></div>
+                            <div class="snow-step-label">审核通过</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 认证等级 + 信息 -->
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:20px">
+
+                <!-- 认证等级说明 -->
+                <div class="snow-card">
+                    <div class="snow-card-header">
+                        <span class="snow-card-title">认证等级权益</span>
+                    </div>
+                    <div style="padding:8px 0">
+                        <div style="padding:12px 24px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--snow-border-light)">
+                            <div style="display:flex;align-items:center;gap:10px">
+                                <div style="width:32px;height:32px;background:#f1f5f9;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:var(--snow-text-secondary)">L0</div>
+                                <div>
+                                    <div style="font-size:13px;font-weight:600">未认证</div>
+                                    <div style="font-size:11.5px;color:var(--snow-text-muted)">仅查看，不可交易</div>
+                                </div>
+                            </div>
+                            <span class="snow-badge muted">限制</span>
+                        </div>
+                        <div style="padding:12px 24px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--snow-border-light)">
+                            <div style="display:flex;align-items:center;gap:10px">
+                                <div style="width:32px;height:32px;background:#eff6ff;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:var(--snow-info)">L1</div>
+                                <div>
+                                    <div style="font-size:13px;font-weight:600">基础认证</div>
+                                    <div style="font-size:11.5px;color:var(--snow-text-muted)">入金 ≤ $10,000/月</div>
+                                </div>
+                            </div>
+                            <span class="snow-badge info">标准</span>
+                        </div>
+                        <div style="padding:12px 24px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--snow-border-light);background:#f0fdf4">
+                            <div style="display:flex;align-items:center;gap:10px">
+                                <div style="width:32px;height:32px;background:#dcfce7;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:var(--snow-success)">L2</div>
+                                <div>
+                                    <div style="font-size:13px;font-weight:600;color:var(--snow-success)">专业认证 ✓ 当前</div>
+                                    <div style="font-size:11.5px;color:var(--snow-text-muted)">入金不限，可开VIP账户</div>
+                                </div>
+                            </div>
+                            <span class="snow-badge success">已认证</span>
+                        </div>
+                        <div style="padding:12px 24px;display:flex;align-items:center;justify-content:space-between">
+                            <div style="display:flex;align-items:center;gap:10px">
+                                <div style="width:32px;height:32px;background:#fef9c3;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#ca8a04">L3</div>
+                                <div>
+                                    <div style="font-size:13px;font-weight:600">机构认证</div>
+                                    <div style="font-size:11.5px;color:var(--snow-text-muted)">公司账户，专属服务</div>
+                                </div>
+                            </div>
+                            <span class="snow-badge warning">升级</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 已提交信息 -->
+                <div class="snow-card">
+                    <div class="snow-card-header">
+                        <span class="snow-card-title">已认证信息</span>
+                        <button class="snow-btn snow-btn-secondary snow-btn-sm">申请更新</button>
+                    </div>
+                    <div class="snow-card-body">
+                        <div style="display:flex;flex-direction:column;gap:12px">
+                            <div style="display:flex;justify-content:space-between;align-items:center">
+                                <span style="font-size:13px;color:var(--snow-text-muted)">姓名</span>
+                                <span style="font-size:13.5px;font-weight:600">Liu Kaihui / 刘凯慧</span>
+                            </div>
+                            <hr style="border:none;border-top:1px solid var(--snow-border-light)">
+                            <div style="display:flex;justify-content:space-between;align-items:center">
+                                <span style="font-size:13px;color:var(--snow-text-muted)">证件类型</span>
+                                <span style="font-size:13.5px;font-weight:600">中国身份证</span>
+                            </div>
+                            <hr style="border:none;border-top:1px solid var(--snow-border-light)">
+                            <div style="display:flex;justify-content:space-between;align-items:center">
+                                <span style="font-size:13px;color:var(--snow-text-muted)">证件号码</span>
+                                <span style="font-size:13.5px;font-weight:600">3101*** **** **48</span>
+                            </div>
+                            <hr style="border:none;border-top:1px solid var(--snow-border-light)">
+                            <div style="display:flex;justify-content:space-between;align-items:center">
+                                <span style="font-size:13px;color:var(--snow-text-muted)">国籍/地区</span>
+                                <span style="font-size:13.5px;font-weight:600">🇨🇳 中国</span>
+                            </div>
+                            <hr style="border:none;border-top:1px solid var(--snow-border-light)">
+                            <div style="display:flex;justify-content:space-between;align-items:center">
+                                <span style="font-size:13px;color:var(--snow-text-muted)">认证时间</span>
+                                <span style="font-size:13.5px;font-weight:600">2024-12-15</span>
+                            </div>
+                            <hr style="border:none;border-top:1px solid var(--snow-border-light)">
+                            <div style="display:flex;justify-content:space-between;align-items:center">
+                                <span style="font-size:13px;color:var(--snow-text-muted)">有效期至</span>
+                                <span style="font-size:13.5px;font-weight:600;color:var(--snow-success)">2029-12-15</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 证件图片 -->
+            <div class="snow-card">
+                <div class="snow-card-header">
+                    <span class="snow-card-title">已上传证件</span>
+                    <span class="snow-status success" style="font-size:13px">已通过验证</span>
+                </div>
+                <div class="snow-card-body">
+                    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px">
+                        <div style="border:1px solid var(--snow-border);border-radius:var(--snow-radius-sm);overflow:hidden">
+                            <div style="background:linear-gradient(135deg,#f1f5f9,#e2e8f0);height:120px;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:8px">
+                                <i class="fas fa-id-card" style="font-size:28px;color:#94a3b8"></i>
+                                <span style="font-size:11.5px;color:var(--snow-text-muted)">身份证 · 正面</span>
+                            </div>
+                            <div style="padding:8px 12px;display:flex;align-items:center;justify-content:space-between;border-top:1px solid var(--snow-border-light)">
+                                <span style="font-size:12px;color:var(--snow-text-secondary);font-weight:500">证件正面</span>
+                                <span class="snow-status success" style="font-size:12px">已验证</span>
+                            </div>
+                        </div>
+                        <div style="border:1px solid var(--snow-border);border-radius:var(--snow-radius-sm);overflow:hidden">
+                            <div style="background:linear-gradient(135deg,#f1f5f9,#e2e8f0);height:120px;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:8px">
+                                <i class="fas fa-id-card" style="font-size:28px;color:#94a3b8"></i>
+                                <span style="font-size:11.5px;color:var(--snow-text-muted)">身份证 · 背面</span>
+                            </div>
+                            <div style="padding:8px 12px;display:flex;align-items:center;justify-content:space-between;border-top:1px solid var(--snow-border-light)">
+                                <span style="font-size:12px;color:var(--snow-text-secondary);font-weight:500">证件背面</span>
+                                <span class="snow-status success" style="font-size:12px">已验证</span>
+                            </div>
+                        </div>
+                        <div style="border:1px solid var(--snow-border);border-radius:var(--snow-radius-sm);overflow:hidden">
+                            <div style="background:linear-gradient(135deg,#f1f5f9,#e2e8f0);height:120px;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:8px">
+                                <i class="fas fa-user-circle" style="font-size:28px;color:#94a3b8"></i>
+                                <span style="font-size:11.5px;color:var(--snow-text-muted)">人脸识别</span>
+                            </div>
+                            <div style="padding:8px 12px;display:flex;align-items:center;justify-content:space-between;border-top:1px solid var(--snow-border-light)">
+                                <span style="font-size:12px;color:var(--snow-text-secondary);font-weight:500">活体检测</span>
+                                <span class="snow-status success" style="font-size:12px">已验证</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </main>
+
+        <footer class="snow-footer">
+            <span>© 2024 Broker SaaS</span>
+            <div class="snow-footer-links">
+                <a href="#">About</a><a href="#">Support</a><a href="#">Contact Us</a>
+            </div>
+        </footer>
+    </div>
+</div>
+</body>
+</html>
